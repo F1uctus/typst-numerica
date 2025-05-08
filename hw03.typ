@@ -29,13 +29,14 @@
   columns: (1fr, auto, 1fr),
   align: horizon + center,
   column-gutter: 5pt,
-  line(length: 100%),
-  it.body,
-  line(length: 100%),
+  line(length: 100%), it.body, line(length: 100%),
 )
 
 #let round(x) = calc.round(eval(str(x)), digits: 5)
-#let tick-fmt(v) = { set text(size: 9pt); v }
+#let tick-fmt(v) = {
+  set text(size: 9pt)
+  v
+}
 
 #let fmt-large-n(n) = {
   let s = str(n)
@@ -50,9 +51,9 @@
 
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-#let f(x) = x*x*x - 3*x*x + 6*x - 5
-#let d1f(x) = 3*x*x - 6*x + 6
-#let d2f(x) = 6*x - 6
+#let f(x) = x * x * x - 3 * x * x + 6 * x - 5
+#let d1f(x) = 3 * x * x - 6 * x + 6
+#let d2f(x) = 6 * x - 6
 #let evalm(x) = eval(mode: "math", x)
 
 
@@ -65,19 +66,23 @@
 приближения левую или правую границу отрезка, оценить погрешность.
 Выяснить количество верных значащих цифр в приближённом решении.
 
-$ f(x) = x^3 - 3x^2 + 6x - 5 = 0,
-quad f'(x) = 3x^2 - 6x + 6,
-quad f''(x) = 6x - 6. $
+$
+  f(x) = x^3 - 3x^2 + 6x - 5 = 0,
+  quad f'(x) = 3x^2 - 6x + 6,
+  quad f''(x) = 6x - 6.
+$
 
-$  f(x) = 0 ==>
-    x_0 = 1 - root(3, 2/(1 + sqrt(5)))
-        + root(3, 1/2 (1 + sqrt(5))) in RR thick, \
-x_(1,2) = 1 - 1/2 root(3, 1/2 (1 + sqrt(5)))
-        + 1/root(3, 4 (1 + sqrt(5))) 
-plus.minus i (sqrt(3)/2 root(3, 1/2 (1 + sqrt(5)))
-              + sqrt(3)/root(3, 4 (1 + sqrt(5)))) in CC thick. $
+$
+  f(x) = 0 ==>
+  x_0 = 1 - root(3, 2 / (1 + sqrt(5)))
+  + root(3, 1 / 2 (1 + sqrt(5))) in RR thick, \
+  x_(1,2) = 1 - 1 / 2 root(3, 1 / 2 (1 + sqrt(5)))
+  + 1 / root(3, 4 (1 + sqrt(5)))
+  plus.minus i (sqrt(3) / 2 root(3, 1 / 2 (1 + sqrt(5)))
+    + sqrt(3) / root(3, 4 (1 + sqrt(5)))) in CC thick.
+$
 
-#let xe = 1 - calc.root(2/(1 + calc.sqrt(5)), 3) + calc.root(1/2 * (1 + calc.sqrt(5)), 3)
+#let xe = 1 - calc.root(2 / (1 + calc.sqrt(5)), 3) + calc.root(1 / 2 * (1 + calc.sqrt(5)), 3)
 
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
@@ -86,54 +91,69 @@ plus.minus i (sqrt(3)/2 root(3, 1/2 (1 + sqrt(5)))
   [Проверим условие Фурье на отрезке $[#a, #b]$ *для $x_0$:* \ ]
   table(
     columns: (6fr, 2fr, 3fr),
-    table.cell(rowspan: 3, inset: (right: 15pt), cetz.canvas({
-      import plot: *
-      cetz.draw.set-style(axes: (
-        stroke: (dash: "dotted", paint: gray),
-        tick: (stroke: gray + .5pt),
-      ))
-      plot(
-        name: "p",
-        size: (8, 3),
-        x-grid: true,
-        x-label: $x$,
-        x-tick-step: 0.1,
-        y-grid: true,
-        y-label: none,
-        y-tick-step: 1,
-        x-format: tick-fmt,
-        y-format: tick-fmt,
-        {
-          add(
-            f, domain: (a, b),
-            style: (stroke: (dash: "solid")),
-          )
-          add-anchor("f0", (b, f(b)))
-          add(
-            d1f, domain: (a, b),
-            style: (stroke: (dash: "dashed")),
-          )
-          add-anchor("f1", (a, d1f(a)))
-          add(
-            d2f, domain: (a, b),
-            style: (stroke: (dash: "dotted")),
-          )
-          add-anchor("f2", (a, d2f(a)))
-        }
-      )
-      cetz.draw.content("p.f0", $f(x)$, anchor: "west", padding: 0.15)
-      cetz.draw.content("p.f1", $f'(x)$, anchor: "east", padding: 0.5)
-      cetz.draw.content("p.f2", $f''(x)$, anchor: "east", padding: 0.5)
-    })),
+    table.cell(
+      rowspan: 3,
+      inset: (right: 15pt),
+      cetz.canvas({
+        import plot: *
+        cetz.draw.set-style(
+          axes: (
+            stroke: (dash: "dotted", paint: gray),
+            tick: (stroke: gray + .5pt),
+          ),
+        )
+        plot(
+          name: "p",
+          size: (8, 3),
+          x-grid: true,
+          x-label: $x$,
+          x-tick-step: 0.1,
+          y-grid: true,
+          y-label: none,
+          y-tick-step: 1,
+          x-format: tick-fmt,
+          y-format: tick-fmt,
+          {
+            add(
+              f,
+              domain: (a, b),
+              style: (stroke: (dash: "solid")),
+            )
+            add-anchor("f0", (b, f(b)))
+            add(
+              d1f,
+              domain: (a, b),
+              style: (stroke: (dash: "dashed")),
+            )
+            add-anchor("f1", (a, d1f(a)))
+            add(
+              d2f,
+              domain: (a, b),
+              style: (stroke: (dash: "dotted")),
+            )
+            add-anchor("f2", (a, d2f(a)))
+          },
+        )
+        cetz.draw.content("p.f0", $f(x)$, anchor: "west", padding: 0.15)
+        cetz.draw.content("p.f1", $f'(x)$, anchor: "east", padding: 0.5)
+        cetz.draw.content("p.f2", $f''(x)$, anchor: "east", padding: 0.5)
+      }),
+    ),
     $ f(#a) f(#b) < 0 $,
-    $ f(#a) &= #round(f(a)) < 0, \
-      f(#b) &= #round(f(b)) > 0. $,
+    $
+      f(#a) &= #round(f(a)) < 0, \
+      f(#b) &= #round(f(b)) > 0.
+    $,
     $ limits("sign")_[#a,#b] f' eq.triple "const" $,
-    $ min f' = f'(#a) &= #round(d1f(a)) > 0, \
-      max f' = f'(#b) &= #round(d1f(b)) > 0. $,
+    $
+      min f' = f'(#a) &= #round(d1f(a)) > 0, \
+      max f' = f'(#b) &= #round(d1f(b)) > 0.
+    $,
     $ limits("sign")_[#a,#b] f'' eq.triple "const" $,
-    $ min f'' = f''(#a) &= #round(d2f(a)) > 0, \
-      max f'' = f''(#b) &= #round(d2f(b)) > 0. $,
+    $
+      min f'' = f''(#a) &= #round(d2f(a)) > 0, \
+      max f'' = f''(#b) &= #round(d2f(b)) > 0.
+    $,
   )
 
   [
@@ -141,8 +161,8 @@ plus.minus i (sqrt(3)/2 root(3, 1/2 (1 + sqrt(5)))
     Т.к. $"sign" f' = "sign" f''$ на $[#a, #b]$,
     то $x^"(0)" = #b$. Проведём итерации по схеме
   ]
-  $x^"(k+1)" = x^"(k)" - frac(f(x^"(k)"), f'(x^"(k)")) : $
-  
+  $x^"(k+1)" = x^"(k)" - frac(f(x^"(k)"), f'(x^"(k)")) :$
+
   let x0 = a
 
   let x1 = "4/3"
@@ -165,32 +185,35 @@ plus.minus i (sqrt(3)/2 root(3, 1/2 (1 + sqrt(5)))
 
   let x5 = "1.32218535462608559663328"
 
-  $ x^"(1)" &= x0 - frac(f(x0), f'(x0))
-             = x0 - frac(#str(f(x0)), #str(d1f(x0)))
-             = #evalm(x1) thick, \
+  $
+    x^"(1)" &= x0 - frac(f(x0), f'(x0))
+    = x0 - frac(#str(f(x0)), #str(d1f(x0)))
+    = #evalm(x1) approx #round(x1) thick, \
     x^"(2)" &= #evalm(x1) - frac(f(x1), f'(x1))
-             = #evalm(x1) - frac(1 slash 27, 10 slash 3)
-             = #evalm(x2) thick, \
+    = #evalm(x1) - frac(1 slash 27, 10 slash 3)
+    = #evalm(x2) approx #round(x2) thick, \
     x^"(3)" &= #evalm(x2) - frac(f(x2), f'(x2))
-             = #evalm(x2) - frac(89 slash 729000, 8941 slash 2700)
-             = #evalm(x3) thick, \
+    = #evalm(x2) - frac(89 slash 729000, 8941 slash 2700)
+    = #evalm(x3) approx #round(x3) thick, \
     x^"(4)" &= #evalm(x3) - frac(f(x3), f'(x3))
-             = #evalm(x3) - frac(
-                    #fmt-large-n(fx3num) slash #fmt-large-n(fx3den),
-                    #fmt-large-n(dfx3num) slash #fmt-large-n(dfx3den)
-                ) \
-            &= frac(#fmt-large-n(x4num), #fmt-large-n(x4den)) thick, \
+    = #evalm(x3) - frac(
+      #fmt-large-n(fx3num) slash #fmt-large-n(fx3den),
+      #fmt-large-n(dfx3num) slash #fmt-large-n(dfx3den)
+    ) = \
+    &= frac(#fmt-large-n(x4num), #fmt-large-n(x4den))
+    approx #round(x4) thick, \
     x^"(5)" &= frac(#fmt-large-n(x4num), #fmt-large-n(x4den))
-             - frac(
-                   f(#fmt-large-n(x4num) slash #fmt-large-n(x4den)),
-                   f'(#fmt-large-n(x4num) slash #fmt-large-n(x4den))
-               ) \
-            &= frac(#fmt-large-n(x4num), #fmt-large-n(x4den))
-             - frac(
-                    #pad(8pt, $display(frac(-#fmt-large-n(fx4num), #fmt-large-n(fx4den)))$),
-                    #pad(8pt, $display(frac(#fmt-large-n(dfx4num), #fmt-large-n(dfx4den)))$)
-               ) \
-       &approx x5 thick. $
+    - frac(
+      f(#fmt-large-n(x4num) slash #fmt-large-n(x4den)),
+      f'(#fmt-large-n(x4num) slash #fmt-large-n(x4den))
+    ) = \
+    &= frac(#fmt-large-n(x4num), #fmt-large-n(x4den))
+    - frac(
+      #pad(8pt, $display(frac(-#fmt-large-n(fx4num), #fmt-large-n(fx4den)))$),
+      #pad(8pt, $display(frac(#fmt-large-n(dfx4num), #fmt-large-n(dfx4den)))$)
+    ) \
+    &approx x5 thick.
+  $
 
   let xe = "1.32218535462608559291148"
   let digits = 1000
@@ -210,17 +233,14 @@ plus.minus i (sqrt(3)/2 root(3, 1/2 (1 + sqrt(5)))
     quad M = max_[#a, #b] abs(f''(x)) approx #M.$
   ]
 
-  $ Delta x_5 &<= M / (2 m) abs(x^"(5)" - x^"(4)")^2
-                = #M / #(2 * m) abs(x5... - x4)^2 approx \
-          &approx #((M / (2 * m)) * calc.pow(calc.abs(eval(x5 + "-" + x4)), 2)), \
+  $
+    Delta x_5 &<= M / (2 m) abs(x^"(5)" - x^"(4)")^2
+    = #M / #(2 * m) abs(x5... - x4)^2 approx \
+    &approx #((M / (2 * m)) * calc.pow(calc.abs(eval(x5 + "-" + x4)), 2)), \
     Delta x^*_5 &:= abs(x^"(5)" - x^*)
-                  = abs(x5... - xe...) approx \
-            &approx #calc.round(
-                         decimal(x5)
-                       - decimal(xe)
-                       + decimal(calc.pow(10, -digits)),
-                       digits: digits
-                     ). $
+    = abs(x5... - xe...) approx \
+    &approx #calc.round(decimal(x5) - decimal(xe) + decimal(calc.pow(10, -digits)), digits: digits).
+  $
 
   [
     *Ответ*: в пятом приближении #digits верных значащих цифр,
