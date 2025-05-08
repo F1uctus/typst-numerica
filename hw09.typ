@@ -89,74 +89,64 @@
 #exercise-hom-diff-eq(
   setup-eq: $ y_(k+2) - 9y_(k+1) + 20y_k = 0 $,
   char-eq: $lambda^2 - 9 lambda + 20 = 0$,
-  solution: [
-    $
-      D = 9^2 - 4 dot 1 dot 20 = 81 - 80 = 1,
-      quad lambda_(1,2) = frac(9 plus.minus sqrt(1), 2) = frac(9 plus.minus 1, 2)
-      quad ==>
-      quad lambda_1 = frac(9 + 1, 2) = 5,
-      quad lambda_2 = frac(9 - 1, 2) = 4.
-    $
-  ],
+  solution: $
+    D = 9^2 - 4 dot 1 dot 20 = 81 - 80 = 1,
+    quad lambda_(1,2) = frac(9 plus.minus sqrt(1), 2) = frac(9 plus.minus 1, 2)
+    quad ==>
+    quad lambda_1 = frac(9 + 1, 2) = 5,
+    quad lambda_2 = frac(9 - 1, 2) = 4.
+  $,
   answer: $ y_k = C_1 dot 5^k + C_2 dot 4^k $,
 )
 
 #exercise-hom-diff-eq(
   setup-eq: $ y_(k+2) - 6y_(k+1) + 9y_k = 0 $,
   char-eq: $lambda^2 - 6 lambda + 9 = 0$,
-  solution: [
-    $
-      D = 6^2 - 4 dot 1 dot 9 = 36 - 36 = 0
-      quad ==>
-      quad lambda_(1,2) = frac(6, 2) = 3.
-    $
-  ],
+  solution: $
+    D = 6^2 - 4 dot 1 dot 9 = 36 - 36 = 0
+    quad ==>
+    quad lambda_(1,2) = frac(6, 2) = 3.
+  $,
   answer: $ y_k = (C_1 + C_2 k) dot 3^k $,
 )
 
 #exercise-hom-diff-eq(
   setup-eq: $ y_(k+2) - 9y_(k+1) + 20y_k = 0 $,
   char-eq: $lambda^2 - 9 lambda + 20 = 0$,
-  solution: [
-    $
-      D = 9^2 - 4 dot 1 dot 20 = 81 - 80 = 1,
-      quad lambda_(1,2) = frac(9 plus.minus sqrt(1), 2) = frac(9 plus.minus 1, 2)
-      quad ==>
-      quad lambda_1 = frac(9 + 1, 2) = 5,
-      quad lambda_2 = frac(9 - 1, 2) = 4.
-    $
-  ],
+  solution: $
+    D = 9^2 - 4 dot 1 dot 20 = 81 - 80 = 1,
+    quad lambda_(1,2) = frac(9 plus.minus sqrt(1), 2) = frac(9 plus.minus 1, 2)
+    quad ==>
+    quad lambda_1 = frac(9 + 1, 2) = 5,
+    quad lambda_2 = frac(9 - 1, 2) = 4.
+  $,
   answer: $ y_k = C_1 dot 5^k + C_2 dot 4^k $,
 )
 
 #exercise-hom-diff-eq(
   setup-eq: $ y_(k+2) - 6y_(k+1) + 9y_k = 0 $,
   char-eq: $lambda^2 - 6 lambda + 9 = 0$,
-  solution: [
-    $
-      D = 6^2 - 4 dot 1 dot 9 = 36 - 36 = 0
-      quad ==>
-      quad lambda_(1,2) = frac(6, 2) = 3.
-    $
-  ],
+  solution: $
+    D = 6^2 - 4 dot 1 dot 9 = 36 - 36 = 0
+    quad ==>
+    quad lambda_(1,2) = frac(6, 2) = 3.
+  $,
   answer: $ y_k = (C_1 + C_2 k) dot 3^k $,
 )
 
 #exercise-hom-diff-eq(
   setup-eq: $ y_(k+2) - y_(k+1) + y_k = 0 $,
   char-eq: $lambda^2 - lambda + 1 = 0$,
-  solution: [
-    $
-      D = 1^2 - 4 dot 1 dot 1 = 1 - 4 = -3
-      quad ==>
-      quad lambda_(1,2) = frac(1 plus.minus i sqrt(3), 2),
-      \ rho = |lambda| = sqrt((frac(1, 2))^2 + (frac(sqrt(3), 2))^2)
-      = 1,
-      quad cos phi = frac(1 slash 2, rho) = frac(1, 2),
-      quad sin phi = frac(sqrt(3) slash 2, rho) = frac(sqrt(3), 2)
-      quad ==> quad phi = frac(pi, 3).
-    $
-  ],
+  solution: $
+    D = 1^2 - 4 dot 1 dot 1 = 1 - 4 = -3
+    quad ==>
+    quad lambda_(1,2) = frac(1 plus.minus i sqrt(3), 2),
+    \ rho = |lambda| = sqrt((frac(1, 2))^2 + (frac(sqrt(3), 2))^2)
+    = 1,
+    quad cos phi = frac(1 slash 2, rho) = frac(1, 2),
+    quad sin phi = frac(sqrt(3) slash 2, rho) = frac(sqrt(3), 2)
+    quad ==> quad phi = frac(pi, 3).
+  $,
   answer: $ y_k = C_1 cos(pi k slash 3) + C_2 sin(pi k slash 3) $,
 )
 
@@ -180,34 +170,30 @@
 #exercise-hom-diff-eq(
   setup-eq: $ y_(k+2) - 5y_(k+1) + 2y_k = 0 $,
   char-eq: $lambda^2 - 5 lambda + 2 = 0$,
-  solution: [
-    $
-      D = 5^2 - 4 dot 1 dot 2 = 25 - 8 = 17,
-      quad lambda_(1,2) = frac(5 plus.minus sqrt(17), 2)
-      quad ==>
-      quad lambda_1 = frac(5 + sqrt(17), 2),
-      quad lambda_2 = frac(5 - sqrt(17), 2).
-    $
-  ],
+  solution: $
+    D = 5^2 - 4 dot 1 dot 2 = 25 - 8 = 17,
+    quad lambda_(1,2) = frac(5 plus.minus sqrt(17), 2)
+    quad ==>
+    quad lambda_1 = frac(5 + sqrt(17), 2),
+    quad lambda_2 = frac(5 - sqrt(17), 2).
+  $,
   answer: $ y_k = C_1 dot (frac(5 + sqrt(17), 2))^k + C_2 dot (frac(5 - sqrt(17), 2))^k $,
 )
 
 #exercise-hom-diff-eq(
   setup-eq: $ y_(k+2) - 3y_(k+1) + 9y_k = 0 $,
   char-eq: $lambda^2 - 3 lambda + 9 = 0$,
-  solution: [
-    $
-      D = 3^2 - 4 dot 1 dot 9 = 9 - 36 = -27,
-      quad lambda_(1,2) = frac(3 plus.minus i sqrt(27), 2)
-      = frac(3 plus.minus 3i sqrt(3), 2)
-      = frac(3, 2) plus.minus frac(3sqrt(3), 2)i,
-      \ rho = |lambda| = sqrt((frac(3, 2))^2 + (frac(3sqrt(3), 2))^2)
-      = 3,
-      quad cos phi = frac(3 slash 2, rho) = frac(1, 2),
-      quad sin phi = frac(3sqrt(3) slash 2, rho) = frac(sqrt(3), 2),
-      quad ==> quad phi = frac(pi, 3).
-    $
-  ],
+  solution: $
+    D = 3^2 - 4 dot 1 dot 9 = 9 - 36 = -27,
+    quad lambda_(1,2) = frac(3 plus.minus i sqrt(27), 2)
+    = frac(3 plus.minus 3i sqrt(3), 2)
+    = frac(3, 2) plus.minus frac(3sqrt(3), 2)i,
+    \ rho = |lambda| = sqrt((frac(3, 2))^2 + (frac(3sqrt(3), 2))^2)
+    = 3,
+    quad cos phi = frac(3 slash 2, rho) = frac(1, 2),
+    quad sin phi = frac(3sqrt(3) slash 2, rho) = frac(sqrt(3), 2),
+    quad ==> quad phi = frac(pi, 3).
+  $,
   answer: $ y_k = 3^k (C_1 cos(pi k slash 3) + C_2 sin(pi k slash 3)) $,
 )
 
@@ -454,9 +440,8 @@
     $ "Общее решение однородного уравнения" y_k^o = C_1 5^k + C_2 2^k $
 
     Правая часть имеет вид $f_k = 4 * 6^k = P_0(k) mu^k.$
-    \
     Поскольку $mu = 6$ -- не корень характеристического уравнения,
-    $y_k^* = A * 6^k$.
+    $y_k^* = 6^k A$.
 
     Подставим в исходное уравнение:
     $
