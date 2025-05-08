@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
-#import "@preview/diverential:0.2.0": *
+#import "@preview/physica:0.9.5": *
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -24,9 +24,7 @@
   columns: (1fr, auto, 1fr),
   align: horizon + center,
   column-gutter: 5pt,
-  line(length: 100%),
-  it.body,
-  line(length: 100%),
+  line(length: 100%), it.body, line(length: 100%),
 )
 #set table(
   align: horizon + center,
@@ -35,7 +33,10 @@
 #set par(justify: true)
 
 #let round(x) = calc.round(x, digits: 4)
-#let tick-fmt(v) = { set text(size: 9pt); v }
+#let tick-fmt(v) = {
+  set text(size: 9pt)
+  v
+}
 
 
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
@@ -51,10 +52,12 @@
 
 #let plot-comparison(plot-block, y-step: 1) = cetz.canvas({
   import plot: *
-  cetz.draw.set-style(axes: (
-    stroke: (dash: "dotted", paint: gray),
-    tick: (stroke: gray + .5pt),
-  ))
+  cetz.draw.set-style(
+    axes: (
+      stroke: (dash: "dotted", paint: gray),
+      tick: (stroke: gray + .5pt),
+    ),
+  )
   plot(
     size: (7, 3),
     x-grid: true,
@@ -74,7 +77,7 @@
     // y-base: 10,
     // x-mode: "log",
     // x-base: 2000,
-    plot-block
+    plot-block,
   )
 })
 
@@ -83,42 +86,61 @@
 Сравнить и объяснить полученный результат.
 Почему совпали приближения по первой и второй модификациям метода Эйлера?
 
-$ y' = y - x, quad
+$
+  y' = y - x, quad
   y(0) = n + 4 = y0, quad
-  h = #h thin. $
+  h = #h thin.
+$
 
-$ (Delta y) / (Delta x) = f(x, y), quad
+$
+  (Delta y) / (Delta x) = f(x, y), quad
   Delta y = y(x + h) - y(x), quad
-  Delta x = (x + h) - x = h thin. $
+  Delta x = (x + h) - x = h thin.
+$
 
-  
+
 Решим аналитически с помощью интегрирующего множителя $mu(x)$:
-$ dv(y, x) = y - x quad <==>
-quad dv(y, x) + P(x) y = Q(x),
-quad "где" thick P(x) = -1, thick Q(x) = -x. $
+$
+  dv(y, x) = y - x quad <==>
+  quad dv(y, x) + P(x) y = Q(x),
+  quad "где" thick P(x) = -1, thick Q(x) = -x.
+$
 
-$ mu(x) = e^(integral_0^x P(t) dif t) = e^(- integral_0^x dif t) = e^(-x), $
+$
+  mu(x) = e^(integral_0^x P(t) dif t)
+  = e^(- integral_0^x dif t) = e^(-x),
+$
 
-$ e^(-x) dv(y, x) - e^(-x) y = -e^(-x) x quad <==>
-quad dv(e^(-x) y, x) = - e^(-x) x quad <==>
-quad e^(-x) y = - integral e^(-x) x dif x, $
+$
+  e^(-x) dv(y, x) - e^(-x) y = -e^(-x) x quad <==>
+  quad dv(e^(-x) y, x) = - e^(-x) x quad <==>
+  quad e^(-x) y = - integral e^(-x) x dif x,
+$
 
-$ integral e^(-x) x dif x = lr(|#table(
-  columns: 2, rows: 2, stroke: none,
-  $u = x$, $dif v = e^(-x) dif x$,
-  $dif u = dif x$, $v = - e^(-x)$
-)|) = -x e^(-x) + integral e^(-x) dif x
-    = -x e^(-x) - e^(-x) + C thick ==> thick
-  y(x) = x + 1 + C e^x. $
+$
+  integral e^(-x) x dif x = lr(
+    |#table(
+      columns: 2,
+      rows: 2,
+      stroke: none,
+      $u = x$, $dif v = e^(-x) dif x$,
+      $dif u = dif x$, $v = - e^(-x)$,
+    )|
+  ) = -x e^(-x) + integral e^(-x) dif x
+  = -x e^(-x) - e^(-x) + C thick ==> thick
+  y(x) = x + 1 + C e^x.
+$
 
-$ y(0) = 1 + C e^0 = 25 quad ==>
-quad C = 24, quad y(x) = x + 1 + 24 e^x. $
+$
+  y(0) = 1 + C e^0 = 25 quad ==>
+  quad C = 24, quad y(x) = x + 1 + 24 e^x.
+$
 
 #let yexact(x) = x + 1 + 24 * calc.exp(x)
 
 Решим классическим методом Эйлера:
 $quad x_k = x_0 + h k,
-quad y_(k + 1) = y_k + h f(x_k, y_k). $
+quad y_(k + 1) = y_k + h f(x_k, y_k).$
 
 #let x = range(ITERATIONS + 1).map(k => x0 + k * h)
 #let y = (y0,)
@@ -126,138 +148,154 @@ quad y_(k + 1) = y_k + h f(x_k, y_k). $
   y.push(y.at(k) + h * f(x.at(k), y.at(k)))
 }
 
-#columns(2, {
-  show table.cell.where(y: 0): strong
-  align(center)[
-    #v(1.8em)
-    #table(
-      inset: 0.5em,
-      columns: 5,
-      table.header[$k$][$x_k$][$y_k$][$y^*_k$][$Delta_k$],
-      ..range(x.len())
-       .map(k => (
-           k,
-           x.at(k),
-           y.at(k),
-           x.map(yexact).at(k),
-           calc.abs(y.at(k) - yexact(x.at(k)))
-         )
-         .map(a => $#calc.round(a, digits: PREC)$)
-       )
-       .flatten()
+#columns(
+  2,
+  {
+    show table.cell.where(y: 0): strong
+    align(center)[
+      #v(1.8em)
+      #table(
+        inset: 0.5em,
+        columns: 5,
+        table.header[$k$][$x_k$][$y_k$][$y^*_k$][$Delta_k$],
+        ..range(x.len())
+          .map(k => (
+            k,
+            x.at(k),
+            y.at(k),
+            x.map(yexact).at(k),
+            calc.abs(y.at(k) - yexact(x.at(k))),
+          ).map(a => $#calc.round(a, digits: PREC)$))
+          .flatten()
+      )
+    ]
+    colbreak()
+    align(
+      center,
+      plot-comparison({
+        plot.add(yexact, domain: (0, h * ITERATIONS))
+        plot.add(
+          x.zip(y),
+          mark: "o",
+          mark-size: 0.1,
+          mark-style: (stroke: none, fill: black),
+        )
+      }),
     )
-  ]
-  colbreak()
-  align(center, plot-comparison({
-    plot.add(yexact, domain: (0, h * ITERATIONS))
-    plot.add(
-      x.zip(y),
-      mark: "o",
-      mark-size: 0.1,
-      mark-style: (stroke: none, fill: black),
-    )
-  }))
-})
-  
+  },
+)
+
 #let error-classic = calc.abs(y.at(-1) - yexact(x.at(-1)))
 
 
 Решим 1-й модификацией метода:
-$quad x_(k + 1/2) = x_0 + h/2 k,
-quad y_(k + 1/2) = y_k + h/2 f(x_k, y_k),
-quad y_(k + 1) = y_k + h f(x_(k + 1/2), y_(k + 1/2)). $
+$quad x_(k + 1 / 2) = x_0 + h / 2 k,
+quad y_(k + 1 / 2) = y_k + h / 2 f(x_k, y_k),
+quad y_(k + 1) = y_k + h f(x_(k + 1 / 2), y_(k + 1 / 2)).$
 
 #let x = range(ITERATIONS + 1).map(k => x0 + h * k)
-#let x2 = range(ITERATIONS + 1).map(k => x.at(k) + 1/2 * h)
+#let x2 = range(ITERATIONS + 1).map(k => x.at(k) + 1 / 2 * h)
 #let y = (y0,)
 #let y2 = ()
 #for k in range(ITERATIONS + 1) {
-  y2.push(y.at(k) + h/2 * f(x.at(k), y.at(k)))
+  y2.push(y.at(k) + h / 2 * f(x.at(k), y.at(k)))
   y.push(y.at(k) + h * f(x2.at(k), y2.at(k)))
 }
 
-#columns(2, {
-  show table.cell.where(y: 0): strong
-  align(center)[
-    #v(1.8em)
-    #table(
-      inset: 0.5em,
-      columns: 7,
-      table.header[$k$][$x_k$][$x_(k+1/2)$][$y_(k+1/2)$][$y_k$][$y^*_k$][$Delta_k$],
-      ..range(x.len())
-       .map(k => (
-           k,
-           x.at(k),
-           x2.at(k),
-           y2.at(k),
-           y.at(k),
-           x.map(yexact).at(k),
-           calc.abs(y.at(k) - yexact(x.at(k)))
-         )
-         .map(a => $#calc.round(a, digits: 5)$)
-       )
-       .flatten()
+#columns(
+  2,
+  {
+    show table.cell.where(y: 0): strong
+    align(center)[
+      #v(1.8em)
+      #table(
+        inset: 0.5em,
+        columns: 7,
+        table.header[$k$][$x_k$][$x_(k+1 / 2)$][$y_(k+1 / 2)$][$y_k$][$y^*_k$][$Delta_k$],
+        ..range(x.len())
+          .map(k => (
+            k,
+            x.at(k),
+            x2.at(k),
+            y2.at(k),
+            y.at(k),
+            x.map(yexact).at(k),
+            calc.abs(y.at(k) - yexact(x.at(k))),
+          ).map(a => $#calc.round(a, digits: 5)$))
+          .flatten()
+      )
+    ]
+    colbreak()
+    align(
+      center,
+      plot-comparison({
+        plot.add(yexact, domain: (0, h * ITERATIONS))
+        plot.add(
+          x.zip(y),
+          mark: "o",
+          mark-size: 0.1,
+          mark-style: (stroke: none, fill: black),
+        )
+      }),
     )
-  ]
-  colbreak()
-  align(center, plot-comparison({
-    plot.add(yexact, domain: (0, h * ITERATIONS))
-    plot.add(
-      x.zip(y),
-      mark: "o",
-      mark-size: 0.1,
-      mark-style: (stroke: none, fill: black),
-    )
-  }))
-})
+  },
+)
 
 #let error-mod-1 = calc.abs(y.at(-2) - yexact(x.at(-1)))
 
 
 Решим 2-й модификацией метода:
-$quad y_(k + 1) = y_k + h/2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))). $
+$quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
 
 #let x = range(ITERATIONS + 1).map(k => x0 + k * h)
 #let y = (y0,)
 #for k in range(ITERATIONS) {
-  y.push(y.at(k) + h/2 * (
-    f(x.at(k), y.at(k)) +
-    f(x.at(k + 1), y.at(k) + h * f(x.at(k), y.at(k)))
-  ))
+  y.push(
+    y.at(k)
+      + h
+        / 2
+        * (
+          f(x.at(k), y.at(k)) + f(x.at(k + 1), y.at(k) + h * f(x.at(k), y.at(k)))
+        ),
+  )
 }
 
-#columns(2, {
-  show table.cell.where(y: 0): strong
-  align(center)[
-    #v(1.8em)
-    #table(
-      inset: 0.5em,
-      columns: 5,
-      table.header[$k$][$x_k$][$y_k$][$y^*_k$][$Delta_k$],
-      ..range(x.len())
-       .map(k => (
-           k,
-           x.at(k),
-           y.at(k),
-           x.map(yexact).at(k),
-           calc.abs(y.at(k) - yexact(x.at(k)))
-         )
-         .map(a => $calc.round(#a, digits: PREC)$)
-       )
-       .flatten()
+#columns(
+  2,
+  {
+    show table.cell.where(y: 0): strong
+    align(center)[
+      #v(1.8em)
+      #table(
+        inset: 0.5em,
+        columns: 5,
+        table.header[$k$][$x_k$][$y_k$][$y^*_k$][$Delta_k$],
+        ..range(x.len())
+          .map(k => (
+            k,
+            x.at(k),
+            y.at(k),
+            x.map(yexact).at(k),
+            calc.abs(y.at(k) - yexact(x.at(k))),
+          ).map(a => $calc.round(#a, digits: PREC)$))
+          .flatten()
+      )
+    ]
+    colbreak()
+    align(
+      center,
+      plot-comparison({
+        plot.add(yexact, domain: (0, h * ITERATIONS))
+        plot.add(
+          x.zip(y),
+          mark: "o",
+          mark-size: 0.1,
+          mark-style: (stroke: none, fill: black),
+        )
+      }),
     )
-  ]
-  colbreak()
-  align(center, plot-comparison({
-    plot.add(yexact, domain: (0, h * ITERATIONS))
-    plot.add(
-      x.zip(y),
-      mark: "o",
-      mark-size: 0.1,
-      mark-style: (stroke: none, fill: black),
-    )
-  }))
-})
+  },
+)
 
 #let error-mod-2 = calc.abs(y.at(-1) - yexact(x.at(-1)))
 
@@ -265,35 +303,40 @@ $quad y_(k + 1) = y_k + h/2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))). $
 #pagebreak()
 Обоснуем эквивалентность приближений по первой и второй модификациям метода Эйлера. \
 Разложим точное решение в ряд Тейлора:
-$  y(x_k + h) &= y(x_k)
-               + h y'(x_k)
-               + frac(h^2, 2) y'' (x_k)
-               + frac(h^3, 6) y''' (x_k)
-               + O(h^4) ==> \
-==> y_(k + 1) &= y_k
-               + h f(x_k, y_k)
-               + frac(h^2, 2) y'' (x_k, y_k)
-               + frac(h^3, 6) y''' (x_k, y_k)
-               + O(h^4),
+$
+  y(x_k + h) &= y(x_k)
+  + h y'(x_k)
+  + frac(h^2, 2) y'' (x_k)
+  + frac(h^3, 6) y''' (x_k)
+  + O(h^4) ==> \
+  ==> y_(k + 1) &= y_k
+  + h f(x_k, y_k)
+  + frac(h^2, 2) y'' (x_k, y_k)
+  + frac(h^3, 6) y''' (x_k, y_k)
+  + O(h^4),
 $
 $ y' = y - x, quad y'' = y - x - 1, quad y''' = y - x - 1, ... $
 
 Подставим точное решение в первую модификацию метода:
-$ f(x_k + h/2, y_k + h/2 f(x_k, y_k))
-= (y_k + h/2 (y_k - x_k)) - (x_k + h/2)
-= (y_k - x_k) + h/2 (y_k - x_k - 1), \
-quad y_(k+1)
-= y_k + h [(y_k - x_k) + h/2 (y_k - x_k - 1)]
-= y_k + h(y_k - x_k) + h^2 / 2 (y_k - x_k - 1). $
+$
+  f(x_k + h / 2, y_k + h / 2 f(x_k, y_k))
+  = (y_k + h / 2 (y_k - x_k)) - (x_k + h / 2)
+  = (y_k - x_k) + h / 2 (y_k - x_k - 1), \
+  quad y_(k+1)
+  = y_k + h [(y_k - x_k) + h / 2 (y_k - x_k - 1)]
+  = y_k + h(y_k - x_k) + h^2 / 2 (y_k - x_k - 1).
+$
 
 Подставим точное решение во вторую модификацию метода:
-$ f(x_k, y_k) + f(x_(k + 1), y_k + h f(x_k, y_k))
-= [y_k - x_k] + [(y_k + h[y_k - x_k]) - x_(k + 1)]
-= 2[y_k - x_k] + [h[y_k - x_k] - h] = \
-= 2[y_k - x_k] + h[y_k - x_k - 1], \
-quad y_(k+1)
-= y_k + h/2 [2[y_k - x_k] + h[y_k - x_k - 1]]
-= y_k + h(y_k - x_k) + h^2 / 2 (y_k - x_k - 1). $
+$
+  f(x_k, y_k) + f(x_(k + 1), y_k + h f(x_k, y_k))
+  = [y_k - x_k] + [(y_k + h[y_k - x_k]) - x_(k + 1)]
+  = 2[y_k - x_k] + [h[y_k - x_k] - h] = \
+  = 2[y_k - x_k] + h[y_k - x_k - 1], \
+  quad y_(k+1)
+  = y_k + h / 2 [2[y_k - x_k] + h[y_k - x_k - 1]]
+  = y_k + h(y_k - x_k) + h^2 / 2 (y_k - x_k - 1).
+$
 
 Формулы обеих модификаций для точного решения дают эквивалентную локальную (шаговую) погрешность
 $Delta_#[_лок_] = O(h^3)$, а это значит, что глобальная погрешность для них $Delta_#[_гл_] = O(h^2)$,
@@ -321,25 +364,28 @@ $Delta_#[_лок_] = O(h^3)$, а это значит, что глобальна�
 #let h = 0.1
 #let c1 = 4.86804
 #let yexact(x) = (
-  - (133 * x * x) / 872
-  - (16625 * x) / 47524
-  - (57323 * calc.cos((431 * x) / 250)) / 933140
-  - (14497 * calc.sin((431 * x) / 250)) / 466570
-  + c1 * calc.exp((109 * x) / 125) - 2078125 / 5180116
+  -(133 * x * x) / 872
+    - (16625 * x) / 47524
+    - (57323 * calc.cos((431 * x) / 250)) / 933140
+    - (14497 * calc.sin((431 * x) / 250)) / 466570
+    + c1 * calc.exp((109 * x) / 125)
+    - 2078125 / 5180116
 )
 #let x0 = 0.2
 #let y02 = calc.round(yexact(0.2), digits: PREC)
 #assert.eq(y02, 5.25)
 
-$ dv(y, x) = 0.133 (x^2 + sin(gamma x)) + 0.872 y,
-quad y(0.2) = n / 4 = #(n / 4),
-quad h = #h,
-quad gamma = (2(n + 4))/(n + 8) approx #gam. $
+$
+  dv(y, x) = 0.133 (x^2 + sin(gamma x)) + 0.872 y,
+  quad y(0.2) = n / 4 = #(n / 4),
+  quad h = #h,
+  quad gamma = (2(n + 4)) / (n + 8) approx #gam.
+$
 
 
 Решим классическим методом Эйлера:
 $quad x_k = x_0 + h k,
-quad y_(k + 1) = y_k + h f(x_k, y_k). $
+quad y_(k + 1) = y_k + h f(x_k, y_k).$
 
 #let x = range(ITERATIONS + 1).map(k => calc.round(x0 + k * h, digits: PREC))
 #let y = (y02,)
@@ -347,175 +393,204 @@ quad y_(k + 1) = y_k + h f(x_k, y_k). $
   y.push(calc.round(y.at(k) + h * f(x.at(k), y.at(k)), digits: PREC))
 }
 
-#columns(2, {
-  show table.cell.where(y: 0): strong
-  align(center)[
-    #v(1.8em)
-    #table(
-      inset: 0.5em,
-      columns: 5,
-      table.header[$k$][$x_k$][$y_k$][$y^*_k$][$Delta_k$],
-      ..range(x.len())
-       .map(k => (
-           k,
-           x.at(k),
-           y.at(k),
-           x.map(yexact).at(k),
-           calc.abs(y.at(k) - yexact(x.at(k)))
-         )
-         .map(a => $calc.round(#a, digits: PREC)$)
-       )
-       .flatten()
-    )
-  ]
-  colbreak()
-    align(center, plot-comparison({
-      plot.add(yexact, domain: (0.2, 0.2 + h * ITERATIONS))
-      plot.add(
-        x.zip(y),
-        mark: "o",
-        mark-size: 0.1,
-        mark-style: (stroke: none, fill: black),
+#columns(
+  2,
+  {
+    show table.cell.where(y: 0): strong
+    align(center)[
+      #v(1.8em)
+      #table(
+        inset: 0.5em,
+        columns: 5,
+        table.header[$k$][$x_k$][$y_k$][$y^*_k$][$Delta_k$],
+        ..range(x.len())
+          .map(k => (
+            k,
+            x.at(k),
+            y.at(k),
+            x.map(yexact).at(k),
+            calc.abs(y.at(k) - yexact(x.at(k))),
+          ).map(a => $calc.round(#a, digits: PREC)$))
+          .flatten()
       )
-    }, y-step: 0.05))
-})
-  
+    ]
+    colbreak()
+    align(
+      center,
+      plot-comparison(
+        {
+          plot.add(yexact, domain: (0.2, 0.2 + h * ITERATIONS))
+          plot.add(
+            x.zip(y),
+            mark: "o",
+            mark-size: 0.1,
+            mark-style: (stroke: none, fill: black),
+          )
+        },
+        y-step: 0.05,
+      ),
+    )
+  },
+)
+
 #let error-classic = calc.abs(y.at(-1) - yexact(x.at(-1)))
 
 
 Решим 1-й модификацией метода:
-$quad x_(k + 1/2) = x_0 + h/2 k,
-quad y_(k + 1/2) = y_k + h/2 f(x_k, y_k),
-quad y_(k + 1) = y_k + h f(x_(k + 1/2), y_(k + 1/2)). $
+$quad x_(k + 1 / 2) = x_0 + h / 2 k,
+quad y_(k + 1 / 2) = y_k + h / 2 f(x_k, y_k),
+quad y_(k + 1) = y_k + h f(x_(k + 1 / 2), y_(k + 1 / 2)).$
 
 #let x = range(ITERATIONS + 1).map(k => calc.round(x0 + h * k, digits: PREC))
-#let x2 = range(ITERATIONS + 1).map(k => x.at(k) + 1/2 * h)
+#let x2 = range(ITERATIONS + 1).map(k => x.at(k) + 1 / 2 * h)
 #let y = (y02,)
 #let y2 = ()
 #for k in range(ITERATIONS + 1) {
-  y2.push(y.at(k) + h/2 * f(x.at(k), y.at(k)))
+  y2.push(y.at(k) + h / 2 * f(x.at(k), y.at(k)))
   y.push(calc.round(y.at(k) + h * f(x2.at(k), y2.at(k)), digits: PREC))
 }
 
-#columns(2, {
-  show table.cell.where(y: 0): strong
-  align(center)[
-    #v(1.8em)
-    #table(
-      inset: 0.5em,
-      columns: 7,
-      table.header[$k$][$x_k$][$x_(k+1/2)$][$y_(k+1/2)$][$y_k$][$y^*_k$][$Delta_k$],
-      ..range(x.len())
-       .map(k => (
-           k,
-           x.at(k),
-           x2.at(k),
-           y2.at(k),
-           y.at(k),
-           x.map(yexact).at(k),
-           calc.abs(y.at(k) - yexact(x.at(k)))
-         )
-         .map(a => $calc.round(#a, digits: PREC)$)
-       )
-       .flatten()
+#columns(
+  2,
+  {
+    show table.cell.where(y: 0): strong
+    align(center)[
+      #v(1.8em)
+      #table(
+        inset: 0.5em,
+        columns: 7,
+        table.header[$k$][$x_k$][$x_(k+1 / 2)$][$y_(k+1 / 2)$][$y_k$][$y^*_k$][$Delta_k$],
+        ..range(x.len())
+          .map(k => (
+            k,
+            x.at(k),
+            x2.at(k),
+            y2.at(k),
+            y.at(k),
+            x.map(yexact).at(k),
+            calc.abs(y.at(k) - yexact(x.at(k))),
+          ).map(a => $calc.round(#a, digits: PREC)$))
+          .flatten()
+      )
+    ]
+    colbreak()
+    align(
+      center,
+      plot-comparison(
+        {
+          plot.add(yexact, domain: (x0, x0 + h * ITERATIONS))
+          plot.add(
+            x.zip(y),
+            mark: "o",
+            mark-size: 0.1,
+            mark-style: (stroke: none, fill: black),
+          )
+        },
+        y-step: 0.05,
+      ),
     )
-  ]
-  colbreak()
-  align(center, plot-comparison({
-    plot.add(yexact, domain: (x0, x0 + h * ITERATIONS))
-    plot.add(
-      x.zip(y),
-      mark: "o",
-      mark-size: 0.1,
-      mark-style: (stroke: none, fill: black),
-    )
-  }, y-step: 0.05))
-})
+  },
+)
 
 #let error-mod-1 = calc.abs(y.at(1) - yexact(x.at(1)))
 
 
 Решим 2-й модификацией метода:
-$quad y_(k + 1) = y_k + h/2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))). $
+$quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
 
 #let x = range(ITERATIONS + 1).map(k => calc.round(x0 + k * h, digits: PREC))
 #let y = (y02,)
 #for k in range(ITERATIONS) {
-  y.push(y.at(k) + h/2 * (
-    f(x.at(k), y.at(k)) +
-    f(x.at(k + 1), y.at(k) + h * f(x.at(k), y.at(k)))
-  ))
+  y.push(
+    y.at(k)
+      + h
+        / 2
+        * (
+          f(x.at(k), y.at(k)) + f(x.at(k + 1), y.at(k) + h * f(x.at(k), y.at(k)))
+        ),
+  )
 }
 
-#columns(2, {
-  show table.cell.where(y: 0): strong
-  align(center)[
-    #v(1.8em)
-    #table(
-      inset: 0.5em,
-      columns: 5,
-      table.header[$k$][$x_k$][$y_k$][$y^*_k$][$Delta_k$],
-      ..range(x.len())
-       .map(k => (
-           k,
-           x.at(k),
-           y.at(k),
-           x.map(yexact).at(k),
-           calc.abs(y.at(k) - yexact(x.at(k)))
-         )
-         .map(a => $calc.round(#a, digits: PREC)$)
-       )
-       .flatten()
+#columns(
+  2,
+  {
+    show table.cell.where(y: 0): strong
+    align(center)[
+      #v(1.8em)
+      #table(
+        inset: 0.5em,
+        columns: 5,
+        table.header[$k$][$x_k$][$y_k$][$y^*_k$][$Delta_k$],
+        ..range(x.len())
+          .map(k => (
+            k,
+            x.at(k),
+            y.at(k),
+            x.map(yexact).at(k),
+            calc.abs(y.at(k) - yexact(x.at(k))),
+          ).map(a => $calc.round(#a, digits: PREC)$))
+          .flatten()
+      )
+    ]
+    colbreak()
+    align(
+      center,
+      plot-comparison(
+        {
+          plot.add(yexact, domain: (x0, x0 + h * ITERATIONS))
+          plot.add(
+            x.zip(y),
+            mark: "o",
+            mark-size: 0.1,
+            mark-style: (stroke: none, fill: black),
+          )
+        },
+        y-step: 50,
+      ),
     )
-  ]
-  colbreak()
-  align(center, plot-comparison({
-    plot.add(yexact, domain: (x0, x0 + h * ITERATIONS))
-    plot.add(
-      x.zip(y),
-      mark: "o",
-      mark-size: 0.1,
-      mark-style: (stroke: none, fill: black),
-    )
-  }, y-step: 50))
-})
+  },
+)
 
 #let error-mod-2 = calc.abs(y.at(1) - yexact(x.at(1)))
 
 #let hl(eqtn) = rect(stroke: gray, inset: (top: 10pt, bottom: 10pt), $display(eqtn.body)$)
 
 Разложим точное решение в ряд Тейлора:
-$   y'' = f_x + f_y y' = f_x + f_y f, \
-   y''' = f_(x x) + f_(x y) y' + (f_(y x) + f_(y y) y') f + f_y (f_x + f_y f)
-        = f_(x x) + 2f_(x y) f + f_(y y) f^2 + f_y (f_x + f_y f), \
- y(x+h) = y(x)
-        + h f
-        + h^2/2 (f_x + f_y f)
-        + h^3/6 (f_(x x) + 2f_(x y) f + f_(y y) f^2 + f_y (f_x + f_y f))
-        + O(h^4). $
+$
+  y'' = f_x + f_y y' = f_x + f_y f, \
+  y''' = f_(x x) + f_(x y) y' + (f_(y x) + f_(y y) y') f + f_y (f_x + f_y f)
+  = f_(x x) + 2f_(x y) f + f_(y y) f^2 + f_y (f_x + f_y f), \
+  y(x+h) = y(x)
+  + h f
+  + h^2 / 2 (f_x + f_y f)
+  + h^3 / 6 (f_(x x) + 2f_(x y) f + f_(y y) f^2 + f_y (f_x + f_y f))
+  + O(h^4).
+$
 
 Разложим $f$ в решении первым методом:
-$ f(x_k + h/2, y_k + h/2 f(x_k, y_k)) = \
-= f
-+ h/2 (f_x + f_y f)
-+ h^2/8 (f_(x x) + 2 f_(x y) f + f_(y y) f^2)
-+ h^3/48 (f_(x x x) + 3 f_(x x y) f + 3 f_(x y y) f^2 + f_(y y y) f^3)
-+ O(h^4)
-==> \ ==> y_(k+1)
-= y_k + h ( f + h/2 (...) + h^2/8 (...) + h^3/48 (...) + O(h^4) )
-= y_k + h f + h^2/2 (...) + #hl($h^3/8$) (...) + #hl($h^4/48$) (...) + O(h^5).
+$
+  f(x_k + h / 2, y_k + h / 2 f(x_k, y_k)) = \
+  = f
+  + h / 2 (f_x + f_y f)
+  + h^2 / 8 (f_(x x) + 2 f_(x y) f + f_(y y) f^2)
+  + h^3 / 48 (f_(x x x) + 3 f_(x x y) f + 3 f_(x y y) f^2 + f_(y y y) f^3)
+  + O(h^4)
+  ==> \ ==> y_(k+1)
+  = y_k + h ( f + h / 2 (...) + h^2 / 8 (...) + h^3 / 48 (...) + O(h^4) )
+  = y_k + h f + h^2 / 2 (...) + #hl($h^3 / 8$) (...) + #hl($h^4 / 48$) (...) + O(h^5).
 $
 
 Разложим $f$ в решении вторым методом:
-$ f(x_k, y_k) + f(x_k + h, y_k + h f(x_k, y_k)) = \
-= 2f
-+ h (f_x + f_y f)
-+ h^2/2 (f_(x x) + 2 f_(x y) f + f_(y y) f^2)
-+ h^3/6 (f_(x x x) + 3 f_(x x y) f + 3 f_(x y y) f^2 + f_(y y y) f^3)
-+ O(h^4)
-==> \ ==> y_(k+1)
-= y_k + h/2( 2f + h (...) + h^2/2 (...) + h^3/6 (...) + O(h^4) )
-= y_k + h f + h^2/2 (...) + #hl($h^3/4$) (...) + #hl($h^4/12$) (...) + O(h^5).
+$
+  f(x_k, y_k) + f(x_k + h, y_k + h f(x_k, y_k)) = \
+  = 2f
+  + h (f_x + f_y f)
+  + h^2 / 2 (f_(x x) + 2 f_(x y) f + f_(y y) f^2)
+  + h^3 / 6 (f_(x x x) + 3 f_(x x y) f + 3 f_(x y y) f^2 + f_(y y y) f^3)
+  + O(h^4)
+  ==> \ ==> y_(k+1)
+  = y_k + h / 2( 2f + h (...) + h^2 / 2 (...) + h^3 / 6 (...) + O(h^4) )
+  = y_k + h f + h^2 / 2 (...) + #hl($h^3 / 4$) (...) + #hl($h^4 / 12$) (...) + O(h^5).
 $
 
 #let dxxf(x, y) = 0.266 - 0.133 * calc.pow(gam, 2) * calc.sin(gam * x)
@@ -525,30 +600,166 @@ $
 #let dxxxf-max-x = 250 * calc.pi / 431
 
 Оценим разницу погрешностей первой и второй модификаций с точностью до $O(h^5)$:
-$    f_(x x) = 0.266 - 0.133 gamma^2 sin(gamma x),
-quad f_(x x x) = -0.133 gamma^3 cos(gamma x),
-quad f_(x y) = f_(y y) = f_(x x y) = f_(x y y) = f_(y y y) = 0. $
+$
+  f_(x x) = 0.266 - 0.133 gamma^2 sin(gamma x),
+  quad f_(x x x) = -0.133 gamma^3 cos(gamma x),
+  quad f_(x y) = f_(y y) = f_(x x y) = f_(x y y) = f_(y y y) = 0.
+$
 
-$  abs(h^3/8 f_(x x) + (3h^4)/48 f_(x x x))
- = abs(f_(x x) / (8 dot 10^3) + (3 f_(x x x)) / (48 dot 10^4))
-<= (0.266 + 0.133 gamma^2) / (8 dot 10^3) + (3 dot 0.133 gamma^3) / (48 dot 10^4)
- = #calc.abs((dxxf((3*calc.pi)/(2*gam), 0) / (8*calc.pow(10, 3))) + (dxxxf(calc.pi/gam, 0) / (48 * calc.pow(10, 4)))), $
+$
+  abs(h^3 / 8 f_(x x) + (3h^4) / 48 f_(x x x))
+  = abs(f_(x x) / (8 dot 10^3) + (3 f_(x x x)) / (48 dot 10^4))
+  <= (0.266 + 0.133 gamma^2) / (8 dot 10^3) + (3 dot 0.133 gamma^3) / (48 dot 10^4)
+  = #calc.abs((dxxf((3 * calc.pi) / (2 * gam), 0) / (8 * calc.pow(10, 3))) + (dxxxf(calc.pi / gam, 0) / (48 * calc.pow(10, 4)))),
+$
 что близко, но всё же меньше, чем $10^(-4)$.
 А значит, разница между методами может и не быть отражена при точности в 4 десятичных знака.
 
-#align(center, table(
-  stroke: none,
-  rows: 2,
-  columns: (auto, auto, auto, auto),
-  table.header[№ мод.][$Delta$],
-  $1$, $#error-mod-1$,
-  table.cell(rowspan: 2, inset: 0pt)[#text(size: 35pt, baseline: -1.6pt)[$}$]],
-  table.cell(rowspan: 2, align: left+horizon)[
-    $ ==> Delta_(1,2) = #calc.abs(error-mod-1 - error-mod-2).$
-  ],
-  $2$, $#error-mod-2$,
-))
+#align(
+  center,
+  {
+    math.cases(
+      reverse: true,
+      gap: 1em,
+      math.display(
+        table(
+          stroke: none,
+          columns: (auto, auto),
+          table.header[№ мод.][$Delta$],
+          $1$, $#error-mod-1$,
+          $2$, $#error-mod-2$,
+        ),
+      ),
+    )
+    $==> Delta_(1,2) = #calc.abs(error-mod-1 - error-mod-2) .$
+  },
+)
 
-#set enum(numbering: it => strong[Ответ:])
-+ Погрешность для классического метода: $Delta_1 approx #calc.round(error-classic, digits: PREC)$, \
-  для первой и второй модификаций: $Delta_1 approx #calc.round(error-mod-1, digits: PREC)$. \
+#{
+  set enum(numbering: it => strong[Ответ:])
+  [
+    + Погрешность для классического метода: $Delta_1 approx #calc.round(error-classic, digits: PREC)$, \
+      для первой и второй модификаций: $Delta_1 approx #calc.round(error-mod-1, digits: PREC)$. \
+  ]
+}
+
+//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+#pagebreak()
+=== Задание 3
+#let RK2-ru = $upright(P)upright(K)2$
+Определить, принадлежит ли формула семейству #RK2-ru методов Рунге-Кутты 2-го порядка точности:
+
+#let f-to-check = $""
+y_(n+1)
+= y_n
++ 0.6 h f(x_n, y_n)
++ 0.4 h f(x_n + 1.25 h, y_n + 1.25 h f(x_n, y_n))
+""$
+
+#align(center, $ #f-to-check . $)
+
+*Решение*
+
+Двухэтапный метод Рунге-Кутты второго порядка имеет вид:
+$
+  y_(n+1) = y_n + p_1 k_1 + p_2 k_2,
+  quad k_1 = h f(x_n, y_n),
+  quad k_2 = h f(x_n + alpha_2 h, y_n + beta_21 k_1).
+$
+
+Коэффициенты $p_1, p_2, alpha_2, beta_21$ должны быть подобраны так,
+чтобы разложения в ряд Тейлора точного и приближённого значений
+функции $y(x)$ в точке $x_(n+1) = x_n + h$ совпадали до порядка
+$h^2$ включительно.
+
+#let evpt = f => $evaluated((#f))_(\(x_n, y_n\))$
+
+Точное решение по формуле Тейлора:
+$
+  y(x_n + h)
+  = y(x_n) + h y'(x_n) + h^2 / 2 y''(x_n) + O(h^3),
+  \ "причём "
+  y'' = pdv(f, x) = f_x + f_y f
+  quad ==> quad
+  y(x_n + h) = evpt(y_n + h f + h^2 / 2 (f_x + f_y f)) + O(h^3).
+$
+
+Численное решение:
+$
+  k_1 = h f,
+  quad k_2
+  = h f(x_n + alpha_2 h, y_n + a_21 k_1)
+  = evpt(h f + h^2 (alpha_2 f_x + beta_21 f f_y)) + O(h^3)
+  quad ==> \ ==> quad
+  y(x_n + h) = evpt(
+    y_n
+    + (p_1 + p_2) h f
+    + p_2 h^2 (alpha_2 f_x + beta_(21) f f_y)
+  ) + O(h^3).
+$
+
+#grid(
+  columns: (1.2fr, 0.1fr, 0.7fr),
+  {
+    [Сравнивая разложения, получим условия принадлежности #RK2-ru:]
+    $
+      #math.cases(gap: 1em, $ f = (p_1 + p_2) f $, $ 1 / 2 (f_x + f_y f) = p_2 (alpha_2 f_x + beta_21 f f_y) $)
+      quad ==> quad
+      #math.cases(gap: 1em, $ p_1 + p_2 = 1, $, $ p_2 alpha_2 = 1 / 2, $, $ p_2 beta_21 = 1 / 2. $)
+    $
+  },
+  [],
+  {
+    [Выпишем коэф-ты в табличной форме:]
+    set table(
+      stroke: (x, y) => (
+        left: if x == 2 and y < 3 { 0.7pt + black } else { none },
+        bottom: if y == 1 { 0.7pt + black } else { none },
+      ),
+    )
+    // show math.cases: it => { set  it }
+    let h = 4em
+    align(
+      center,
+      table(
+        columns: 5,
+        rows: (h / 2, h / 2, auto, auto),
+        table.cell(rowspan: 2, $display(alpha_i) cases("", "", "")$),
+        [0], [], [], table.cell(rowspan: 2, $cases(reverse: #true, "", "", "") display(beta_(i j))$),
+        [1.25], [1.25], [],
+        [], [], [0.6], [0.4], [],
+        [], [], table.cell(
+          colspan: 2,
+          inset: (left: 8pt, top: -10pt),
+          math.underbrace(box(width: 3.5em), $display(p_j)$),
+        ), []
+      ),
+    )
+  },
+)
+
+#{
+  show math.equation: math.display
+  [Из схемы:]
+  $thin
+  quad p_1 = 0.6,
+  quad p_2 = 0.4,
+  quad alpha_2 = 1.25,
+  quad beta_21 = 1.25
+  quad ==> quad
+  cases(
+    gap: #1em,
+    p_1 + p_2 = 0.6 + 0.4 = 1\,,
+    p_2 alpha_2 = 0.4 dot 1.25 = 1 / 2\,,
+    p_2 beta_21 = 0.4 dot 1.25 = 1 / 2 .
+  ) ("условия выполнены").$
+}
+
+\
+#{
+  set enum(numbering: it => strong[Ответ:])
+  [
+    + Формула #f-to-check принадлежит #RK2-ru.
+  ]
+}
