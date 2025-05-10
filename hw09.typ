@@ -27,18 +27,6 @@
   column-gutter: 5pt,
   line(length: 100%), it.body, line(length: 100%),
 )
-#set table(
-  align: horizon + center,
-  stroke: gray + 0.2mm,
-)
-#set par(justify: true)
-
-#let round(x) = calc.round(x, digits: 4)
-#let tick-fmt(v) = {
-  set text(size: 9pt)
-  v
-}
-#let big(formula) = $lr(#formula, size: #175%)$
 
 #let tasks = counter("tasks-counter")
 #tasks.step()
@@ -91,7 +79,9 @@
   char-eq: $lambda^2 - 9 lambda + 20 = 0$,
   solution: $
     D = 9^2 - 4 dot 1 dot 20 = 81 - 80 = 1,
-    quad lambda_(1,2) = frac(9 plus.minus sqrt(1), 2) = frac(9 plus.minus 1, 2)
+    quad lambda_(1,2)
+    = frac(9 plus.minus sqrt(1), 2)
+    = frac(9 plus.minus 1, 2)
     quad ==>
     quad lambda_1 = frac(9 + 1, 2) = 5,
     quad lambda_2 = frac(9 - 1, 2) = 4.
@@ -115,7 +105,9 @@
   char-eq: $lambda^2 - 9 lambda + 20 = 0$,
   solution: $
     D = 9^2 - 4 dot 1 dot 20 = 81 - 80 = 1,
-    quad lambda_(1,2) = frac(9 plus.minus sqrt(1), 2) = frac(9 plus.minus 1, 2)
+    quad lambda_(1,2)
+    = frac(9 plus.minus sqrt(1), 2)
+    = frac(9 plus.minus 1, 2)
     quad ==>
     quad lambda_1 = frac(9 + 1, 2) = 5,
     quad lambda_2 = frac(9 - 1, 2) = 4.
@@ -141,7 +133,8 @@
     D = 1^2 - 4 dot 1 dot 1 = 1 - 4 = -3
     quad ==>
     quad lambda_(1,2) = frac(1 plus.minus i sqrt(3), 2),
-    \ rho = |lambda| = sqrt((frac(1, 2))^2 + (frac(sqrt(3), 2))^2)
+    \ rho = |lambda|
+    = sqrt((frac(1, 2))^2 + (frac(sqrt(3), 2))^2)
     = 1,
     quad cos phi = frac(1 slash 2, rho) = frac(1, 2),
     quad sin phi = frac(sqrt(3) slash 2, rho) = frac(sqrt(3), 2)
@@ -156,7 +149,8 @@
   solution: [
     $
       D = 6^2 - 4 dot 1 dot 5 = 36 - 20 = 16,
-      quad lambda_(1,2) = frac(6 plus.minus sqrt(16), 2) = frac(6 plus.minus 4, 2)
+      quad lambda_(1,2) = frac(6 plus.minus sqrt(16), 2)
+      = frac(6 plus.minus 4, 2)
       quad ==>
       quad lambda_1 = frac(6 + 4, 2) = 5,
       quad lambda_2 = frac(6 - 4, 2) = 1.

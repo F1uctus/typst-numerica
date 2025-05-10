@@ -31,10 +31,6 @@
 #show table.cell.where(x: 0): strong
 
 #let round(x) = calc.round(x, digits: 4)
-#let tick-fmt(v) = {
-  set text(size: 9pt)
-  v
-}
 
 
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
@@ -42,7 +38,19 @@
 #let f(x) = x * x * x - 3 * x * x + 6 * x - 5
 #let d1f(x) = 3 * x * x - 6 * x + 6
 #let d2f(x) = 6 * x - 6
-#let sstring(x: "x") = "calc.root(3*" + str(x) + "*" + str(x) + " - 6*" + str(x) + " + 5, 3)"
+#let sstring(x: "x") = (
+  (
+    "calc.root(3*",
+    x,
+    "*",
+    x,
+    " - 6 * ",
+    x,
+    " + 5, 3)",
+  )
+    .map(str)
+    .join()
+)
 #let s(x) = eval(sstring(x: x))
 #let evalm(x) = eval(mode: "math", x)
 #let xe = 1 - calc.root(2 / (1 + calc.sqrt(5)), 3) + calc.root(1 / 2 * (1 + calc.sqrt(5)), 3)

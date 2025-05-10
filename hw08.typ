@@ -32,11 +32,6 @@
 )
 #set par(justify: true)
 
-#let round(x) = calc.round(x, digits: 4)
-#let tick-fmt(v) = {
-  set text(size: 9pt)
-  v
-}
 #let big(formula) = $lr(#formula, size: #175%)$
 
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
