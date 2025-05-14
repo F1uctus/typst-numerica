@@ -75,11 +75,7 @@ $
 $
   f(x) = 0 ==>
   x_0 = 1 - root(3, 2 / (1 + sqrt(5)))
-  + root(3, 1 / 2 (1 + sqrt(5))) in RR thick, \
-  x_(1,2) = 1 - 1 / 2 root(3, 1 / 2 (1 + sqrt(5)))
-  + 1 / root(3, 4 (1 + sqrt(5)))
-  plus.minus i (sqrt(3) / 2 root(3, 1 / 2 (1 + sqrt(5)))
-    + sqrt(3) / root(3, 4 (1 + sqrt(5)))) in CC thick.
+  + root(3, 1 / 2 (1 + sqrt(5))) in RR.
 $
 
 #let xe = 1 - calc.root(2 / (1 + calc.sqrt(5)), 3) + calc.root(1 / 2 * (1 + calc.sqrt(5)), 3)
@@ -151,6 +147,8 @@ $
     $,
     $ limits("sign")_[#a,#b] f'' eq.triple "const" $,
     $
+      // TODO сдвинуть левую границу,
+      // чтобы было >, а не >=.
       min f'' = f''(#a) &= #round(d2f(a)) > 0, \
       max f'' = f''(#b) &= #round(d2f(b)) > 0.
     $,
