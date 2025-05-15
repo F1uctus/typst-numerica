@@ -31,6 +31,7 @@ using namespace std;
 
 // Определение функций уравнений
 double f1(double x) { return x*x*x - x; }
+double f2(double x) { return x*x*x - 3*x*x + 6*x - 5; }
 double f3(double x) { return x - sin(x) - 0.25; }
 double f4(double x) { return x - sin(M_PI_2 * x) - 0.25; }
 double f5(double x) { return x - cos(x); }
@@ -38,6 +39,7 @@ double f6(double x) { return x - cos(M_PI_2 * x); }
 
 // Производные для метода Ньютона
 double df1(double x) { return 3*x*x - 1; }
+double df2(double x) { return 3*x*x - 6*x + 6; }
 double df3(double x) { return 1 - cos(x); }
 double df4(double x) { return 1 - M_PI_2 * cos(M_PI_2 * x); }
 double df5(double x) { return 1 + sin(x); }
@@ -45,6 +47,7 @@ double df6(double x) { return 1 + M_PI_2 * sin(M_PI_2 * x); }
 
 // Функции phi(x) для метода простой итерации
 double phi_f1(double x) { return cbrt(x); }
+double phi_f2(double x) { return (-x*x*x + 3*x*x + 5) / 6; }
 double phi_f3(double x) { return sin(x) + 0.25; }
 double phi_f4(double x) { return sin(M_PI_2 * x) + 0.25; }
 double phi_f5(double x) { return cos(x); }
@@ -52,6 +55,7 @@ double phi_f6(double x) { return cos(M_PI_2 * x); }
 
 // Производные phi(x)
 double dphi_f1(double x) { return 1.0 / (3.0 * pow(x, 2.0/3.0)); }
+double dphi_f2(double x) { return (-2*x*x + 6*x) / 6; }
 double dphi_f3(double x) { return cos(x); }
 double dphi_f4(double x) { return M_PI_2 * cos(M_PI_2 * x); }
 double dphi_f5(double x) { return -sin(x); }
@@ -68,6 +72,7 @@ struct FunctionData {
 
 vector<FunctionData> functions = {
     {"x^3 - x", {{0.5, 2.0}, {-0.5, 0.5}, {-2.0, -0.5}}, f1, df1, phi_f1, dphi_f1},
+    {"x^3 - 3x^2 + 6x - 5", {{0.5, 2.0}, {-0.5, 0.5}, {-2.0, -0.5}}, f2, df2, phi_f2, dphi_f2},
     {"x - sin(x) - 0.25", {{1.0, 1.5}}, f3, df3, phi_f3, dphi_f3},
     {"x - sin(pi/2 x) - 0.25", {{1.0, 1.5}}, f4, df4, phi_f4, dphi_f4},
     {"x - cos(x)", {{0.5, 1.5}}, f5, df5, phi_f5, dphi_f5},
