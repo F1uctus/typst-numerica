@@ -712,6 +712,8 @@ $
 
 #show math.frac: it => $#it.num slash #it.denom$
 
+#pagebreak(weak: true)
+
 #grid(
   columns: (1.2fr, 0.1fr, 0.7fr),
   {
