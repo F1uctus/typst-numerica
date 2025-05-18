@@ -32,7 +32,7 @@
 
 #let round(x) = calc.round(eval(str(x)), digits: 12)
 #let tick-fmt(v) = {
-  set text(size: 9pt)
+  set text(size: 8pt)
   v
 }
 
@@ -370,12 +370,21 @@ $
 #let y0 = -1
 #let h = 0.1
 
-#let plot-comparison(plot-block, y-step: 1) = cetz.canvas({
+#let plot-comparison(plot-block, y-step: 0.05) = cetz.canvas({
   import plot: *
   cetz.draw.set-style(
     axes: (
-      stroke: (dash: "dotted", paint: gray),
-      tick: (stroke: gray + .5pt),
+      stroke: (gray + .5pt),
+      x: (
+        tick: (
+          label: (anchor: "south-west", offset: -1em),
+        ),
+        grid: (stroke: gray + 0.1mm),
+      ),
+      y: (
+        overshoot: 0.2,
+        grid: (stroke: gray + 0.1mm),
+      )
     ),
   )
   plot(
@@ -383,9 +392,11 @@ $
     x-grid: true,
     x-label: $x$,
     x-tick-step: h / 2,
+    x-format: tick-fmt,
     y-grid: true,
     y-label: none,
     y-tick-step: y-step,
+    y-format: tick-fmt,
     mark: "o",
     axis-style: "school-book",
     plot-block,
@@ -507,6 +518,7 @@ $thick x_(k + 1 / 2) = x_0 + h k slash 2,
 #grid(
   columns: (1.3fr, 1fr),
   inset: (left: 0em, right: 0em, rest: 1em),
+  column-gutter: 0.5em,
   align(
     center + horizon,
     table(
