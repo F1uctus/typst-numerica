@@ -380,6 +380,16 @@ $
   }
   iterations = calc.max(seidel-history.len(), jacobi-history.len())
   mod-num += 1
+  results.push((
+    $A^*_#mod-num$,
+    $inline(#nt.print(A2-mod))$,
+    $inline(#nt.print(f2-mod.map(x => calc.round(x, digits: 10))))$,
+    $inline(#nt.print(calc.round(mathnorm(A2-mod), digits: 14)))$,
+    $inline(#nt.print(alpha2-mod.flatten().map(x => calc.round(x, digits: 2)).chunks(5)))$,
+    $inline(#nt.print(beta2-mod))$,
+    $#jacobi(alpha2-mod, beta2-mod, EPS.at(0), x01, max-iterations: MAX_ITER).len()$,
+    $#seidel(alpha2-mod, beta2-mod, EPS.at(0), x01, max-iterations: MAX_ITER).len()$,
+  ))
 }
 
 #table(
