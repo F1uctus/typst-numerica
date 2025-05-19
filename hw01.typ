@@ -42,16 +42,16 @@
       columns: (1fr, ..points.map(_ => 1fr)),
       stroke: gray + 0.2mm,
       $k$, ..range(points.len()).map(str).map(math.equation),
-      $x_1$, ..points.map(x => str(calc.round(x.at(0), digits: PREC))),
-      $x_2$, ..points.map(x => str(calc.round(x.at(1), digits: PREC))),
+      $x_1$, ..points.map(((x, _)) => str(calc.round(x, digits: PREC))),
+      $x_2$, ..points.map(((_, y)) => str(calc.round(y, digits: PREC))),
     ),
   )
 }
 
 #let show-plot(points, l1, l2) = {
-  let plot-name = "plt" + points.map(p => str(int(p.at(0))) + str(int(p.at(1)))).join()
-  let min-x = calc.min(..points.map(p => p.at(0)))
-  let max-x = calc.max(..points.map(p => p.at(0)))
+  let plot-name = "plt" + points.map(((x, y)) => str(int(x)) + str(int(y))).join()
+  let min-x = calc.min(..points.map(((x, _)) => x))
+  let max-x = calc.max(..points.map(((x, _)) => x))
   align(
     center,
     cetz.canvas({
