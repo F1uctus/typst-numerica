@@ -56,12 +56,39 @@ jobs:
           path: "**/*.pdf"
           retention-days: 7
 
+      - name: Prepare previews
+        run: |
+          mkdir -p previews
+          find . -name "*-preview.png" -type f | while read -r file; do
+            name=$(echo "$file" | sed 's|^\./||' | sed 's|/|_|g')
+            cp "$file" "previews/$name"
+          done
+
+      - name: Delete old Release
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const { owner, repo } = context.repo
+            try {
+              const latestRelease = await github.rest.repos.getLatestRelease({owner, repo});
+              if (latestRelease && latestRelease.data && latestRelease.data.id) {
+                await github.rest.repos.deleteRelease({owner, repo, release_id: latestRelease.data.id});
+                await github.rest.git.deleteRef({owner, repo, ref: `tags/${latestRelease.data.tag_name}`});
+                console.log(`Release and tag ${latestRelease.data.tag_name} have been deleted.`);
+              } else {
+                console.log("No latest release found or failed to retrieve it.");
+              }
+            } catch (error) {
+              console.log("Error:", error.message);
+            }
+
       - name: Create or update release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: previews
           name: Latest Previews
-          files: "**/*-preview.png"
+          files: previews/*.png
           draft: false
           prerelease: false
           update: true
@@ -86,13 +113,13 @@ jobs:
               rel_path=$(echo "$file" | sed 's|^\./||')
               base="${file%.typ}"
               pdf="${base}.pdf"
-              preview="${base}-preview.png"
+              preview_name=$(echo "${base}-preview.png" | sed 's|^\./||' | sed 's|/|_|g')
               
-              if [ -f "$preview" ]; then
+              if [ -f "${base}-preview.png" ]; then
                 echo "<details open>"
                 echo "<summary><b>$rel_path</b></summary>"
                 echo ""
-                echo "![Preview](https://github.com/${{ github.repository }}/releases/download/previews/$preview)"
+                echo "![Preview](https://github.com/${{ github.repository }}/releases/download/previews/$preview_name)"
                 echo ""
                 echo "> [Download PDF]($pdf)"
                 echo "</details>"
