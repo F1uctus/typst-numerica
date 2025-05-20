@@ -3,31 +3,23 @@
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
-#let n = 21
+#let n = 5
 #let PLOT_SCALE = 6.5
-#let STEPS = (5, 10, 20, 40, 80, 160)
+#let STEPS = (5, 10, 20, 40, 80)
 #let PREC = 14
 
-#set page(
-  width: 420mm,
-  margin: (top: 3em, bottom: 1cm, rest: 0.5cm),
-  numbering: "1 / 1",
-  header: [
-    ЛР.03. Численное решение дифференциальных уравнений.
-    #h(1fr)
-    #eval(mode: "math", "n = " + repr(n))
-    #h(1fr)
-    #SURNAME_NAME, #UNN_GROUP
-  ],
-  columns: 4,
-)
+#let double-line = block(width: 100%)[
+  #block(spacing: 0pt, line(length: 100%))
+  #v(2.5pt)
+  #block(spacing: 0pt, line(length: 100%))
+]
+#set page(width: 420mm, margin: 0.5cm, columns: 4)
 #set columns(gutter: 0.5cm)
-
 #show heading: it => grid(
   columns: (1fr, auto, 1fr),
   align: horizon + center,
   column-gutter: 5pt,
-  line(length: 100%), it.body, line(length: 100%),
+  double-line, it.body, double-line,
 )
 #let tick-fmt(v) = {
   set text(size: 8pt)
@@ -36,16 +28,16 @@
 
 // Функции
 
-// Первое уравнение: y' = y - x, y(0) = n + 4
+/// Первое уравнение: y' = y - x, y(0) = n + 4
 #let f1(x, y) = y - x
 
-// Второе уравнение: y' = y - 2x/y, y(0) = n + 4
+/// Второе уравнение: y' = y - 2x/y, y(0) = n + 4
 #let f2(x, y) = y - (2 * x / y)
 
-// Точное решение для первого уравнения
-#let exact1(x, y0) = (y0 + 1) * calc.exp(x) - x - 1
+/// Точное решение для первого уравнения
+#let exact1(x, y0) = (y0 - 1) * calc.exp(x) + x + 1
 
-// Метод Эйлера
+/// Метод Эйлера
 #let euler(f, x0, y0, h, n) = {
   let x = x0
   let y = y0
@@ -58,7 +50,7 @@
   (y, points)
 }
 
-// Первая модификация метода Эйлера (предиктор-корректор)
+/// Первая модификация метода Эйлера (предиктор-корректор)
 #let euler_mod1(f, x0, y0, h, n) = {
   let x = x0
   let y = y0
@@ -72,7 +64,7 @@
   (y, points)
 }
 
-// Вторая модификация метода Эйлера (среднее значение производной)
+/// Вторая модификация метода Эйлера (среднее значение производной)
 #let euler_mod2(f, x0, y0, h, n) = {
   let x = x0
   let y = y0
@@ -87,7 +79,7 @@
   (y, points)
 }
 
-// Метод Рунге-Кутты 2-го порядка с параметром alpha
+/// Метод Рунге-Кутты 2-го порядка с параметром alpha
 #let runge_kutta_2(f, x0, y0, h, n, alpha) = {
   let x = x0
   let y = y0
@@ -103,17 +95,16 @@
   (y, points)
 }
 
-// Отрисовка графиков
+/// Отрисовка графиков
 #let show-plot(points, exact-fn, title) = {
-  let x-points = points.map(p => p.at(0))
+  let x-points = points.map(p => p.map(((x, y)) => x)).flatten()
   let min-x = calc.min(..x-points)
   let max-x = calc.max(..x-points)
 
   align(
     center,
     [
-      #text(weight: "bold", title)
-      #v(5pt)
+      *#title*
       #cetz.canvas({
         cetz.draw.set-style(
           axes: (
@@ -130,23 +121,22 @@
           x-format: tick-fmt,
           y-format: tick-fmt,
           {
-            // Рисуем точки метода и соединяем их отрезками
-            plot.add(
-              points,
-              mark: "o",
-              mark-size: 0.15,
-              style: (stroke: (paint: blue, dash: "dotted", thickness: 0.2mm)),
-            )
+            for points in points {
+              // Рисуем точки метода и соединяем их отрезками
+              plot.add(
+                points,
+                mark: "o",
+                mark-size: 0.04,
+                style: (stroke: none),
+              )
+            }
 
             // Рисуем точное решение (если оно есть)
             if exact-fn != none {
-              let exact-points = range(0, 101).map(i => {
-                let x = min-x + i * (max-x - min-x) / 100
-                (x, exact-fn(x))
-              })
               plot.add(
-                exact-points,
-                style: (stroke: (paint: red, dash: "solid", thickness: 0.4mm)),
+                exact-fn,
+                domain: (min-x, max-x),
+                style: (stroke: (paint: red, dash: "solid", thickness: 0.01pt)),
               )
             }
           },
@@ -156,13 +146,12 @@
   )
 }
 
-// Отрисовка графика зависимости ошибки от шага
+/// Отрисовка графика зависимости ошибки от шага
 #let show-error-plot(h-values, errors, title) = {
   align(
     center,
     [
       *#title*
-      #v(5pt)
       #cetz.canvas({
         cetz.draw.set-style(
           axes: (
@@ -193,16 +182,15 @@
   )
 }
 
-// Создание таблицы результатов
+/// Создание таблицы результатов
 #let show-table(title, steps, results) = {
   show table.cell.where(x: 0): strong
   align(
     center,
     [
       *#title*
-      #v(5pt)
       #table(
-        columns: (auto, auto, auto, auto),
+        columns: (auto, auto, 1fr, 1fr),
         stroke: gray + 0.2mm,
         [*Шаги*], [*h*], [*Значение*], [*Ошибка*],
         ..steps
@@ -214,9 +202,9 @@
             let error = row.at(1).at(1)
             (
               [#n],
-              [#calc.round(h, digits: PREC)],
-              [#calc.round(result, digits: PREC)],
-              [#calc.round(error, digits: PREC)],
+              [#h],
+              [#result],
+              [#error],
             )
           })
           .flatten()
@@ -225,14 +213,13 @@
   )
 }
 
-// Результаты поиска оптимального alpha
+/// Результаты поиска оптимального alpha
 #let show-alpha-table(title, alpha-values, errors) = {
   show table.cell.where(x: 0): strong
   align(
     center,
     [
       *#title*
-      #v(5pt)
       #table(
         columns: (auto, auto),
         stroke: gray + 0.2mm,
@@ -243,8 +230,8 @@
             let alpha = row.at(0)
             let error = row.at(1)
             (
-              [#calc.round(alpha, digits: PREC)],
-              [#calc.round(error, digits: PREC)],
+              [#calc.round(alpha, digits: 10)],
+              [#error],
             )
           })
           .flatten()
@@ -253,55 +240,39 @@
   )
 }
 
-//////////////////////////////////////////////////
-=== Задание 1: $y' = y - x, y(0) = n + 4$
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+#place(float: true, top + center, scope: "parent")[
+  === Задание 1: $y' = y - x, y(0) = n + 4$
+]
+
 #{
   let x0 = 0.0
   let y0 = n + 4.0
   let X = 1.0
   let f = f1
 
-  // Расчеты для разных методов и разных шагов
   let euler_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
+    let h = 1 / steps
     let (result, points) = euler(f, x0, y0, h, steps)
     let exact_val = exact1(X, y0)
     let error = calc.abs(exact_val - result)
     ((result, error), points)
   })
 
-  let mod1_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
-    let (result, points) = euler_mod1(f, x0, y0, h, steps)
-    let exact_val = exact1(X, y0)
-    let error = calc.abs(exact_val - result)
-    ((result, error), points)
-  })
-
-  let mod2_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
-    let (result, points) = euler_mod2(f, x0, y0, h, steps)
-    let exact_val = exact1(X, y0)
-    let error = calc.abs(exact_val - result)
-    ((result, error), points)
-  })
-
-  // Таблицы с результатами
   show-table([Метод Эйлера], STEPS, euler_results.map(r => r.at(0)))
 
-  // Графики для метода Эйлера с n=20
   show-plot(
-    euler_results.at(2).at(1),
+    euler_results.map(r => r.at(1)),
     x => exact1(x, y0),
-    [Метод Эйлера (n=20)],
+    [Метод Эйлера],
   )
 
-  // График ошибки от шага для метода Эйлера
-  let h_values = STEPS.map(s => 1.0 / s)
-  let euler_errors = euler_results.map(r => r.at(0).at(1))
   show-error-plot(
-    h_values,
-    euler_errors,
+    STEPS.map(s => 1.0 / s),
+    euler_results.map(r => r.at(0).at(1)),
     [Зависимость ошибки от шага (Метод Эйлера)],
   )
 }
@@ -312,18 +283,9 @@
   let X = 1.0
   let f = f1
 
-  // Получаем результаты для методов, вычисленные на предыдущей странице
   let mod1_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
+    let h = 1 / steps
     let (result, points) = euler_mod1(f, x0, y0, h, steps)
-    let exact_val = exact1(X, y0)
-    let error = calc.abs(exact_val - result)
-    ((result, error), points)
-  })
-
-  let mod2_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
-    let (result, points) = euler_mod2(f, x0, y0, h, steps)
     let exact_val = exact1(X, y0)
     let error = calc.abs(exact_val - result)
     ((result, error), points)
@@ -331,22 +293,17 @@
 
   colbreak(weak: true)
 
-  // Таблицы с результатами
   show-table([Модификация 1 (предиктор-корректор)], STEPS, mod1_results.map(r => r.at(0)))
 
-  // Графики для модификации 1 с n=20
   show-plot(
-    mod1_results.at(2).at(1),
+    mod1_results.map(r => r.at(1)),
     x => exact1(x, y0),
-    [Метод Эйлера, модификация 1 (n=20)],
+    [Метод Эйлера, модификация 1],
   )
 
-  // График ошибки от шага для модификации 1
-  let h_values = STEPS.map(s => 1.0 / s)
-  let mod1_errors = mod1_results.map(r => r.at(0).at(1))
   show-error-plot(
-    h_values,
-    mod1_errors,
+    STEPS.map(s => 1.0 / s),
+    mod1_results.map(r => r.at(0).at(1)),
     [Зависимость ошибки от шага (Модификация 1)],
   )
 }
@@ -359,44 +316,65 @@
   let X = 1.0
   let f = f1
 
-  // Получаем результаты для метода Эйлера, модификация 2
   let mod2_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
+    let h = 1 / steps
     let (result, points) = euler_mod2(f, x0, y0, h, steps)
     let exact_val = exact1(X, y0)
     let error = calc.abs(exact_val - result)
     ((result, error), points)
   })
 
-  // Таблица с результатами
   show-table([Модификация 2 (среднее значение производной)], STEPS, mod2_results.map(r => r.at(0)))
 
-  // Графики для модификации 2 с n=20
   show-plot(
-    mod2_results.at(2).at(1),
+    mod2_results.map(r => r.at(1)),
     x => exact1(x, y0),
-    [Метод Эйлера, модификация 2 (n=20)],
+    [Метод Эйлера, модификация 2],
   )
 
-  // График ошибки от шага для модификации 2
-  let h_values = STEPS.map(s => 1.0 / s)
-  let mod2_errors = mod2_results.map(r => r.at(0).at(1))
   show-error-plot(
-    h_values,
-    mod2_errors,
+    STEPS.map(s => 1.0 / s),
+    mod2_results.map(r => r.at(0).at(1)),
     [Зависимость ошибки от шага (Модификация 2)],
   )
 }
 
+#colbreak(weak: true)
+
 #{
-  // Метод Рунге-Кутты 2-го порядка с разными значениями alpha
   let x0 = 0.0
   let y0 = n + 4.0
   let X = 1.0
   let f = f1
   let steps = 40
-  let h = (X - x0) / steps
+  let h = 1 / steps
 
+  // Сравнение с разными шагами
+  let rk_steps_results = STEPS.map(steps => {
+    let h = 1 / steps
+    let (result, points) = runge_kutta_2(f, x0, y0, h, steps, 0.5)
+    let exact_val = exact1(X, y0)
+    let error = calc.abs(exact_val - result)
+    ((result, error), points)
+  })
+
+  show-table([Метод Рунге-Кутты], STEPS, rk_steps_results.map(r => r.at(0)))
+
+  show-plot(
+    rk_steps_results.map(r => r.at(1)),
+    x => exact1(x, y0),
+    [Метод Рунге-Кутты],
+  )
+
+  show-error-plot(
+    STEPS.map(s => 1.0 / s),
+    rk_steps_results.map(r => r.at(0).at(1)),
+    [Зависимость ошибки от шага (Метод Рунге-Кутты)],
+  )
+
+  colbreak()
+
+  // Сравнение с разными alpha
   let alpha_values = range(1, 10).map(i => i * 0.1)
   let rk_results = alpha_values.map(alpha => {
     let (result, points) = runge_kutta_2(f, x0, y0, h, steps, alpha)
@@ -405,7 +383,6 @@
     ((result, error), points, alpha)
   })
 
-  // Находим минимальную ошибку и соответствующее alpha
   let min_error_idx = 0
   for i in range(1, rk_results.len()) {
     if rk_results.at(i).at(0).at(1) < rk_results.at(min_error_idx).at(0).at(1) {
@@ -414,85 +391,74 @@
   }
   let best_alpha = rk_results.at(min_error_idx).at(2)
 
-  colbreak()
-
-  // Таблица с результатами для разных alpha
   show-alpha-table(
     [Метод Рунге-Кутты с разными $alpha$ ($n=40$)],
     alpha_values,
     rk_results.map(r => r.at(0).at(1)),
   )
 
-  // График для метода Рунге-Кутты с оптимальным alpha
   show-plot(
-    rk_results.at(min_error_idx).at(1),
+    rk_results.map(r => r.at(1)),
     x => exact1(x, y0),
-    [Метод Рунге-Кутты с $alpha$ = #calc.round(best_alpha, digits: PREC)],
+    [Метод Рунге-Кутты с $alpha$ = #best_alpha],
   )
 
-  // Выводим оптимальное значение alpha
-  v(10pt)
-  [*Минимальная ошибка при $alpha$ = #calc.round(best_alpha, digits: PREC), ошибка = #calc.round(rk_results.at(min_error_idx).at(0).at(1), digits: PREC)*]
+  [*Минимальная ошибка при $alpha$ = #best_alpha,
+    ошибка = #rk_results.at(min_error_idx).at(0).at(1)*]
 }
 
 #pagebreak()
 
-=== Задание 2: $y' = y - 2x/y, y(0) = n + 4$
+#place(float: true, top + center, scope: "parent")[
+  === Задание 2: $y' = y - 2x/y, y(0) = n + 4$
+]
+
 #{
   let x0 = 0.0
   let y0 = n + 4.0
   let X = 1.0
   let f = f2
 
-  // Для этого уравнения нет точного решения в аналитическом виде,
-  // поэтому будем использовать численное решение с очень маленьким шагом
-  // как эталон для сравнения
   let reference_steps = 1000
   let h_ref = (X - x0) / reference_steps
   let (reference_value, _) = runge_kutta_2(f, x0, y0, h_ref, reference_steps, 0.5)
 
-  // Расчеты для разных методов и разных шагов
   let euler_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
+    let h = 1 / steps
     let (result, points) = euler(f, x0, y0, h, steps)
     let error = calc.abs(reference_value - result)
     ((result, error), points)
   })
 
   let mod1_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
+    let h = 1 / steps
     let (result, points) = euler_mod1(f, x0, y0, h, steps)
     let error = calc.abs(reference_value - result)
     ((result, error), points)
   })
 
   let mod2_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
+    let h = 1 / steps
     let (result, points) = euler_mod2(f, x0, y0, h, steps)
     let error = calc.abs(reference_value - result)
     ((result, error), points)
   })
 
-  // Таблицы с результатами
   show-table(
-    [Метод Эйлера (эталонное значение ≈ #calc.round(reference_value, digits: PREC))],
+    [Метод Эйлера (эталонное значение ≈ #reference_value)],
     STEPS,
     euler_results.map(r => r.at(0)),
   )
 
-  // Графики для метода Эйлера с n=20
   show-plot(
-    euler_results.at(2).at(1),
+    euler_results.map(r => r.at(1)),
     none,
     "Метод Эйлера (n=20)",
   )
 
-  // График ошибки от шага для метода Эйлера
-  let h_values = STEPS.map(s => 1.0 / s)
-  let euler_errors = euler_results.map(r => r.at(0).at(1))
   show-error-plot(
-    h_values,
-    euler_errors,
+    STEPS.map(s => 1.0 / s),
+    euler_results.map(r => r.at(0).at(1)),
     [Зависимость ошибки от шага (Метод Эйлера)],
   )
 
@@ -501,21 +467,19 @@
   let X = 1.0
   let f = f2
 
-  // Эталонное значение
   let reference_steps = 1000
   let h_ref = (X - x0) / reference_steps
   let (reference_value, _) = runge_kutta_2(f, x0, y0, h_ref, reference_steps, 0.5)
 
-  // Получаем результаты для методов
   let mod1_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
+    let h = 1 / steps
     let (result, points) = euler_mod1(f, x0, y0, h, steps)
     let error = calc.abs(reference_value - result)
     ((result, error), points)
   })
 
   let mod2_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
+    let h = 1 / steps
     let (result, points) = euler_mod2(f, x0, y0, h, steps)
     let error = calc.abs(reference_value - result)
     ((result, error), points)
@@ -523,28 +487,22 @@
 
   colbreak()
 
-  // Таблицы с результатами
   show-table([Модификация 1 (предиктор-корректор)], STEPS, mod1_results.map(r => r.at(0)))
 
-  // Графики для модификации 1 с n=20
   show-plot(
-    mod1_results.at(2).at(1),
+    (mod1_results.at(2).at(1),),
     none,
     [Метод Эйлера, модификация 1 ($n=20$)],
   )
 
-  // График ошибки от шага для модификации 1
-  let h_values = STEPS.map(s => 1.0 / s)
-  let mod1_errors = mod1_results.map(r => r.at(0).at(1))
   show-error-plot(
-    h_values,
-    mod1_errors,
+    STEPS.map(s => 1.0 / s),
+    mod1_results.map(r => r.at(0).at(1)),
     [Зависимость ошибки от шага (Модификация 1)],
   )
 
   colbreak(weak: true)
 
-  // Таблицы с результатами
   show-table([Модификация 2 (среднее значение производной)], STEPS, mod2_results.map(r => r.at(0)))
 
   let x0 = 0.0
@@ -552,44 +510,36 @@
   let X = 1.0
   let f = f2
 
-  // Эталонное значение
   let reference_steps = 1000
   let h_ref = (X - x0) / reference_steps
   let (reference_value, _) = runge_kutta_2(f, x0, y0, h_ref, reference_steps, 0.5)
 
-  // Получаем результаты для модификации 2
   let mod2_results = STEPS.map(steps => {
-    let h = (X - x0) / steps
+    let h = 1 / steps
     let (result, points) = euler_mod2(f, x0, y0, h, steps)
     let error = calc.abs(reference_value - result)
     ((result, error), points)
   })
 
-  // Графики для модификации 2 с n=20
   show-plot(
-    mod2_results.at(2).at(1),
+    mod2_results.map(r => r.at(1)),
     none,
     [Метод Эйлера, модификация 2 ($n=20$)],
   )
 
-  // График ошибки от шага для модификации 2
-  let h_values = STEPS.map(s => 1.0 / s)
-  let mod2_errors = mod2_results.map(r => r.at(0).at(1))
   show-error-plot(
-    h_values,
-    mod2_errors,
+    STEPS.map(s => 1.0 / s),
+    mod2_results.map(r => r.at(0).at(1)),
     [Зависимость ошибки от шага (Модификация 2)],
   )
 
-  // Метод Рунге-Кутты 2-го порядка с разными значениями alpha
   let x0 = 0.0
   let y0 = n + 4.0
   let X = 1.0
   let f = f2
   let steps = 40
-  let h = (X - x0) / steps
+  let h = 1 / steps
 
-  // Эталонное значение
   let reference_steps = 1000
   let h_ref = (X - x0) / reference_steps
   let (reference_value, _) = runge_kutta_2(f, x0, y0, h_ref, reference_steps, 0.5)
@@ -601,7 +551,6 @@
     ((result, error), points, alpha)
   })
 
-  // Находим минимальную ошибку и соответствующее alpha
   let min_error_idx = 0
   for i in range(1, rk_results.len()) {
     if rk_results.at(i).at(0).at(1) < rk_results.at(min_error_idx).at(0).at(1) {
@@ -612,28 +561,26 @@
 
   colbreak()
 
-  // Таблица с результатами для разных alpha
   show-alpha-table(
     [Метод Рунге-Кутты с разными $alpha$ (n=40)],
     alpha_values,
     rk_results.map(r => r.at(0).at(1)),
   )
 
-  // График для метода Рунге-Кутты с оптимальным alpha
   show-plot(
-    rk_results.at(min_error_idx).at(1),
+    rk_results.map(r => r.at(1)),
     none,
-    [Метод Рунге-Кутты с $alpha$ = #calc.round(best_alpha, digits: PREC)],
+    [Метод Рунге-Кутты с $alpha$ = #best_alpha],
   )
 
-  // Выводим оптимальное значение alpha
-  [
-    #v(10pt)
-    #text(
-      weight: "bold",
-      [Минимальная ошибка при $alpha$ = #calc.round(best_alpha, digits: PREC), ошибка = #calc.round(rk_results.at(min_error_idx).at(0).at(1), digits: PREC)],
-    )
-  ]
+  [*Минимальная ошибка при $alpha$ = #best_alpha,
+    ошибка = #rk_results.at(min_error_idx).at(0).at(1)*]
+
+  show-error-plot(
+    STEPS.map(s => 1.0 / s),
+    rk_results.map(r => r.at(0).at(1)),
+    [Зависимость ошибки от шага (Метод Рунге-Кутты)],
+  )
 }
 
 #pagebreak()

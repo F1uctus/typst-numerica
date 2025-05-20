@@ -91,7 +91,6 @@ jobs:
           files: previews/*.png
           draft: false
           prerelease: false
-          update: true
 
       - name: Update README
         run: |
