@@ -1,6 +1,6 @@
 # Numerical Methods
 
-> Note: PDFs are available in the [latest workflow run](https://github.com/F1uctus/unn-numerical-methods/actions/runs/15138355947)
+> Note: PDFs are available in the [latest workflow run](https://github.com/F1uctus/unn-numerical-methods/actions/runs/15147854914)
 
 <details open>
 <summary><b>cw01.typ</b></summary>
