@@ -43,22 +43,8 @@
 #let dphi_f5(x) = -calc.sin(x)
 #let dphi_f6(x) = -calc.pi / 2 * calc.sin(calc.pi / 2 * x)
 
-/// Метод Ньютона для эталонного решения
-#let newton-ref(f, df, x0, eps, max-iter) = {
-  let x = x0
-  for i in range(max-iter) {
-    let fx = f(x)
-    let dfx = df(x)
-    if calc.abs(dfx) < 1e-12 { break }
-    let delta = fx / dfx
-    x -= delta
-    if calc.abs(delta) < eps { break }
-  }
-  x
-}
-
 /// Метод половинного деления
-#let bisection(a, b, f, eps, max-iter) = {
+#let bisection(a, b, f, eps: EPS, max-iter: ITER_LIMIT) = {
   let hist = ()
   if f(a) * f(b) >= 0 { return hist }
   for i in range(max-iter) {
@@ -71,7 +57,7 @@
 }
 
 /// Метод хорд
-#let chord(a, b, f, eps, max-iter) = {
+#let chord(a, b, f, eps: EPS, max-iter: ITER_LIMIT) = {
   let hist = ()
   for i in range(max-iter) {
     let c = a - f(a) * (b - a) / (f(b) - f(a))
@@ -83,7 +69,7 @@
 }
 
 /// Метод простой итерации
-#let simple-iter(x0, phi, eps, max-iter) = {
+#let simple-iter(x0, phi, eps: EPS, max-iter: ITER_LIMIT) = {
   let hist = (x0,)
   let converged = false
   for i in range(max-iter) {
@@ -98,7 +84,7 @@
 }
 
 /// Метод Ньютона
-#let newton(x0, f, df, eps, max-iter) = {
+#let newton(x0, f, df, eps: EPS, max-iter: ITER_LIMIT) = {
   let hist = (x0,)
   for i in range(max-iter) {
     let dfx = df(hist.at(-1))
@@ -287,11 +273,11 @@
 #let a = 0.5
 #let b = 2.0
 
-#let x-ref = newton-ref(func, dfunc, (a + b) / 2, 1e-10, 100)
-#let bisect-hist = bisection(a, b, func, EPS, ITER_LIMIT)
-#let chord-hist = chord(a, b, func, EPS, ITER_LIMIT)
-#let (si-hist, si-converged) = simple-iter((a + b) / 2, phifunc, EPS, ITER_LIMIT)
-#let newton-hist = newton((a + b) / 2, func, dfunc, EPS, ITER_LIMIT)
+#let x-ref = 1
+#let bisect-hist = bisection(a, b, func)
+#let chord-hist = chord(a, b, func)
+#let (si-hist, si-converged) = simple-iter((a + b) / 2, phifunc)
+#let newton-hist = newton((a + b) / 2, func, dfunc)
 
 #let plot-data = (
   (bisect-hist, "Половинного деления", COLORS.at(0)),
@@ -322,15 +308,16 @@
 Найти другие корни уравнения $f(x) = x^3 - x$.
 
 #let intervals = ((-0.3, 0.5), (-2.0, -0.5))
+#let roots = (0, -1)
 
-#for (a, b) in intervals {
+#for (k, (a, b)) in intervals.enumerate() {
   [=== Корень на отрезке $[#a; #b]$]
 
-  let x-ref = newton-ref(func, dfunc, (a + b) / 2, 1e-10, 100)
-  let bisect-hist = bisection(a, b, func, EPS, ITER_LIMIT)
-  let chord-hist = chord(a, b, func, EPS, ITER_LIMIT)
-  let (si-hist, si-converged) = simple-iter(a, phifunc, EPS, ITER_LIMIT)
-  let newton-hist = newton(a, func, dfunc, EPS, ITER_LIMIT)
+  let x-ref = roots.at(k)
+  let bisect-hist = bisection(a, b, func)
+  let chord-hist = chord(a, b, func)
+  let (si-hist, si-converged) = simple-iter(a, phifunc)
+  let newton-hist = newton(a, func, dfunc)
 
   let plot-data = (
     (bisect-hist, "Половинного деления", COLORS.at(0)),
@@ -370,22 +357,22 @@
 #let ddf6(x) = (calc.pi / 2) * (calc.pi / 2) * calc.cos(calc.pi / 2 * x)
 
 #let functions = (
-  (f2, df2, ddf2, phi_f2, dphi_f2, "x^3 - 3x^2 + 6x - 5", (0.5, 2.0)),
-  (f3, df3, ddf3, phi_f3, dphi_f3, "x - sin(x) - 0.25", (1.0, 1.5)),
-  (f4, df4, ddf4, phi_f4, dphi_f4, "x - sin(pi/2 x) - 0.25", (1.0, 1.5)),
-  (f5, df5, ddf5, phi_f5, dphi_f5, "x - cos(x)", (0.5, 1.5)),
-  (f6, df6, ddf6, phi_f6, dphi_f6, "x - cos(pi/2 x)", (0.5, 1.0)),
+  (f2, df2, ddf2, phi_f2, dphi_f2, "x^3 - 3x^2 + 6x - 5", (0.5, 2.0), 1.3221853546260855929114707107040320),
+  (f3, df3, ddf3, phi_f3, dphi_f3, "x - sin(x) - 0.25", (1.0, 1.5), 1.171229652501665993903833075536210572017),
+  (f4, df4, ddf4, phi_f4, dphi_f4, "x - sin(pi/2 x) - 0.25", (1.0, 1.5), 1.2007108667632066604),
+  (f5, df5, ddf5, phi_f5, dphi_f5, "x - cos(x)", (0.5, 1.5), 0.7390851332151606416553120876738734040134),
+  (f6, df6, ddf6, phi_f6, dphi_f6, "x - cos(pi/2 x)", (0.5, 1.0), 0.5946116384296164),
 )
 
-#for (func, dfunc, ddfunc, phifunc, dphifunc, name, (a, b)) in functions {
+#for (func, dfunc, ddfunc, phifunc, dphifunc, name, (a, b), root) in functions {
   [=== Уравнение $f(x) = #eval(mode: "math", name)$]
 
   let x0 = (a + b) / 2
-  let x-ref = newton-ref(func, dfunc, x0, 1e-10, 100)
-  let bisect-hist = bisection(a, b, func, EPS, ITER_LIMIT)
-  let chord-hist = chord(a, b, func, EPS, ITER_LIMIT)
-  let (si-hist, si-converged) = simple-iter(x0, phifunc, EPS, ITER_LIMIT)
-  let newton-hist = newton(x0, func, dfunc, EPS, ITER_LIMIT)
+  let x-ref = root
+  let bisect-hist = bisection(a, b, func)
+  let chord-hist = chord(a, b, func)
+  let (si-hist, si-converged) = simple-iter(x0, phifunc)
+  let newton-hist = newton(x0, func, dfunc)
 
   let plot-data = (
     (bisect-hist, "Половинного деления", COLORS.at(0)),
