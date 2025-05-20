@@ -1,95 +1,55 @@
-#import "@preview/cetz:0.3.4"
-#import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/numty:0.0.5" as nt
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 
-#let double-line = block(width: 100%)[
-  #block(spacing: 0pt, line(length: 100%))
-  #v(2.5pt)
-  #block(spacing: 0pt, line(length: 100%))
-]
+// В Typst возможно изменять условия задач,
+// и сразу же видеть пересчитанные результаты
+// на странице документа.
+//
+// Далее даны примеры условий задач.
+//
+// Чтобы пересчитать результаты, нужно убрать
+// знаки комментария (//) у интересующего примера,
+// и закомментировать остальные примеры.
 
-#set page(
-  height: auto,
-  width: auto,
-  margin: (top: 3em, rest: 0.5cm),
-  header: [
-    ЛР.01.
-    #h(1fr)
-    #SURNAME_NAME,
-    #h(1pt)
-    #UNN_GROUP
-  ],
+
+// Пример 1.
+// #let f1 = (0.5, -3)
+// #let dim = f1.len()
+// #let A1 = (
+//   (3, 1.5),
+//   (1, 3),
+// )
+// #let x01 = (0, 0)
+
+
+// Пример 2.
+#let f1 = (1, 2, 3)
+#let dim = f1.len()
+#let A1 = range(dim).map(
+  // Диагональное преобладание
+  row => range(dim).map(col => if row == col { 10 } else { 1 }),
 )
-#set par(justify: true)
-#show par: it => align(center, it)
-#set table(stroke: 0.3pt)
-#show heading: it => align(center, it)
-#show heading.where(level: 2): it => align(
-  center,
-  grid(
-    columns: (10em, auto, 10em),
-    align: horizon + center,
-    column-gutter: 5pt,
-    double-line, it.body, double-line,
-  ),
-)
-#show table.cell.where(x: 0): strong
-#show table.cell.where(y: 0): strong
+#let x01 = (0, 0, 0)
 
+// Моя реализация методов Якоби и Зейделя дана ниже.
 
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+/// Рассматриваемые в задачах точности.
+#let EPS = (1e-3, 1e-4, 1e-5)
 
+/// Общее ограничение на количество итераций.
 #let ITER_LIMIT = 1234
 
+/// Упрощённая функция округления, используется
+/// только для вывода результатов.
 #let round(x) = calc.round(x, digits: 13)
 
-#let det(A) = {
-  let dim = A.len()
-  if dim == 0 { return 0 }
-  if dim == 1 { return A.at(0).at(0) }
-  let res = 0
-  for i in range(dim) {
-    let minor = range(dim).filter(j => j != i).map(j => 
-      range(dim).filter(k => k != 0).map(k => A.at(j).at(k))
-    )
-    res += calc.pow(-1, i) * A.at(0).at(i) * det(minor)
-  }
-  return res
-}
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-#let l2-norm(x) = {
-  if x.len() == 0 { return 0 }
-  if type(x.at(0)) == array {
-    // Матрица
-    let ATA = nt.matmul(nt.transpose(x), x)
-    let dim = ATA.len()
-    let v = range(dim).map(_ => 1.0)
-    let lambda = 0.0
-    let prev_lambda = float.inf
-    let max_iters = 100
-    let iter = 0
-    while calc.abs(lambda - prev_lambda) > 1e-10 and iter < max_iters {
-      prev_lambda = lambda
-      v = nt.matmul(ATA, nt.c(..v)).flatten()
-      lambda = calc.sqrt(nt.dot(v, v))
-      if lambda == 0 {
-        return 0
-      }
-      v = v.map(x => x / lambda)
-      iter += 1
-    }
-    return calc.sqrt(lambda)
-  }
-  // Вектор
-  calc.sqrt(x.map(x => x * x).sum())
-}
-
-// $L^∞$ норма матрицы или вектора
+/// $L^∞$ норма матрицы или вектора.
 #let linf-norm(x) = {
   if x.len() == 0 { return 0 }
   if type(x.at(0)) == array {
@@ -100,35 +60,70 @@
   calc.max(..x.map(calc.abs))
 }
 
+/// Норма, используемая во всех задачах.
 #let mynorm = linf-norm
 
-// Метод Якоби
+/// Метод Якоби.
+/// - alpha (array): Матрица $alpha$.
+/// - beta (array): Вектор $beta$.
+/// - eps (float): Точность.
+/// - x0 (array): Начальное приближение.
+/// - norm (function): Норма.
+/// - max-iters (int): Ограничение на количество итераций.
 #let jacobi(alpha, beta, eps, x0, norm: mynorm, max-iters: ITER_LIMIT) = {
+  // Размерность задачи
   let dim = alpha.len()
+
+  // Норма матрицы
   let alpha_norm = norm(alpha)
+
+  // ε₁ = (1 - ‖α‖) / ‖α‖ * ε
   let eps1 = if alpha_norm == 0 { eps } else { (1 - alpha_norm) / alpha_norm * eps }
+
+  // Список предыдущих приближений
   let history = (x0,)
   while history.len() <= max-iters {
     let x_prev = history.at(-1)
+
+    // Шаг итерационного процесса
     let x = range(dim).map(i => (
       beta.at(i) + nt.dot(alpha.at(i), x_prev)
     ))
+
+    // Критерий окончания итерационного процесса
+    // ‖x^(i+1) - x^i‖ < ε₁
     if norm(nt.sub(x, x_prev)) < eps1 {
       break
     }
+
     history.push(x)
   }
   history
 }
 
-// Метод Зейделя
+/// Метод Зейделя.
+/// - alpha (array): Матрица $alpha$.
+/// - beta (array): Вектор $beta$.
+/// - eps (float): Точность.
+/// - x0 (array): Начальное приближение.
+/// - norm (function): Норма.
+/// - max-iters (int): Ограничение на количество итераций.
 #let seidel(alpha, beta, eps, x0, norm: mynorm, max-iters: ITER_LIMIT) = {
+  // Размерность задачи
   let dim = alpha.len()
+
+  // Норма матрицы
   let alpha_norm = norm(alpha)
+
+  // ε₁ = (1 - ‖α‖) / ‖α‖ * ε
   let eps1 = if alpha_norm == 0 { eps } else { (1 - alpha_norm) / alpha_norm * eps }
+
+  // Список предыдущих приближений
   let history = (x0,)
   while history.len() <= max-iters {
     let x_prev = history.at(-1)
+
+    // Шаг итерационного процесса
     let x = ()
     for i in range(dim) {
       let delta = beta.at(i)
@@ -141,16 +136,22 @@
       }
       x.push(delta)
     }
+
+    // Критерий окончания итерационного процесса
+    // ‖x^(i+1) - x^i‖ < ε₁
     if norm(nt.sub(x, x_prev)) < eps1 {
       break
     }
+
     history.push(x)
   }
   history
 }
 
-// Преобразование матрицы $A$ и вектора $f$
-// в систему вида $x = beta + alpha x$
+/// Преобразование матрицы $A$ и вектора $f$ к виду, удобному для итераций:
+/// $ x^(k+1) = beta + alpha x^k $.
+/// - A (array): Матрица $A$.
+/// - f (array): Вектор $f$.
 #let prepare-system(A, f) = {
   let dim = A.len()
   let alpha = ((),) * dim
@@ -170,8 +171,44 @@
 }
 
 
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+// Общие установки форматирования документа.
+#set page(
+  height: auto,
+  width: auto,
+  margin: (top: 3em, rest: 0.5cm),
+  header: [ЛР.01. #h(1fr) #SURNAME_NAME, #h(1pt) #UNN_GROUP],
+)
+#let double-line = [
+  #block(spacing: 0pt, line(length: 100%))
+  #v(2.5pt)
+  #block(spacing: 0pt, line(length: 100%))
+]
+#show heading: it => align(center, it)
+#show heading.where(level: 2): it => align(
+  center,
+  grid(
+    columns: (10em, auto, 10em),
+    align: horizon + center,
+    column-gutter: 5pt,
+    double-line, it.body, double-line,
+  ),
+)
+#set par(justify: true)
+#show par: it => align(center, it)
+#set table(stroke: 0.3pt)
+#show table.cell.where(x: 0): strong
+#show table.cell.where(y: 0): strong
+#let cell-highlight(x, it) = table.cell(
+  fill: if x { green } else { red }.transparentize(90%),
+  it,
+)
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 == Задание 1 + 3
 
@@ -187,24 +224,6 @@ $epsilon thick (epsilon = 10^(-3), 10^(-4), 10^(-5))$.
 $norm(x^(i+1) - x^i) < epsilon_1,
   quad epsilon_1
   = display((1 - norm(alpha)) / norm(alpha) epsilon).$
-
-#let f1 = (1, 2, 3)
-#let dim = f1.len()
-#let A1 = range(dim).map(
-  //
-  row => range(dim).map(col => if row == col { 10 } else { 1 }),
-)
-#let x01 = (0, 0, 0)
-
-// #let f1 = (0.5, -3)
-// #let dim = f1.len()
-// #let A1 = (
-//   (3, 1.5),
-//   (1, 3),
-// )
-// #let x01 = (0, 0)
-
-#let EPS = (1e-3, 1e-4, 1e-5)
 
 // Приведение системы к виду $x = beta + alpha x$
 #let (alpha1, beta1) = prepare-system(A1, f1)
@@ -261,10 +280,12 @@ $
   ],
 )
 
-#let xe = seidel(alpha1, beta1, 10e-100, x01).at(-1)
+// Точное решение
+#let xe = seidel(alpha1, beta1, 10e-28, x01).at(-1)
 
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 #pagebreak(weak: true)
 
@@ -301,64 +322,64 @@ $
   calc.pow(n(a), k - 1) / (1 - n(a)) * n(b)
 )
 
+// Условия задачи
 #let A2 = A1
 #let f2 = f1
 #let (alpha2, beta2) = prepare-system(A2, f2)
 #let alpha2-norm = mynorm(alpha2)
 #let beta2-norm = mynorm(beta2)
 
+/// Строки таблицы
 #let rows = ()
+
+/// Количество итераций
 #let iterations = 0
+
+/// Номер модификации
 #let mod-num = 0
+
+/// Коэффициент шаговой корректировки
 #let corr = 0.07
-#while iterations < 1000 {
+
+/// История итераций для метода Якоби
+#let j-history = ()
+
+/// История итераций для метода Зейделя
+#let s-history = ()
+
+#while iterations < 1010 {
+  j-history = jacobi(alpha2, beta2, EPS.at(-1), x01)
+  let j-err-bound = error-bound(alpha2, beta2, j-history.len())
+  let j-delta = mynorm(nt.sub(xe, j-history.at(-1)))
+
+  s-history = seidel(alpha2, beta2, EPS.at(-1), x01)
+  let s-err-bound = error-bound(alpha2, beta2, s-history.len())
+  let s-delta = mynorm(nt.sub(xe, s-history.at(-1)))
+
   let k = alpha2.at(0).at(1)
-  let jacobi-history = jacobi(alpha2, beta2, EPS.at(-1), x01)
-  let seidel-history = seidel(alpha2, beta2, EPS.at(-1), x01)
-  let j-err-bound = error-bound(
-    alpha2,
-    beta2,
-    jacobi-history.len(),
-  )
-  let s-err-bound = error-bound(
-    alpha2,
-    beta2,
-    seidel-history.len(),
-  )
-  let j-delta = mynorm(nt.sub(xe, jacobi-history.at(-1)))
-  let s-delta = mynorm(nt.sub(xe, seidel-history.at(-1)))
-  rows.push(
-    (
-      mod-num,
-      A2.flatten().map(round).chunks(dim),
-      mynorm(A2),
-      f2.map(round),
-      if str(k).len() > 10 {
-        $display(#alpha-mat), \ c = #k$
-      } else {
-        alpha2
-      },
-      alpha2-norm,
-      beta2.map(round),
-      beta2-norm,
-      jacobi-history.len(),
-      jacobi-history.at(-1),
-      table.cell(fill: if j-delta <= j-err-bound { green } else { red }.transparentize(90%))[
-        $&#j-delta <= \ <= &#j-err-bound$
-      ],
-      seidel-history.len(),
-      seidel-history.at(-1),
-      table.cell(fill: if s-delta <= s-err-bound { green } else { red }.transparentize(90%))[
-        $&#s-delta <= \ <= &#s-err-bound$
-      ],
-    ).map(x => if type(x) == content {
-      x
-    } else if type(x) == float {
-      $#round(x)$
+  rows.push((
+    num: mod-num,
+    A: nt.print(A2.flatten().map(round).chunks(dim)),
+    A-norm: mynorm(A2),
+    f: nt.print(f2.map(round)),
+    alpha: if str(k).len() > 10 {
+      // Если элементы матрицы имеют большое количество знаков,
+      // то выводим матрицу в общем виде
+      $display(#alpha-mat), \ c = #k$
     } else {
-      nt.print(x)
-    }),
-  )
+      // Иначе выводим матрицу полностью
+      nt.print(alpha2)
+    },
+    alpha-norm: alpha2-norm,
+    beta: nt.print(beta2.map(round)),
+    beta-norm: beta2-norm,
+    jacobi-iters: if j-history.len() == ITER_LIMIT + 1 { $> #j-history.len()$ } else { j-history.len() },
+    jacobi-x: nt.print(j-history.at(-1).map(round)),
+    jacobi-check: cell-highlight(j-delta <= j-err-bound, $&#j-delta <= \ <= &#j-err-bound$),
+    seidel-iters: if s-history.len() == ITER_LIMIT + 1 { $> #s-history.len()$ } else { s-history.len() },
+    seidel-x: nt.print(s-history.at(-1).map(round)),
+    seidel-check: cell-highlight(s-delta <= s-err-bound, $&#s-delta <= \ <= &#s-err-bound$),
+  ))
 
   // Корректировка матрицы
   A2 = A2
@@ -373,27 +394,19 @@ $
   // Пересчёт системы
   (alpha2, beta2) = prepare-system(A2, f2)
 
+  // Пересчёт норм
   alpha2-norm = mynorm(alpha2)
   beta2-norm = mynorm(beta2)
   if alpha2-norm == 1 {
     error-bound = (a, b) => float.inf
   }
-  iterations = calc.max(seidel-history.len(), jacobi-history.len())
+
+  iterations = calc.max(s-history.len(), j-history.len())
   mod-num += 1
-  results.push((
-    $A^*_#mod-num$,
-    $inline(#nt.print(A2-mod))$,
-    $inline(#nt.print(f2-mod.map(x => calc.round(x, digits: 10))))$,
-    $inline(#nt.print(calc.round(mathnorm(A2-mod), digits: 14)))$,
-    $inline(#nt.print(alpha2-mod.flatten().map(x => calc.round(x, digits: 2)).chunks(5)))$,
-    $inline(#nt.print(beta2-mod))$,
-    $#jacobi(alpha2-mod, beta2-mod, EPS.at(0), x01, max-iterations: MAX_ITER).len()$,
-    $#seidel(alpha2-mod, beta2-mod, EPS.at(0), x01, max-iterations: MAX_ITER).len()$,
-  ))
 }
 
 #table(
-  columns: (auto,) * 14,
+  columns: (auto,) * rows.at(0).len(),
   align: center + horizon,
   $m$,
   $А^*_m$,
@@ -409,11 +422,22 @@ $
   [$k$, \ Зейделя],
   [$x^k$, Зейделя],
   estimate-f,
-  ..rows.flatten()
+  ..rows
+    .map(r => r.values())
+    .flatten()
+    .map((
+      x => if type(x) == content {
+        x
+      } else if type(x) == float {
+        $#round(x)$
+      } else {
+        nt.print(x)
+      }
+    ))
 )
 
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 #pagebreak(weak: true)
 #set page(width: 50em, height: auto)
@@ -426,4 +450,12 @@ $
 итераций требуется для решения с заданной точностью ε
 СЛАУ $A x = f$ и СЛАУ $A^* x = f^*$ методом Зейделя?
 
-*Ответ* приведён в таблицах.
+*Ответ* приведён в таблицах. В наихудших рассматриваемых случаях
+для метода Зейделя требуется кратно меньше итераций,
+чем для метода Якоби. Если сравнивать количества итераций
+в сумме для модификаций, то получим:
+$
+  (sum_k N^j_k) slash (sum_k N^s_k)
+  = #(rows.slice(0, -1).map(r => r.jacobi-iters).sum() / rows.slice(0, -1).map(r => r.seidel-iters).sum())
+$
+
