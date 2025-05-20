@@ -1,0 +1,110 @@
+name: Render Typst Documents
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # - name: Check Spelling
+      #   uses: check-spelling/check-spelling@v0.0.25
+
+      - name: Cache Typst
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/typst
+            typst/packages
+          key: ${{ runner.os }}-typst-${{ hashFiles('typst/packages/**') }}
+          restore-keys: |
+            ${{ runner.os }}-typst-
+
+      - name: Install Typst
+        run: |
+          curl -L https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz | tar -xJf -
+          sudo mv typst-x86_64-unknown-linux-musl/typst /usr/local/bin/
+
+      - name: Compile Typst documents
+        run: |
+          find . -name "*.typ" -type f | while read -r file; do
+            # Get directory of the file
+            dir=$(dirname "$file")
+            # Get filename without extension
+            base=$(basename "$file" .typ)
+            # Compile PDF with minimal settings for faster processing
+            typst compile "$file" "$dir/$base.pdf" --jobs 1
+            # Generate first page preview with lower quality
+            typst compile "$file" "$dir/$base-preview.png" --format png --pages 1 --ppi 72
+          done
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.run_id }}
+          path: "**/*.pdf"
+          retention-days: 7
+
+      - name: Create or update release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: previews
+          name: Latest Previews
+          files: "**/*-preview.png"
+          draft: false
+          prerelease: false
+          update: true
+
+      - name: Update README
+        run: |
+          {
+            echo "# Numerical Methods"
+            echo ""
+            echo "> Note: PDFs are available in the [latest workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            echo ""
+            
+            find . -name "*.typ" -type f | sort | while read -r file; do
+              dir=$(dirname "$file" | sed 's|^\./||')
+              
+              if [ "$dir" != "." ] && [ "$dir" != "$last_dir" ]; then
+                echo "### $dir"
+                echo ""
+                last_dir="$dir"
+              fi
+              
+              rel_path=$(echo "$file" | sed 's|^\./||')
+              base="${file%.typ}"
+              pdf="${base}.pdf"
+              preview="${base}-preview.png"
+              
+              if [ -f "$preview" ]; then
+                echo "<details open>"
+                echo "<summary><b>$rel_path</b></summary>"
+                echo ""
+                echo "![Preview](https://github.com/${{ github.repository }}/releases/download/previews/$preview)"
+                echo ""
+                echo "> [Download PDF]($pdf)"
+                echo "</details>"
+                echo ""
+              fi
+            done
+          } > README.md
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -f README.md
+          git commit -m "Update README" || exit 0
+          git push "https://$GITHUB_TOKEN@github.com/${{ github.repository }}.git"
