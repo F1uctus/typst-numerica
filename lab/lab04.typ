@@ -161,6 +161,15 @@
   return orders
 }
 
+#let err_func(errors) = {
+  return x => {
+    if x <= 5 { errors.at(0) } else if x <= 10 { errors.at(0) + (errors.at(1) - errors.at(0)) * (x - 5) / 5 } else if (
+      x <= 20
+    ) { errors.at(1) + (errors.at(2) - errors.at(1)) * (x - 10) / 10 } else if x <= 40 {
+      errors.at(2) + (errors.at(3) - errors.at(2)) * (x - 20) / 20
+    } else { errors.at(3) + (errors.at(4) - errors.at(3)) * (x - 40) / 40 }
+  }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -173,9 +182,10 @@
 #let y0 = n + 4
 #let (results, n_values, errors_rk, errors_ab) = compute_errors(f1, exact_solution1, a, b, y0)
 
-$y' = y - x, quad y(0) = #(n + 4)$
+$ y' = y - x, quad y(0) = #(n + 4) $
 
-Аналитическое решение: $y(x) = x + 1 + #(n + 3) e^x$
+Аналитическое решение:
+$ y(x) = x + 1 + #(n + 3) e^x $
 
 #show-table(
   results,
@@ -189,38 +199,19 @@ $y' = y - x, quad y(0) = #(n + 4)$
 
 Порядок сходимости AB4: #(orders_ab.map(str).join(", "))
 
-#let error_plot_data = (
-  (5, errors_rk.at(0)),
-  (10, errors_rk.at(1)),
-  (20, errors_rk.at(2)),
-  (40, errors_rk.at(3)),
-  (80, errors_rk.at(4)),
-)
-#let error_plot_data2 = (
-  (5, errors_ab.at(0)),
-  (10, errors_ab.at(1)),
-  (20, errors_ab.at(2)),
-  (40, errors_ab.at(3)),
-  (80, errors_ab.at(4)),
-)
+// #let error_plot_data = range(4).fold(
+//   ((5, errors_rk.at(0)),),
+//   (acc, i) => acc + ((2 * acc.at(-1).at(0), errors_rk.at(i + 1)),)
+// )
+// #let error_plot_data2 = (
+//   (5, errors_ab.at(0)),
+//   (10, errors_ab.at(1)),
+//   (20, errors_ab.at(2)),
+//   (40, errors_ab.at(3)),
+//   (80, errors_ab.at(4)),
+// )
 
-#let err_func_rk(x) = {
-  if x <= 5 { return errors_rk.at(0) }
-  if x <= 10 { return errors_rk.at(0) + (errors_rk.at(1) - errors_rk.at(0)) * (x - 5) / 5 }
-  if x <= 20 { return errors_rk.at(1) + (errors_rk.at(2) - errors_rk.at(1)) * (x - 10) / 10 }
-  if x <= 40 { return errors_rk.at(2) + (errors_rk.at(3) - errors_rk.at(2)) * (x - 20) / 20 }
-  return errors_rk.at(3) + (errors_rk.at(4) - errors_rk.at(3)) * (x - 40) / 40
-}
-
-#let err_func_ab(x) = {
-  if x <= 5 { return errors_ab.at(0) }
-  if x <= 10 { return errors_ab.at(0) + (errors_ab.at(1) - errors_ab.at(0)) * (x - 5) / 5 }
-  if x <= 20 { return errors_ab.at(1) + (errors_ab.at(2) - errors_ab.at(1)) * (x - 10) / 10 }
-  if x <= 40 { return errors_ab.at(2) + (errors_ab.at(3) - errors_ab.at(2)) * (x - 20) / 20 }
-  return errors_ab.at(3) + (errors_ab.at(4) - errors_ab.at(3)) * (x - 40) / 40
-}
-
-#show-plot((5, 80), err_func_rk, err_func_ab, "Погрешность")
+#show-plot((5, 80), err_func(errors_ab), err_func(errors_rk), "Погрешность")
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -235,9 +226,10 @@ $y' = y - x, quad y(0) = #(n + 4)$
 #let y0 = n + 4
 #let (results, n_values, errors_rk, errors_ab) = compute_errors(f2, exact_solution2, a, b, y0)
 
-$y' = y - 2x/y, quad y(0) = #(n + 4)$
+$ y' = y - 2x/y, quad y(0) = #(n + 4) $
 
-Аналитическое решение: $y(x) = sqrt(2x + 1 + (#(calc.pow(n + 4, 2) - 1) e^(2x)))$
+Аналитическое решение:
+$ y(x) = sqrt(2x + 1 + (#(calc.pow(n + 4, 2) - 1) e^(2x))) $
 
 #show-table(
   results,
@@ -251,21 +243,7 @@ $y' = y - 2x/y, quad y(0) = #(n + 4)$
 
 Порядок сходимости AB4: #(orders_ab.map(str).join(", "))
 
-#let err_func_rk(x) = {
-  if x <= 5 { return errors_rk.at(0) }
-  if x <= 10 { return errors_rk.at(0) + (errors_rk.at(1) - errors_rk.at(0)) * (x - 5) / 5 }
-  if x <= 20 { return errors_rk.at(1) + (errors_rk.at(2) - errors_rk.at(1)) * (x - 10) / 10 }
-  if x <= 40 { return errors_rk.at(2) + (errors_rk.at(3) - errors_rk.at(2)) * (x - 20) / 20 }
-  return errors_rk.at(3) + (errors_rk.at(4) - errors_rk.at(3)) * (x - 40) / 40
-}
-#let err_func_ab(x) = {
-  if x <= 5 { return errors_ab.at(0) }
-  if x <= 10 { return errors_ab.at(0) + (errors_ab.at(1) - errors_ab.at(0)) * (x - 5) / 5 }
-  if x <= 20 { return errors_ab.at(1) + (errors_ab.at(2) - errors_ab.at(1)) * (x - 10) / 10 }
-  if x <= 40 { return errors_ab.at(2) + (errors_ab.at(3) - errors_ab.at(2)) * (x - 20) / 20 }
-  return errors_ab.at(3) + (errors_ab.at(4) - errors_ab.at(3)) * (x - 40) / 40
-}
-#show-plot((5, 80), err_func_rk, err_func_ab, "Погрешность")
+#show-plot((5, 80), err_func(errors_ab), err_func(errors_rk), "Погрешность")
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -280,7 +258,7 @@ $y' = y - 2x/y, quad y(0) = #(n + 4)$
 #let y0 = 2.0
 #let (results, n_values, errors_rk, errors_ab) = compute_errors(f3, exact_solution3, a, b, y0)
 
-$y' = 2y / x + 2x^3, quad y(1) = 2$
+$ y' = 2y / x + 2x^3, quad y(1) = 2 $
 
 Аналитическое решение: $y(x) = x^2 + x^4$
 
@@ -296,21 +274,7 @@ $y' = 2y / x + 2x^3, quad y(1) = 2$
 
 Порядок сходимости AB4: #(orders_ab.map(str).join(", "))
 
-#let err_func_rk(x) = {
-  if x <= 5 { return errors_rk.at(0) }
-  if x <= 10 { return errors_rk.at(0) + (errors_rk.at(1) - errors_rk.at(0)) * (x - 5) / 5 }
-  if x <= 20 { return errors_rk.at(1) + (errors_rk.at(2) - errors_rk.at(1)) * (x - 10) / 10 }
-  if x <= 40 { return errors_rk.at(2) + (errors_rk.at(3) - errors_rk.at(2)) * (x - 20) / 20 }
-  return errors_rk.at(3) + (errors_rk.at(4) - errors_rk.at(3)) * (x - 40) / 40
-}
-#let err_func_ab(x) = {
-  if x <= 5 { return errors_ab.at(0) }
-  if x <= 10 { return errors_ab.at(0) + (errors_ab.at(1) - errors_ab.at(0)) * (x - 5) / 5 }
-  if x <= 20 { return errors_ab.at(1) + (errors_ab.at(2) - errors_ab.at(1)) * (x - 10) / 10 }
-  if x <= 40 { return errors_ab.at(2) + (errors_ab.at(3) - errors_ab.at(2)) * (x - 20) / 20 }
-  return errors_ab.at(3) + (errors_ab.at(4) - errors_ab.at(3)) * (x - 40) / 40
-}
-#show-plot((5, 80), err_func_rk, err_func_ab, "Погрешность")
+#show-plot((5, 80), err_func(errors_ab), err_func(errors_rk), "Погрешность")
 
 
 ////////////////////////////////////////////////////////////////////////////////
