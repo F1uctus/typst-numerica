@@ -75,7 +75,7 @@
 }
 
 #exercise-hom-diff-eq(
-  setup-eq: $ y_(k+2) - 9y_(k+1) + 20y_k = 0 $,
+  setup-eq: $ y_(k+1) - 9y_k + 20y_(k-1) = 0 $,
   char-eq: $lambda^2 - 9 lambda + 20 = 0$,
   solution: $
     D = 9^2 - 4 dot 1 dot 20 = 81 - 80 = 1,
@@ -90,7 +90,7 @@
 )
 
 #exercise-hom-diff-eq(
-  setup-eq: $ y_(k+2) - 6y_(k+1) + 9y_k = 0 $,
+  setup-eq: $ y_(k+1) - 6y_k + 9y_(k-1) = 0 $,
   char-eq: $lambda^2 - 6 lambda + 9 = 0$,
   solution: $
     D = 6^2 - 4 dot 1 dot 9 = 36 - 36 = 0
@@ -100,51 +100,25 @@
   answer: $ y_k = (C_1 + C_2 k) dot 3^k $,
 )
 
-#exercise-hom-diff-eq(
-  setup-eq: $ y_(k+2) - 9y_(k+1) + 20y_k = 0 $,
-  char-eq: $lambda^2 - 9 lambda + 20 = 0$,
-  solution: $
-    D = 9^2 - 4 dot 1 dot 20 = 81 - 80 = 1,
-    quad lambda_(1,2)
-    = frac(9 plus.minus sqrt(1), 2)
-    = frac(9 plus.minus 1, 2)
-    quad ==>
-    quad lambda_1 = frac(9 + 1, 2) = 5,
-    quad lambda_2 = frac(9 - 1, 2) = 4.
-  $,
-  answer: $ y_k = C_1 dot 5^k + C_2 dot 4^k $,
-)
-
-#exercise-hom-diff-eq(
-  setup-eq: $ y_(k+2) - 6y_(k+1) + 9y_k = 0 $,
-  char-eq: $lambda^2 - 6 lambda + 9 = 0$,
-  solution: $
-    D = 6^2 - 4 dot 1 dot 9 = 36 - 36 = 0
-    quad ==>
-    quad lambda_(1,2) = frac(6, 2) = 3.
-  $,
-  answer: $ y_k = (C_1 + C_2 k) dot 3^k $,
-)
-
-#exercise-hom-diff-eq(
-  setup-eq: $ y_(k+2) - y_(k+1) + y_k = 0 $,
+#exercise-hom-diff-eq(//FIXME
+  setup-eq: $ y_(k+1) + y_k + y_(k-1) = 0 $,
   char-eq: $lambda^2 - lambda + 1 = 0$,
   solution: $
     D = 1^2 - 4 dot 1 dot 1 = 1 - 4 = -3
     quad ==>
-    quad lambda_(1,2) = frac(1 plus.minus i sqrt(3), 2),
+    quad lambda_(1,2) = frac(-1 plus.minus i sqrt(3), 2),
     \ rho = |lambda|
-    = sqrt((frac(1, 2))^2 + (frac(sqrt(3), 2))^2)
+    = sqrt((-frac(1, 2))^2 + (frac(sqrt(3), 2))^2)
     = 1,
-    quad cos phi = frac(1 slash 2, rho) = frac(1, 2),
+    quad cos phi = frac(-1 slash 2, rho) = -frac(1, 2),
     quad sin phi = frac(sqrt(3) slash 2, rho) = frac(sqrt(3), 2)
     quad ==> quad phi = frac(pi, 3).
   $,
   answer: $ y_k = C_1 cos(pi k slash 3) + C_2 sin(pi k slash 3) $,
 )
 
-#exercise-hom-diff-eq(
-  setup-eq: $ y_(k+2) - 6y_(k+1) + 5y_k = 0 $,
+#exercise-hom-diff-eq(//FIXME
+  setup-eq: $ 6y_(k+1) - 5y_k + y_(k-1) = 0 $,
   char-eq: $lambda^2 - 6 lambda + 5 = 0$,
   solution: [
     $
@@ -159,10 +133,8 @@
   answer: $ y_k = C_1 dot 5^k + C_2 $,
 )
 
-#pagebreak()
-
-#exercise-hom-diff-eq(
-  setup-eq: $ y_(k+2) - 5y_(k+1) + 2y_k = 0 $,
+#exercise-hom-diff-eq(//FIXME
+  setup-eq: $ y_(k+1) - 5 / 2 y_k + y_(k-1) = 0 $,
   char-eq: $lambda^2 - 5 lambda + 2 = 0$,
   solution: $
     D = 5^2 - 4 dot 1 dot 2 = 25 - 8 = 17,
@@ -174,8 +146,8 @@
   answer: $ y_k = C_1 dot (frac(5 + sqrt(17), 2))^k + C_2 dot (frac(5 - sqrt(17), 2))^k $,
 )
 
-#exercise-hom-diff-eq(
-  setup-eq: $ y_(k+2) - 3y_(k+1) + 9y_k = 0 $,
+#exercise-hom-diff-eq(//FIXME
+  setup-eq: $ y_(k+1) + 3y_k + 9y_(k-1) = 0 $,
   char-eq: $lambda^2 - 3 lambda + 9 = 0$,
   solution: $
     D = 3^2 - 4 dot 1 dot 9 = 9 - 36 = -27,

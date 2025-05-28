@@ -53,7 +53,8 @@
 === Задание 1
 #let PREC = 10
 #let ITERATIONS = 2
-#let dashes = ("solid", "densely-dotted", "dash-dotted", "dotted")
+#let dashes = ("solid", "dashed", "dash-dotted", "dotted")
+#let colors = (blue, red, yellow, purple)
 #let f(x, y) = y - x
 #let y0 = n + 4
 #let h = 1
@@ -66,6 +67,12 @@
     axes: (
       stroke: (dash: "dotted", paint: gray),
       tick: (stroke: gray + .5pt),
+    ),
+    legend: (
+      stroke: none,
+      orientation: ltr,
+      item: (spacing: 3em),
+      scale: 80%,
     ),
   )
   body
@@ -163,11 +170,12 @@ $quad x_k = x_0 + h k,
         add(
           yfs.at(k),
           domain: (0, h * ITERATIONS),
-          style: (stroke: (dash: dashes.at(k))),
+          style: (stroke: (dash: dashes.at(k), paint: black)),
         )
         add(
           slope.with(xs, ys, k),
           domain: (0, h * ITERATIONS),
+          style: (stroke: (dash: dashes.at(k), paint: colors.at(1 - k))),
         )
       },
     )
@@ -248,12 +256,15 @@ $quad x_(k + 1 / 2) = x_0 + h / 2 k,
       y-grid: true,
       y-tick-step: 1,
       axis-style: "school-book",
+      legend: "south",
       {
+        let labels = ($y^*_k$, ..range(ITERATIONS).map(k => $y_#(h * (k + 1/2))$)).map(strong)
         for k in range(ITERATIONS + 1) {
           add(
             yfs.at(k),
             domain: (0, h * ITERATIONS),
-            style: (stroke: (dash: dashes.at(k))),
+            style: (stroke: (dash: dashes.at(k), paint: black)),
+            label: labels.at(k),
           )
         }
         for k in range(ITERATIONS) {
@@ -261,11 +272,22 @@ $quad x_(k + 1 / 2) = x_0 + h / 2 k,
           add(
             x => (x - a) * f(xs.at(k), ys.at(k)) + ys.at(k),
             domain: (a, a + h / 2),
+            label: $1$,
+            style: (stroke: (dash: dashes.at(1), paint: colors.at(1))),
           )
           let a = h * k + h / 2
           add(
             x => (x - a) * dyfs.at(k)(x2.at(k)) + y2.at(k),
             domain: (a, a + h / 2),
+            label: $2$,
+            style: (stroke: (dash: dashes.at(2), paint: colors.at(2))),
+          )
+          let a = h * k
+          add(
+            x => (x - a) * dyfs.at(k)(x2.at(k)) + ys.at(k),
+            domain: (a, a + h),
+            label: $3$,
+            style: (stroke: (dash: dashes.at(3), paint: colors.at(3))),
           )
         }
       },
@@ -342,11 +364,12 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
           add(
             yfs.at(k),
             domain: (0, h * ITERATIONS),
-            style: (stroke: (dash: dashes.at(k))),
+            style: (stroke: (dash: dashes.at(k), paint: colors.at(k))),
           )
           add(
             slope.with(xs, ys, k),
             domain: (h * k, h * (k + 1)),
+            style: (stroke: (paint: colors.at(1 - k))),
           )
         },
       )
