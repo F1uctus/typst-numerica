@@ -33,8 +33,10 @@
 
 #let exercises = counter("exercises-counter")
 
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 === Задание 1
 Найти общее решение однородных разностных уравнений:
 
@@ -100,9 +102,9 @@
   answer: $ y_k = (C_1 + C_2 k) dot 3^k $,
 )
 
-#exercise-hom-diff-eq(//FIXME
+#exercise-hom-diff-eq(
   setup-eq: $ y_(k+1) + y_k + y_(k-1) = 0 $,
-  char-eq: $lambda^2 - lambda + 1 = 0$,
+  char-eq: $lambda^2 + lambda + 1 = 0$,
   solution: $
     D = 1^2 - 4 dot 1 dot 1 = 1 - 4 = -3
     quad ==>
@@ -112,59 +114,61 @@
     = 1,
     quad cos phi = frac(-1 slash 2, rho) = -frac(1, 2),
     quad sin phi = frac(sqrt(3) slash 2, rho) = frac(sqrt(3), 2)
-    quad ==> quad phi = frac(pi, 3).
+    quad ==> quad phi = frac(2 pi, 3).
   $,
-  answer: $ y_k = C_1 cos(pi k slash 3) + C_2 sin(pi k slash 3) $,
+  answer: $ y_k = C_1 cos(2 pi k slash 3) + C_2 sin(2 pi k slash 3) $,
 )
 
-#exercise-hom-diff-eq(//FIXME
+#exercise-hom-diff-eq(
   setup-eq: $ 6y_(k+1) - 5y_k + y_(k-1) = 0 $,
-  char-eq: $lambda^2 - 6 lambda + 5 = 0$,
+  char-eq: $6lambda^2 - 5 lambda + 1 = 0$,
   solution: [
     $
-      D = 6^2 - 4 dot 1 dot 5 = 36 - 20 = 16,
-      quad lambda_(1,2) = frac(6 plus.minus sqrt(16), 2)
-      = frac(6 plus.minus 4, 2)
+      D = 5^2 - 4 dot 6 dot 1 = 25 - 24 = 1,
+      quad lambda_(1,2) = frac(5 plus.minus sqrt(1), 12)
+      = frac(5 plus.minus 1, 12)
       quad ==>
-      quad lambda_1 = frac(6 + 4, 2) = 5,
-      quad lambda_2 = frac(6 - 4, 2) = 1.
+      quad lambda_1 = frac(5 + 1, 12) = 1 / 2,
+      quad lambda_2 = frac(5 - 1, 12) = 1 / 3.
     $
   ],
-  answer: $ y_k = C_1 dot 5^k + C_2 $,
+  answer: $ y_k = C_1 dot (1/2)^k + C_2 dot (1/3)^k $,
 )
 
-#exercise-hom-diff-eq(//FIXME
+#exercise-hom-diff-eq(
   setup-eq: $ y_(k+1) - 5 / 2 y_k + y_(k-1) = 0 $,
-  char-eq: $lambda^2 - 5 lambda + 2 = 0$,
+  char-eq: $2 lambda^2 - 5 lambda + 2 = 0$,
   solution: $
-    D = 5^2 - 4 dot 1 dot 2 = 25 - 8 = 17,
-    quad lambda_(1,2) = frac(5 plus.minus sqrt(17), 2)
+    D = 5^2 - 4 dot 2 dot 2 = 25 - 16 = 9,
+    quad lambda_(1,2) = frac(5 plus.minus sqrt(9), 4)
     quad ==>
-    quad lambda_1 = frac(5 + sqrt(17), 2),
-    quad lambda_2 = frac(5 - sqrt(17), 2).
+    quad lambda_1 = frac(5 + 3, 4) = 2,
+    quad lambda_2 = frac(5 - 3, 4) = 1 / 2.
   $,
-  answer: $ y_k = C_1 dot (frac(5 + sqrt(17), 2))^k + C_2 dot (frac(5 - sqrt(17), 2))^k $,
+  answer: $ y_k = C_1 dot 2^k + C_2 dot (1/2)^k $,
 )
 
-#exercise-hom-diff-eq(//FIXME
+#exercise-hom-diff-eq(
   setup-eq: $ y_(k+1) + 3y_k + 9y_(k-1) = 0 $,
-  char-eq: $lambda^2 - 3 lambda + 9 = 0$,
+  char-eq: $lambda^2 + 3 lambda + 9 = 0$,
   solution: $
     D = 3^2 - 4 dot 1 dot 9 = 9 - 36 = -27,
-    quad lambda_(1,2) = frac(3 plus.minus i sqrt(27), 2)
-    = frac(3 plus.minus 3i sqrt(3), 2)
-    = frac(3, 2) plus.minus frac(3sqrt(3), 2)i,
+    quad lambda_(1,2) = frac(-3 plus.minus i sqrt(27), 2)
+    = frac(-3 plus.minus 3i sqrt(3), 2)
+    = -frac(3, 2) plus.minus frac(3sqrt(3), 2)i,
     \ rho = |lambda| = sqrt((frac(3, 2))^2 + (frac(3sqrt(3), 2))^2)
     = 3,
-    quad cos phi = frac(3 slash 2, rho) = frac(1, 2),
-    quad sin phi = frac(3sqrt(3) slash 2, rho) = frac(sqrt(3), 2),
-    quad ==> quad phi = frac(pi, 3).
+    quad cos phi = frac(-3 slash 2, rho) = -frac(1, 2),
+    quad sin phi = frac(3sqrt(3) slash 2, rho) = -frac(sqrt(3), 2),
+    quad ==> quad phi = frac(2 pi, 3).
   $,
-  answer: $ y_k = 3^k (C_1 cos(pi k slash 3) + C_2 sin(pi k slash 3)) $,
+  answer: $ y_k = 3^k (C_1 cos(2 pi k slash 3) + C_2 sin(2 pi k slash 3)) $,
 )
 
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 === Задание 2
 #tasks.step()
 #exercises.update(0)
