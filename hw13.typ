@@ -91,40 +91,32 @@ $
   )
 $
 
-*Шаблон разностной схемы:*
+#grid(
+  columns: (1fr, 1fr),
+  [*Шаблон разностной схемы:*],
+  align: center + horizon,
+  cetz.canvas(
+    length: 1.5cm,
+    {
+      import cetz.draw: *
 
-#cetz.canvas(
-  length: 1.5cm,
-  {
-    import cetz.draw: *
+      // Выделяем активные точки схемы для (m,p)
+      let m = 1
+      let p = 1
+      circle((m, p), radius: 0.05, fill: black)
+      content((m, p + 0.3), text(size: 8pt, $(m, p)$))
 
-    // Сетка точек
-    for i in range(-1, 3) {
-      for j in range(0, 3) {
-        circle((i, j), radius: 0.05, fill: black)
-        content((i, j + 0.3), text(size: 8pt, $(#i, #j)$))
-      }
-    }
+      circle((m, p - 1), radius: 0.05, fill: black)
+      content((m + 0.6, p - 1), text(size: 8pt, $(m, p - 1)$))
 
-    // Выделяем активные точки схемы для (m,p)
-    let m = 1
-    let p = 1
-    circle((m, p), radius: 0.1, stroke: red + 2pt)
-    circle((m, p - 1), radius: 0.1, stroke: red + 2pt)
-    circle((m + 1, p), radius: 0.1, stroke: red + 2pt)
+      circle((m + 1, p), radius: 0.05, fill: black)
+      content((m + 1, p + 0.3), text(size: 8pt, $(m + 1, p)$))
 
-    // Соединяем линиями
-    line((m, p - 1), (m, p), stroke: red + 1pt)
-    line((m, p), (m + 1, p), stroke: red + 1pt)
-
-    // Подписи осей
-    content((-1.5, 1), text(size: 10pt, $t$))
-    content((1, -0.5), text(size: 10pt, $x$))
-
-    // Стрелки осей
-    line((-1.5, -0.3), (-1.5, 2.3), mark: (end: ">"))
-    line((-1.8, 0), (2.3, 0), mark: (end: ">"))
-  },
+      // Соединяем линиями
+      line((m, p - 1), (m, p), stroke: gray)
+      line((m, p), (m + 1, p), stroke: gray)
+    },
+  )
 )
 
 Для аппроксимации частной производной по пространству применяется левая конечная разность, она имеет первый порядок аппроксимации. Для аппроксимации частной производной по времени применяется правая конечная разность, она имеет первый порядок аппроксимации.
@@ -242,40 +234,30 @@ $
   )
 $
 
-*Шаблон разностной схемы:*
-
-#cetz.canvas(
+#grid(
+  columns: (1fr, 1fr),
+  align: center+horizon,
+  [*Шаблон разностной схемы:*],
+cetz.canvas(
   length: 1.5cm,
   {
     import cetz.draw: *
 
-    // Сетка точек
-    for i in range(-1, 3) {
-      for j in range(0, 3) {
-        circle((i, j), radius: 0.05, fill: black)
-        content((i, j + 0.3), text(size: 8pt, $(#i, #j)$))
-      }
-    }
-
     // Выделяем активные точки схемы для (m,p)
     let m = 1
     let p = 1
-    circle((m, p), radius: 0.1, stroke: red + 2pt)
-    circle((m, p - 1), radius: 0.1, stroke: red + 2pt)
-    circle((m - 1, p), radius: 0.1, stroke: red + 2pt)
+    circle((m, p), radius: 0.05, fill: black)
+    content((m, p + 0.3), text(size: 8pt, $(m, p)$))
+    circle((m, p - 1), radius: 0.05, fill: black)
+    content((m + 0.6, p - 1), text(size: 8pt, $(m, p - 1)$))
+    circle((m - 1, p), radius: 0.05, fill: black)
+    content((m - 1, p + 0.3), text(size: 8pt, $(m - 1, p)$))
 
     // Соединяем линиями
-    line((m, p - 1), (m, p), stroke: red + 1pt)
-    line((m - 1, p), (m, p), stroke: red + 1pt)
-
-    // Подписи осей
-    content((-1.5, 1), text(size: 10pt, $t$))
-    content((1, -0.5), text(size: 10pt, $x$))
-
-    // Стрелки осей
-    line((-1.5, -0.3), (-1.5, 2.3), mark: (end: ">"))
-    line((-1.8, 0), (2.3, 0), mark: (end: ">"))
+    line((m, p - 1), (m, p), stroke: gray)
+    line((m - 1, p), (m, p), stroke: gray)
   },
+)
 )
 
 Для аппроксимации частной производной по пространству применяется левая конечная разность, она имеет первый порядок аппроксимации. Для аппроксимации частной производной по времени применяется правая конечная разность, она имеет первый порядок аппроксимации.
@@ -397,40 +379,30 @@ $
   )
 $
 
-*Шаблон разностной схемы:*
-
-#cetz.canvas(
+#grid(
+  columns: (1fr, 1fr),
+  [*Шаблон разностной схемы:*],
+  align: center+horizon,
+cetz.canvas(
   length: 1.5cm,
   {
     import cetz.draw: *
 
-    // Сетка точек
-    for i in range(-1, 3) {
-      for j in range(0, 3) {
-        circle((i, j), radius: 0.05, fill: black)
-        content((i, j + 0.3), text(size: 8pt, $(#i, #j)$))
-      }
-    }
-
     // Выделяем активные точки схемы для (m,p)
     let m = 1
     let p = 1
-    circle((m, p), radius: 0.1, stroke: red + 2pt)
-    circle((m, p + 1), radius: 0.1, stroke: red + 2pt)
-    circle((m - 1, p), radius: 0.1, stroke: red + 2pt)
+    circle((m, p), radius: 0.05, fill: black)
+    content((m + 0.6, p), text(size: 8pt, $(m, p)$))
+    circle((m, p + 1), radius: 0.05, fill: black)
+    content((m + 0.6, p + 1), text(size: 8pt, $(m, p + 1)$))
+    circle((m - 1, p), radius: 0.05, fill: black)
+    content((m - 1, p + 0.3), text(size: 8pt, $(m - 1, p)$))
 
     // Соединяем линиями
-    line((m, p), (m, p + 1), stroke: red + 1pt)
-    line((m - 1, p), (m, p), stroke: red + 1pt)
-
-    // Подписи осей
-    content((-1.5, 1), text(size: 10pt, $t$))
-    content((1, -0.5), text(size: 10pt, $x$))
-
-    // Стрелки осей
-    line((-1.5, -0.3), (-1.5, 2.3), mark: (end: ">"))
-    line((-1.8, 0), (2.3, 0), mark: (end: ">"))
+    line((m, p), (m, p + 1), stroke: gray)
+    line((m - 1, p), (m, p), stroke: gray)
   },
+)
 )
 
 Для аппроксимации частной производной по пространству применяется левая конечная разность, она имеет первый порядок аппроксимации. Для аппроксимации частной производной по времени применяется правая конечная разность, она имеет первый порядок аппроксимации.
