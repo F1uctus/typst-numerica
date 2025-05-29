@@ -105,3 +105,55 @@ $y = e^{-x} - 1$
 })
 
 Погрешность на правом конце: $|y_("числ")(0) - y_("точн")(0)| = #calc.abs(points.at(-1).at(1) - exact(X1))$
+
+#let N = 10
+#let h = 1.0 / N
+#let x_grid = range(0,N).map(i => i * h)
+
+// Решение двух задач Коши методом конечных разностей
+#let solve_cauchy(y0, dy0) = {
+  let y = (y0,)
+  let y1 = y0 + h * dy0
+  y.push(y1)
+  for n in range(1, N) {
+    let yn = (2 * y.at(-1) - y.at(-2) + h * h * (y.at(-1) - 1)) / (1 + h / 2)
+    y.push(yn)
+  }
+  y
+}
+
+#let y0 = 3
+#let y1 = 6
+#let y_c0 = solve_cauchy(y0, 0) // y'(0)=0
+#let y_c1 = solve_cauchy(y0, 1) // y'(0)=1
+
+// Линейная комбинация для краевой задачи
+#let alpha = (y1 - y_c0.at(-1)) / (y_c1.at(-1) - y_c0.at(-1))
+#let y_sol = range(0,N).map(i => y_c0.at(i) + alpha * (y_c1.at(i) - y_c0.at(i)))
+
+#let exact(x) = (3 - 7 * calc.exp(x - 1) + 4 * calc.exp(x)) / (calc.exp(1) - 1)
+
+$y'' - y' + 1 = 0, quad y(0) = 3, quad y(1) = 6$
+
+=== Численное решение методом конечных разностей
+
+#table(
+  columns: (auto, auto, auto),
+  [*"x"*], [*"y (числ.)"*], [*"y (точн.)"*],
+  ..range(0,N).map(i => [#x_grid.at(i), #y_sol.at(i), #exact(x_grid.at(i))])
+)
+
+#cetz.canvas({
+  plot.plot(
+    size: (PLOT_SCALE * 1.2, PLOT_SCALE),
+    x-label: $x$,
+    y-label: $y$,
+    axis-style: "school-book",
+    {
+      plot.add(range(0,N).map(i => (x_grid.at(i), y_sol.at(i))), mark: "o", style: (stroke: (paint: red, thickness: 0.5mm)), label: "Численное решение")
+      plot.add(x => exact(x), domain: (0, 1), style: (stroke: (paint: green, thickness: 0.5mm)), label: "Аналитическое решение")
+    }
+  )
+})
+
+Погрешность на правом конце: $|y_{"числ"}(1) - y_{"точн"}(1)| = #calc.abs(y_sol.at(-1) - exact(1))$
