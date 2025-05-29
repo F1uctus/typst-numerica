@@ -1,6 +1,6 @@
 # Numerical Methods
 
-> Note: PDFs are available in the [latest workflow run](https://github.com/F1uctus/unn-numerical-methods/actions/runs/15318466526)
+> Note: PDFs are available in the [latest workflow run](https://github.com/F1uctus/unn-numerical-methods/actions/runs/15322135323)
 
 <details open>
 <summary><b>cw01.typ</b></summary>
@@ -96,6 +96,22 @@
 ![Preview](https://github.com/F1uctus/unn-numerical-methods/releases/download/previews/hw11-preview.png)
 
 > [Download PDF](./hw11.pdf)
+</details>
+
+<details open>
+<summary><b>hw12.typ</b></summary>
+
+![Preview](https://github.com/F1uctus/unn-numerical-methods/releases/download/previews/hw12-preview.png)
+
+> [Download PDF](./hw12.pdf)
+</details>
+
+<details open>
+<summary><b>hw13.typ</b></summary>
+
+![Preview](https://github.com/F1uctus/unn-numerical-methods/releases/download/previews/hw13-preview.png)
+
+> [Download PDF](./hw13.pdf)
 </details>
 
 ### lab
