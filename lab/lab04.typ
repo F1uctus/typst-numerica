@@ -11,7 +11,7 @@
   #v(2.5pt)
   #block(spacing: 0pt, line(length: 100%))
 ]
-#set page(paper: "a4", margin: 0.5cm, columns: 2)
+#set page(width: 280mm, height: auto, margin: 0.5cm, columns: 2)
 #set columns(gutter: 0.5cm)
 #set par(justify: true)
 #show heading: it => grid(
@@ -46,14 +46,14 @@
         legend: (stroke: none),
       )
       plot.plot(
-        size: (8, 6),
+        size: (8, 15),
         x-label: $n$,
         y-label: $Delta$,
         axis-style: "school-book",
         x-min: domain.at(0),
         x-max: domain.at(1),
         x-tick-step: 10,
-        x-format: plot.formats.decimal,
+        y-format: plot.formats.decimal.with(digits: 10),
         legend: "south",
         {
           plot.add(f1, domain: domain, label: "RK4", style: (stroke: blue + 0.5mm))
@@ -70,9 +70,6 @@
 
 #let f2(x, y) = y - (2 * x) / y
 #let exact_solution2(x) = calc.sqrt(2 * x + 1 + (calc.pow(n + 4, 2) - 1) * calc.exp(2 * x))
-
-#let f3(x, y) = 2 * y / x + 2 * calc.pow(x, 3)
-#let exact_solution3(x) = calc.pow(x, 2) + calc.pow(x, 4)
 
 #let runge_kutta(f, y0, a, b, steps) = {
   let h = (b - a) / steps
@@ -161,21 +158,123 @@
   return orders
 }
 
-#let err_func(errors) = {
-  return x => {
-    if x <= 5 { errors.at(0) } else if x <= 10 { errors.at(0) + (errors.at(1) - errors.at(0)) * (x - 5) / 5 } else if (
-      x <= 20
-    ) { errors.at(1) + (errors.at(2) - errors.at(1)) * (x - 10) / 10 } else if x <= 40 {
-      errors.at(2) + (errors.at(3) - errors.at(2)) * (x - 20) / 20
-    } else { errors.at(3) + (errors.at(4) - errors.at(3)) * (x - 40) / 40 }
+#let err_func(errors) = x => {
+  if x <= 5 { errors.at(0) } else if x <= 10 { errors.at(0) + (errors.at(1) - errors.at(0)) * (x - 5) / 5 } else if (
+    x <= 20
+  ) { errors.at(1) + (errors.at(2) - errors.at(1)) * (x - 10) / 10 } else if x <= 40 {
+    errors.at(2) + (errors.at(3) - errors.at(2)) * (x - 20) / 20
+  } else { errors.at(3) + (errors.at(4) - errors.at(3)) * (x - 40) / 40 }
+}
+
+// Методы для систем ДУ (для решения ДУ 2-го порядка)
+#let runge_kutta_system(f, y0, a, b, steps) = {
+  let h = (b - a) / steps
+  let x = a
+  let y = y0  // y теперь вектор
+  let history = ((x, y),)
+  
+  for i in range(0, steps) {
+    // k1 = h * f(x, y)
+    let k1 = f(x, y).map(v => h * v)
+    
+    // k2 = h * f(x + h/2, y + k1/2)
+    let y_temp = y.enumerate().map(((i, yi)) => yi + k1.at(i) / 2)
+    let k2 = f(x + h / 2, y_temp).map(v => h * v)
+    
+    // k3 = h * f(x + h/2, y + k2/2)
+    y_temp = y.enumerate().map(((i, yi)) => yi + k2.at(i) / 2)
+    let k3 = f(x + h / 2, y_temp).map(v => h * v)
+    
+    // k4 = h * f(x + h, y + k3)
+    y_temp = y.enumerate().map(((i, yi)) => yi + k3.at(i))
+    let k4 = f(x + h, y_temp).map(v => h * v)
+    
+    // y = y + (k1 + 2*k2 + 2*k3 + k4) / 6
+    y = y.enumerate().map(((i, yi)) => yi + (k1.at(i) + 2 * k2.at(i) + 2 * k3.at(i) + k4.at(i)) / 6)
+    x += h
+    history.push((x, y))
   }
+  return (y, history)
+}
+
+#let adams_bashforth_system(f, y0, a, b, steps) = {
+  if steps < 4 { return ((), ()) }
+  let h = (b - a) / steps
+  let x = (a,)
+  let y = (y0,)  // массив векторов
+  let history = ((a, y0),)
+  
+  // Первые 4 точки методом Рунге-Кутты
+  for i in range(0, 3) {
+    let yi = y.at(i)
+    let xi = x.at(i)
+    
+    let k1 = f(xi, yi).map(v => h * v)
+    let y_temp = yi.enumerate().map(((j, yj)) => yj + k1.at(j) / 2)
+    let k2 = f(xi + h / 2, y_temp).map(v => h * v)
+    
+    y_temp = yi.enumerate().map(((j, yj)) => yj + k2.at(j) / 2)
+    let k3 = f(xi + h / 2, y_temp).map(v => h * v)
+    
+    y_temp = yi.enumerate().map(((j, yj)) => yj + k3.at(j))
+    let k4 = f(xi + h, y_temp).map(v => h * v)
+    
+    let next_y = yi.enumerate().map(((j, yj)) => yj + (k1.at(j) + 2 * k2.at(j) + 2 * k3.at(j) + k4.at(j)) / 6)
+    let next_x = xi + h
+    
+    y.push(next_y)
+    x.push(next_x)
+    history.push((next_x, next_y))
+  }
+  
+  // Остальные точки методом Адамса-Бошфорта
+  for i in range(3, steps) {
+    let f_n = f(x.at(i), y.at(i))
+    let f_n1 = f(x.at(i - 1), y.at(i - 1))
+    let f_n2 = f(x.at(i - 2), y.at(i - 2))
+    let f_n3 = f(x.at(i - 3), y.at(i - 3))
+    
+    let next_y = y.at(i).enumerate().map(((j, yj)) => {
+      yj + h * (55 * f_n.at(j) - 59 * f_n1.at(j) + 37 * f_n2.at(j) - 9 * f_n3.at(j)) / 24
+    })
+    let next_x = x.at(i) + h
+    
+    y.push(next_y)
+    x.push(next_x)
+    history.push((next_x, next_y))
+  }
+  
+  return (y.at(steps), history)
+}
+
+// Функция для подбора количества шагов для заданной точности
+#let find_steps_for_tolerance(f, exact_solution, a, b, y0, tolerance, method) = {
+  let steps = 5
+  let max_steps = 10000
+  let error = 1.0
+  
+  while error > tolerance and steps < max_steps {
+    let (y_num, _) = if method == "RK4" {
+      runge_kutta(f, y0, a, b, steps)
+    } else {
+      adams_bashforth(f, y0, a, b, steps)
+    }
+    let y_exact = exact_solution(b)
+    error = calc.abs(y_num - y_exact)
+    if error > tolerance {
+      steps = calc.round(steps * 1.5)
+      steps = int(steps)  // Преобразуем в целое число
+    }
+  }
+  
+  return (steps, error)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 
-=== Задание 1
+=== Задание 1 (Часть 1)
 
 #let a = 0.0
 #let b = 1.0
@@ -219,14 +318,14 @@ $ y(x) = x + 1 + #(n + 3) e^x $
 
 #colbreak()
 
-=== Задание 2
+=== Задание 2 (Часть 1)
 
 #let a = 0.0
 #let b = 1.0
 #let y0 = n + 4
 #let (results, n_values, errors_rk, errors_ab) = compute_errors(f2, exact_solution2, a, b, y0)
 
-$ y' = y - 2x/y, quad y(0) = #(n + 4) $
+$ y' = y - 2 x slash y, quad y(0) = #(n + 4) $
 
 Аналитическое решение:
 $ y(x) = sqrt(2x + 1 + (#(calc.pow(n + 4, 2) - 1) e^(2x))) $
@@ -249,40 +348,9 @@ $ y(x) = sqrt(2x + 1 + (#(calc.pow(n + 4, 2) - 1) e^(2x))) $
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-#pagebreak()
+#pagebreak(weak: true)
 
-=== Задание 3
-
-#let a = 1.0
-#let b = 2.0
-#let y0 = 2.0
-#let (results, n_values, errors_rk, errors_ab) = compute_errors(f3, exact_solution3, a, b, y0)
-
-$ y' = 2y / x + 2x^3, quad y(1) = 2 $
-
-Аналитическое решение: $y(x) = x^2 + x^4$
-
-#show-table(
-  results,
-  ([n], [RK4], [AB4], [Точное], [Погр. RK4], [Погр. AB4]),
-)
-
-#let orders_rk = compute_convergence_order(errors_rk)
-#let orders_ab = compute_convergence_order(errors_ab)
-
-Порядок сходимости RK4: #(orders_rk.map(str).join(", ")) \
-
-Порядок сходимости AB4: #(orders_ab.map(str).join(", "))
-
-#show-plot((5, 80), err_func(errors_ab), err_func(errors_rk), "Погрешность")
-
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-#colbreak()
-
-=== Часть 2. Анализ результатов
+=== Анализ результатов (Часть 2\*)
 
 *Порядок методов*
 
@@ -297,6 +365,115 @@ $ y' = 2y / x + 2x^3, quad y(1) = 2 $
 
 Из полученных результатов видно, что метод Рунге-Кутты 4-го порядка обеспечивает более высокую точность, чем метод Адамса-Бошфорта 4-го порядка при одинаковом числе шагов. Это связано с тем, что метод Адамса-Бошфорта является многошаговым методом, и погрешность начальных приближений влияет на все последующие вычисления.
 
-*Выбор числа шагов для заданной точности*
+*Автоматический подбор шагов*
 
-Для достижения точности $10^{-6}$ для первых двух задач достаточно использовать метод Рунге-Кутты с числом шагов $n = 20$. Для метода Адамса-Бошфорта требуется примерно $n = 40$ шагов для достижения аналогичной точности.
+#let tolerance = 1e-6
+#let a = 0.0
+#let b = 1.0
+#let y0 = n + 4
+
+Подбор количества шагов для достижения точности $#tolerance$:
+
+*Задача 1:* $y' = y - x$
+
+#let (steps_rk1, error_rk1) = find_steps_for_tolerance(f1, exact_solution1, a, b, y0, tolerance, "RK4")
+#let (steps_ab1, error_ab1) = find_steps_for_tolerance(f1, exact_solution1, a, b, y0, tolerance, "AB4")
+
+- Метод Рунге-Кутты: #steps_rk1 шагов (погрешность: #calc.round(error_rk1, digits: 10))
+- Метод Адамса-Бошфорта: #steps_ab1 шагов (погрешность: #calc.round(error_ab1, digits: 10))
+
+*Задача 2:* $y' = y - 2x/y$
+
+#let (steps_rk2, error_rk2) = find_steps_for_tolerance(f2, exact_solution2, a, b, y0, tolerance, "RK4")
+#let (steps_ab2, error_ab2) = find_steps_for_tolerance(f2, exact_solution2, a, b, y0, tolerance, "AB4")
+
+- Метод Рунге-Кутты: #steps_rk2 шагов (погрешность: #calc.round(error_rk2, digits: 10))
+- Метод Адамса-Бошфорта: #steps_ab2 шагов (погрешность: #calc.round(error_ab2, digits: 10))
+
+*Сравнение трудоемкости:*
+
+Для задачи 1:
+- Рунге-Кутта: #(steps_rk1 * 4) вычислений функции
+- Адамс-Бошфорт: #(3 * 4 + (steps_ab1 - 3) * 1) вычислений функции
+
+Для задачи 2:
+- Рунге-Кутта: #(steps_rk2 * 4) вычислений функции
+- Адамс-Бошфорт: #(3 * 4 + (steps_ab2 - 3) * 1) вычислений функции
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+#colbreak(weak: true)
+
+=== Задание 3 (Часть 3\*)
+
+// Новое ДУ 2-го порядка: y'' - y = -2, x in [0, 1]
+// Аналитическое решение: y(x) = 2 + exp(-x)
+// Начальные условия: y(0) = 3, y'(0) = -1
+// Преобразуем в систему ДУ 1-го порядка:
+// y1' = y2
+// y2' = y1 - 2
+
+#let f_system(x, y) = (
+  y.at(1),   // y1' = y2
+  y.at(0) - 2  // y2' = y1 - 2
+)
+
+#let exact_solution_system(x) = 2 + calc.exp(-x)
+#let exact_derivative_system(x) = -calc.exp(-x)
+
+#let compute_errors_system(f, exact_solution, exact_derivative, a, b, y0) = {
+  let n_values = (5, 10, 20, 40, 80)
+  let errors_rk = ()
+  let errors_ab = ()
+  let results = ()
+  
+  for steps in n_values {
+    let (y_rk, _) = runge_kutta_system(f, y0, a, b, steps)
+    let (y_ab, _) = adams_bashforth_system(f, y0, a, b, steps)
+    
+    let y_exact = exact_solution(b)
+    let y_exact_deriv = exact_derivative(b)
+    
+    let error_rk = calc.abs(y_rk.at(0) - y_exact)
+    let error_ab = calc.abs(y_ab.at(0) - y_exact)
+    
+    errors_rk.push(error_rk)
+    errors_ab.push(error_ab)
+    
+    results.push((
+      [#steps],
+      [#calc.round(y_rk.at(0), digits: PREC)],
+      [#calc.round(y_ab.at(0), digits: PREC)],
+      [#calc.round(y_exact, digits: PREC)],
+      [#calc.round(error_rk, digits: PREC)],
+      [#calc.round(error_ab, digits: PREC)],
+    ))
+  }
+  
+  return (results, n_values, errors_rk, errors_ab)
+}
+
+#let a = 0.0
+#let b = 1.0
+#let y0 = (3.0, -1.0)  // начальные условия: y(0) = 3, y'(0) = -1
+#let (results, n_values, errors_rk, errors_ab) = compute_errors_system(f_system, exact_solution_system, exact_derivative_system, a, b, y0)
+
+$ y'' - y = -2, quad y(0) = 3, quad y'(0) = -1 $
+
+Аналитическое решение: $y(x) = 2 + e^{-x}$
+
+#show-table(
+  results,
+  ([n], [RK4], [AB4], [Точное], [Погр. RK4], [Погр. AB4]),
+)
+
+#let orders_rk = compute_convergence_order(errors_rk)
+#let orders_ab = compute_convergence_order(errors_ab)
+
+Порядок сходимости RK4: #(orders_rk.map(str).join(", ")) \
+
+Порядок сходимости AB4: #(orders_ab.map(str).join(", "))
+
+#show-plot((5, 80), err_func(errors_ab), err_func(errors_rk), "Погрешность")
