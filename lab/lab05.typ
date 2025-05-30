@@ -7,9 +7,11 @@
 
 #let PLOT_SCALE = 8
 #set page(
-  paper: "a4",
+  width: 210mm, height: auto,
   margin: (top: 3em, rest: 1cm),
 )
+#set par(justify: true)
+#show table.cell.where(y: 0): strong
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,33 +80,50 @@
 
 #let (z_sol, points) = boundary_shooting(Y0, Y1, X0, X1, H, 0.0, 2.0)
 
-$y'' - y' = 1, quad y(-1) = e - 1, quad y(0) = 0$
+Рассмотрим краевую задачу для линейного ОДУ 2-го порядка:
+
+$ y'' - y' = 1, quad y(-1) = e - 1, quad y(0) = 0 $
 
 Аналитическое решение:
-$y = e^{-x} - 1$
+$y = e^(-x) - 1$.
 
-=== Численное решение задачи методом стрельбы
+Вместо этой задачи будем решать две задачи Коши с начальными условиями
+$ y(0) = e - 1, quad y'(0) = 0
+quad "и" quad
+y(0) = e - 1, quad y'(0) = 1. $
 
-#table(
-  columns: (auto, auto, auto),
-  [*"x"*], [*"y (числ.)"*], [*"y (точн.)"*],
-  ..points.map(((x, y)) => [#x, #y, #exact(x)])
-)
+Для численного решения задачи Коши методом конечных разностей
+область изменения переменной $x$ разобьём на $N = 10$ отрезков
+с шагом $h = 1 slash N$, полагая $x_n = x_0 + n h, n = overline(0\,N), x_0 = 0$,
+значения искомой функции в узлах сетки обозначим $y_0, y_1, ... , y_N$.
 
-#cetz.canvas({
-  plot.plot(
-    size: (PLOT_SCALE * 1.2, PLOT_SCALE),
-    x-label: $x$,
-    y-label: $y$,
-    axis-style: "school-book",
-    {
-      plot.add(points, mark: "o", style: (stroke: (paint: red, thickness: 0.5mm)), label: "Численное решение")
-      plot.add(x => exact(x), domain: (X0, X1), style: (stroke: (paint: green, thickness: 0.5mm)), label: "Аналитическое решение")
-    },
-  )
-})
+Составим разностную схему для уравнения в узлах сетки $x_1, x_N$,
+используя центральные разности второго порядка аппроксимации:
+$ (y_(n+1) - 2y_n + y_(n-1)) / h^2 - (y_(n+1) - y_(n-1)) / (2h) = 1 $
 
-Погрешность на правом конце: $|y_("числ")(0) - y_("точн")(0)| = #calc.abs(points.at(-1).at(1) - exact(X1))$
+Приведём подобные слагаемые:
+$ y_(n+1) (1 / h^2 - 1 / (2h)) + y_n (-2 / h^2) + y_(n-1) (1 / h^2 + 1 / (2h)) = 1
+, n = overline(1\,N). $
+
+Для второго начального условия:
+$(y_1 - y_0) slash h = 0$ или $(y_1 - y_0) slash h = 1$.
+
+Разностная схема первой задачи Коши:
+$ y_(n+1) (1/h^2 - 1/(2h)) + y_n (-2/h^2) + y_(n-1) (1/h^2 + 1/(2h)) = 1
+, n = overline(1\,N).
+\ y_0 = e - 1
+, quad y_1 - y_0 = 0. $
+
+Разностная схема второй задачи Коши:
+$ y_(n+1) (1/h^2 - 1/(2h)) + y_n (-2/h^2) + y_(n-1) (1/h^2 + 1/(2h)) = 1
+, n = overline(1\,N).
+\ y_0 = e - 1
+, quad y_1 - y_0 = 1. $
+
+Решаем обе задачи Коши по полученным рекуррентным соотношениям.
+
+В таблице приведены результаты расчётов с пятью знаками после запятой
+и абсолютные погрешности. На рисунке приведены графики полученных решений.
 
 #let N = 10
 #let h = 1.0 / N
@@ -133,14 +152,11 @@ $y = e^{-x} - 1$
 
 #let exact(x) = (3 - 7 * calc.exp(x - 1) + 4 * calc.exp(x)) / (calc.exp(1) - 1)
 
-$y'' - y' + 1 = 0, quad y(0) = 3, quad y(1) = 6$
-
-=== Численное решение методом конечных разностей
-
 #table(
-  columns: (auto, auto, auto),
-  [*"x"*], [*"y (числ.)"*], [*"y (точн.)"*],
-  ..range(0,N).map(i => [#x_grid.at(i), #y_sol.at(i), #exact(x_grid.at(i))])
+  columns: (auto, auto, 1fr, 1fr, 1fr, 1fr, 1fr),
+  align: center+horizon,
+  table.header[$i$][$x$][$y^*$][$y_(**)$][$y$][Точное решение][$Delta$],
+  ..points.enumerate().map(((i, (x, y))) => (i, x, exact(x), exact(x), y, exact(x), calc.abs(y - exact(x)))).flatten().map(x => $#calc.round(x, digits: 13)$)
 )
 
 #cetz.canvas({
@@ -150,10 +166,10 @@ $y'' - y' + 1 = 0, quad y(0) = 3, quad y(1) = 6$
     y-label: $y$,
     axis-style: "school-book",
     {
-      plot.add(range(0,N).map(i => (x_grid.at(i), y_sol.at(i))), mark: "o", style: (stroke: (paint: red, thickness: 0.5mm)), label: "Численное решение")
-      plot.add(x => exact(x), domain: (0, 1), style: (stroke: (paint: green, thickness: 0.5mm)), label: "Аналитическое решение")
-    }
+      plot.add(points, mark: "o", style: (stroke: (paint: red, thickness: 0.5mm)), label: "Численное решение")
+      plot.add(x => exact(x), domain: (X0, X1), style: (stroke: (paint: green, thickness: 0.5mm)), label: "Аналитическое решение")
+    },
   )
 })
 
-Погрешность на правом конце: $|y_{"числ"}(1) - y_{"точн"}(1)| = #calc.abs(y_sol.at(-1) - exact(1))$
+Погрешность на правом конце: $|y_("числ")(0) - y_("точн")(0)| = #calc.abs(points.at(-1).at(1) - exact(X1))$
