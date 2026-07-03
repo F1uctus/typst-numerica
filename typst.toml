@@ -1,0 +1,21 @@
+[package]
+name = "numerica"
+version = "0.1.0"
+entrypoint = "src/lib.typ"
+authors = ["Ilya I. Nikitin <ilya.i.nikitin@proton.me>"]
+license = "MIT"
+description = "Homoiconic expression core (evaluate / render / step-by-step reduce / differentiate a single expression tree) and a numerical-methods layer that produces fully worked solutions."
+repository = "https://github.com/F1uctus/unn-numerical-methods"
+categories = ["scripting", "utility"]
+disciplines = ["mathematics"]
+keywords = [
+  "numerical methods",
+  "step-by-step",
+  "expression tree",
+  "computer algebra",
+  "homoiconic",
+  "jacobi",
+  "gauss-seidel",
+  "newton",
+]
+exclude = ["worksheets", "tests", "docs", "packages", "sources", "sandbox"]

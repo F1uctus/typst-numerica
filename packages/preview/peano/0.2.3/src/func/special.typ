@@ -1,0 +1,48 @@
+// Copyright (C) 2026 Ilya I. Nikitin <ilya.i.nikitin@proton.me>
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+/// Special mathematic functions.
+
+// This is a program-generated file. Do not edit it directly.
+#import "../_impl/func/special.typ": (
+  gamma,
+  digamma,
+  psi,
+  erf,
+  erfc,
+  erfi,
+  zeta,
+  beta,
+  gammaln,
+  gammainc,
+  airy-ai,
+  airy-bi,
+  lambert-w,
+  euler-gamma,
+  bessel-j,
+  bessel-y,
+  bessel-j0,
+  bessel-j1,
+  bessel-i0,
+  bessel-i1,
+  bessel-k0,
+  bessel-k1,
+  fresnel-s,
+  fresnel-c,
+  fresnel,
+  elliptic-k,
+  elliptic-e,
+  elliptic-f,
+  elliptic-e-inc,
+  jacobi-sn,
+  jacobi-cn,
+  jacobi-dn,
+  elliptic-j,
+  kelvin-ber,
+  kelvin-bei,
+  kelvin-ker,
+  kelvin-kei,
+  hyp-2f1,
+  hyp-1f1,
+  hyp-0f1,
+)

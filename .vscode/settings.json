@@ -1,0 +1,8 @@
+{
+  "tinymist.rootPath": "/home/f1uctus/Dev/_papers/unn-numerical-methods",
+  "tinymist.typstExtraArgs": [
+    "--package-path",
+    "/home/f1uctus/Dev/_papers/unn-numerical-methods/packages"
+  ],
+  "tinymist.formatterProseWrap": true
+}

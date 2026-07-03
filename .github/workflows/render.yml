@@ -24,29 +24,33 @@ jobs:
       - name: Cache Typst
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.cache/typst
-            typst/packages
-          key: ${{ runner.os }}-typst-${{ hashFiles('typst/packages/**') }}
+          path: ~/.cache/typst
+          key: ${{ runner.os }}-typst-${{ hashFiles('packages/**') }}
           restore-keys: |
             ${{ runner.os }}-typst-
 
       - name: Install Typst
         run: |
-          curl -L https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz | tar -xJf -
+          curl -L https://github.com/typst/typst/releases/download/v0.15.0/typst-x86_64-unknown-linux-musl.tar.xz | tar -xJf -
           sudo mv typst-x86_64-unknown-linux-musl/typst /usr/local/bin/
+
+      - name: Run library tests
+        run: |
+          find tests -name "*.typ" -type f | while read -r file; do
+            typst compile "$file" - --format pdf --root . --package-path packages > /dev/null
+          done
 
       - name: Compile Typst documents
         run: |
-          find . -name "*.typ" -type f | while read -r file; do
+          find worksheets -name "*.typ" -type f | while read -r file; do
             # Get directory of the file
             dir=$(dirname "$file")
             # Get filename without extension
             base=$(basename "$file" .typ)
             # Compile PDF with minimal settings for faster processing
-            typst compile "$file" "$dir/$base.pdf" --jobs 1
-            # Generate first page preview with lower quality
-            typst compile "$file" "$dir/$base-preview.png" --format png --pages 1 --ppi 72
+            typst compile "$file" "$dir/$base.pdf" --jobs 1 --root . --package-path packages
+            # First page preview; Typst emits the white page background itself
+            typst compile "$file" "$dir/$base-preview.svg" --format svg --pages 1 --root . --package-path packages
           done
 
       - name: Upload PDFs
@@ -59,48 +63,52 @@ jobs:
       - name: Prepare previews
         run: |
           mkdir -p previews
-          find . -name "*-preview.png" -type f | while read -r file; do
+          find . -name "*-preview.svg" -type f | while read -r file; do
             name=$(echo "$file" | sed 's|^\./||' | sed 's|/|_|g')
             cp "$file" "previews/$name"
           done
 
-      - name: Delete old Release
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const { owner, repo } = context.repo
-            try {
-              const latestRelease = await github.rest.repos.getLatestRelease({owner, repo});
-              if (latestRelease && latestRelease.data && latestRelease.data.id) {
-                await github.rest.repos.deleteRelease({owner, repo, release_id: latestRelease.data.id});
-                await github.rest.git.deleteRef({owner, repo, ref: `tags/${latestRelease.data.tag_name}`});
-                console.log(`Release and tag ${latestRelease.data.tag_name} have been deleted.`);
-              } else {
-                console.log("No latest release found or failed to retrieve it.");
-              }
-            } catch (error) {
-              console.log("Error:", error.message);
-            }
-
-      - name: Create or update release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: previews
-          name: Latest Previews
-          files: previews/*.png
-          draft: false
-          prerelease: false
+      # Release assets are served as application/octet-stream, which browsers
+      # refuse to render as SVG; raw.githubusercontent.com sets image/svg+xml.
+      - name: Publish previews branch
+        if: github.event_name == 'push'
+        run: |
+          cd previews
+          git init -q -b previews
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add .
+          git commit -qm "Previews for ${{ github.sha }}"
+          git push -qf "https://x-access-token:$GITHUB_TOKEN@github.com/${{ github.repository }}.git" previews
 
       - name: Update README
         run: |
           {
-            echo "# Numerical Methods"
+            echo "# numerica"
+            echo ""
+            echo "A homoiconic expression core + numerical-methods library in Typst:"
+            echo "one expression tree is evaluated (exactly over ℚ via a vendored"
+            echo "[peano](https://github.com/F1uctus/peano_typ) fork, or in floats),"
+            echo "rendered as math, reduced step by step with explanations, and"
+            echo "differentiated symbolically. Worksheets below state a problem as"
+            echo "data and generate the full worked solution."
+            echo ""
+            echo '```typst'
+            echo '#import "../src/lib.typ": *'
+            echo '#let f = from-math($f(x) = x^3 - 3 x^2 + 6 x - 5$)'
+            echo '#show-reduction(f, ctx: (x: 3), lang: "ru")   // full chain to f(3) = 13'
+            echo '#let df = d(f, "x")                           // 3x² − 6x + 6'
+            echo '#newton-history(f, 1, iterations: 5)          // exact ℚ iterations'
+            echo '```'
+            echo ""
+            echo "Build: \`typst compile worksheets/hw01.typ --root . --package-path packages\`"
+            echo ""
+            echo "## Worksheets"
             echo ""
             echo "> Note: PDFs are available in the [latest workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
             echo ""
-            
-            find . -name "*.typ" -type f | sort | while read -r file; do
+
+            find worksheets -name "*.typ" -type f | sort | while read -r file; do
               dir=$(dirname "$file" | sed 's|^\./||')
               
               if [ "$dir" != "." ] && [ "$dir" != "$last_dir" ]; then
@@ -112,13 +120,13 @@ jobs:
               rel_path=$(echo "$file" | sed 's|^\./||')
               base="${file%.typ}"
               pdf="${base}.pdf"
-              preview_name=$(echo "${base}-preview.png" | sed 's|^\./||' | sed 's|/|_|g')
-              
-              if [ -f "${base}-preview.png" ]; then
+              preview_name=$(echo "${base}-preview.svg" | sed 's|^\./||' | sed 's|/|_|g')
+
+              if [ -f "${base}-preview.svg" ]; then
                 echo "<details open>"
                 echo "<summary><b>$rel_path</b></summary>"
                 echo ""
-                echo "![Preview](https://github.com/${{ github.repository }}/releases/download/previews/$preview_name)"
+                echo "![Preview](https://raw.githubusercontent.com/${{ github.repository }}/previews/$preview_name)"
                 echo ""
                 echo "> [Download PDF]($pdf)"
                 echo "</details>"
