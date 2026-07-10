@@ -19,7 +19,7 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 
 ## Worksheets
 
-> Note: PDFs are available in the [latest workflow run](https://github.com/F1uctus/typst-numerica/actions/runs/28634244493)
+> Note: PDFs are available in the [latest workflow run](https://github.com/F1uctus/typst-numerica/actions/runs/29115648036)
 
 ### worksheets
 
