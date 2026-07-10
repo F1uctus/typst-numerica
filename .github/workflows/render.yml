@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [main]
 
+# A newer push supersedes any in-flight run for the same ref; without this,
+# the older run's README push races the new commit and fails as non-fast-forward.
+concurrency:
+  group: render-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   render:
     runs-on: ubuntu-latest
@@ -136,9 +142,15 @@ jobs:
           } > README.md
 
       - name: Commit changes
+        if: github.event_name == 'push'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git fetch origin main
+          if [ "$(git rev-parse origin/main)" != "${{ github.sha }}" ]; then
+            echo "main moved past ${{ github.sha }}; the newer run will refresh the README"
+            exit 0
+          fi
           git add -f README.md
           git commit -m "Update README" || exit 0
-          git push "https://$GITHUB_TOKEN@github.com/${{ github.repository }}.git"
+          git push "https://$GITHUB_TOKEN@github.com/${{ github.repository }}.git" HEAD:main
