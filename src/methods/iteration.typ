@@ -15,7 +15,7 @@
 #import "../render.typ": render, render-num
 #import "../reduce.typ": show-reduction
 #import "../diff.typ": simplify
-#import "../theme.typ": theme
+#import "../theme.typ": theme, themed-axes-grid, themed-plot-base
 
 // --- input normalization ---------------------------------------------------
 
@@ -242,12 +242,10 @@
     center,
     cetz.canvas({
       cetz.draw.set-style(
-        axes: (
-          stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
-          tick: (stroke: theme.plot-stroke + 0.5pt),
-        ),
+        axes: themed-axes-grid,
       )
       plot.plot(
+        plot-style: themed-plot-base,
         name: plot-name,
         size: (size, size),
         x-label: $x_1$,
@@ -265,6 +263,7 @@
             mark: "o",
             mark-size: 0.1,
             style: (stroke: (paint: theme.plot-stroke, dash: "dotted", thickness: 0.2mm)),
+            mark-style: (stroke: none, fill: theme.text),
           )
           for (k, p) in points.enumerate() {
             plot.add-anchor("x" + str(k), p)

@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
-#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-stroke
+#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-line-dashed, themed-line-solid, themed-plot-base, themed-stroke
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -58,7 +58,8 @@
     legend: themed-legend,
   )
   plot(
-    name: "plt",
+    plot-style: themed-plot-base,
+          name: "plt",
     size: (7, 9.5),
     x-grid: true,
     x-label: $x$,
@@ -216,7 +217,7 @@ quad y_(k + 1) = y_k + h f(x_(k + 1/2), y_(k + 1/2)). $
   align(center, plot-comparison(k => {
         for k in range(ITERATIONS) {
       plot.add-anchor("x" + str(k), (xs.at(k), ys.at(k)))}
-    plot.add(yexact.code, domain: (0, h * ITERATIONS))
+    plot.add(yexact.code, domain: (0, h * ITERATIONS), style: themed-stroke("solid"))
     plot.add(
       x.zip(y),
       mark: "o",
@@ -266,7 +267,7 @@ $quad y_(k + 1) = y_k + h/2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))). $
   align(center, plot-comparison(k => {
             for k in range(ITERATIONS) {
       plot.add-anchor("x" + str(k), (xs.at(k), ys.at(k)))}
-    plot.add(yexact.code, domain: (0, h * ITERATIONS))
+    plot.add(yexact.code, domain: (0, h * ITERATIONS), style: themed-stroke("solid"))
     plot.add(
       x.zip(y),
       mark: "o",

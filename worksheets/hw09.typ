@@ -2,7 +2,7 @@
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/physica:0.9.5": *
 #import "@preview/showybox:2.0.4": showybox
-#import "../src/theme.typ": theme
+#import "../src/theme.typ": theme, themed-showybox-body, themed-showybox-frame
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -51,12 +51,8 @@
 ) = context {
   exercises.step()
   showybox(
-    frame: (
-      inset: 4pt,
-      thickness: 0.1pt,
-      border-color: theme.stroke-muted,
-      body-color: theme.bg.transparentize(100%),
-    ),
+    frame: themed-showybox-frame,
+    body-style: themed-showybox-body,
     breakable: true,
     grid(
       columns: (auto, 1fr),

@@ -3,7 +3,7 @@
 #import "@preview/diverential:0.3.0": dvpc
 #import "@preview/physica:0.9.8": dv, pdv, evaluated
 #import "@preview/numty:0.0.5" as nt
-#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-stroke
+#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-line-dashed, themed-line-dotted, themed-line-solid, themed-plot-base, themed-stroke
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -102,6 +102,7 @@ $
           axes: themed-axes-grid,
         )
         plot(
+          plot-style: themed-plot-base,
           name: "p",
           size: (9.5, 3),
           x-grid: true,
@@ -117,19 +118,19 @@ $
             add(
               f.code,
               domain: (0, 2),
-              style: themed-stroke("solid"),
+              style: themed-line-solid,
             )
             add-anchor("f0", (b, (f.code)(b)))
             add(
               d1f.code,
               domain: (0, 2),
-              style: themed-stroke("dashed"),
+              style: themed-line-dashed,
             )
             add-anchor("f1", (a, (d1f.code)(a)))
             add(
               d2f.code,
               domain: (0, 2),
-              style: themed-stroke("dotted"),
+              style: themed-line-dotted,
             )
             add-anchor("f2", (a, (d2f.code)(a)))
           },
@@ -374,20 +375,19 @@ $
   import plot: *
   cetz.draw.set-style(
     axes: (
-      stroke: themed-axes.stroke,
+      ..themed-axes-grid,
       x: (
         tick: (
           label: (anchor: "south-west", offset: -1em),
         ),
-        grid: (stroke: theme.stroke-muted + 0.1mm),
       ),
       y: (
         overshoot: 0.2,
-        grid: (stroke: theme.stroke-muted + 0.1mm),
       ),
     ),
   )
   plot(
+    plot-style: themed-plot-base,
     size: (7, 3),
     x-grid: true,
     x-label: $x$,
@@ -489,7 +489,7 @@ $quad x_k = x_0 + h k,
     ),
   ),
   plot-comparison({
-    plot.add(yexact, domain: (0, h * ITERATIONS))
+    plot.add(yexact, domain: (0, h * ITERATIONS), style: themed-stroke("solid"))
     plot.add(
       x.zip(y),
       mark: "o",
@@ -553,7 +553,7 @@ $thick x_(k + 1 / 2) = x_0 + h k slash 2,
     ),
   ),
   plot-comparison({
-    plot.add(yexact, domain: (0, h * ITERATIONS))
+    plot.add(yexact, domain: (0, h * ITERATIONS), style: themed-stroke("solid"))
     plot.add(
       x.zip(y),
       mark: "o",
@@ -603,7 +603,7 @@ $quad y_(k + 1)
     ),
   ),
   plot-comparison({
-    plot.add(yexact, domain: (0, h * ITERATIONS))
+    plot.add(yexact, domain: (0, h * ITERATIONS), style: themed-stroke("solid"))
     plot.add(
       x.zip(y),
       mark: "o",

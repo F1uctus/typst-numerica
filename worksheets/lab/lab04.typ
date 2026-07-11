@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
-#import "../../src/theme.typ": theme, themed-legend
+#import "../../src/theme.typ": theme, themed-axes-grid, themed-legend, themed-plot-base
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -41,14 +41,12 @@
     center,
     cetz.canvas({
       cetz.draw.set-style(
-        axes: (
-          stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
-          tick: (stroke: theme.plot-stroke + .5pt),
-        ),
+        axes: themed-axes-grid,
         legend: themed-legend,
       )
       plot.plot(
-        size: (8, 15),
+        plot-style: themed-plot-base,
+          size: (8, 15),
         x-label: $n$,
         y-label: $Delta$,
         axis-style: "school-book",

@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/physica:0.9.5": dv
-#import "../../src/theme.typ": theme
+#import "../../src/theme.typ": theme, themed-axes-grid, themed-plot-base, themed-stroke
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -168,12 +168,10 @@
       *#title*
       #cetz.canvas({
         cetz.draw.set-style(
-          axes: (
-            stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
-            tick: (stroke: theme.plot-stroke + .5pt),
-          ),
+          axes: themed-axes-grid,
         )
         plot.plot(
+          plot-style: themed-plot-base,
           name: "method-plot",
           size: scale,
           x-label: x-label,
@@ -182,12 +180,11 @@
           x-format: tick-fmt,
           y-format: tick-fmt,
           {
-            // Рисуем точное решение (если оно есть)
             if exact-fn != none {
               plot.add(
                 exact-fn,
                 domain: (min-x, max-x),
-                style: (stroke: (thickness: 0.1mm)),
+                style: themed-stroke("solid"),
               )
             }
             for (i, points) in points.rev().enumerate() {
@@ -225,12 +222,10 @@
       *#title*
       #cetz.canvas({
         cetz.draw.set-style(
-          axes: (
-            stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
-            tick: (stroke: theme.plot-stroke + .5pt),
-          ),
+          axes: themed-axes-grid,
         )
         plot.plot(
+          plot-style: themed-plot-base,
           size: scale,
           x-label: x-label,
           y-label: $Delta$,

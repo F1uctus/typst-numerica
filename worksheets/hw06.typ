@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/physica:0.9.5": *
-#import "../src/theme.typ": theme
+#import "../src/theme.typ": theme, themed-axes-grid, themed-line-solid, themed-plot-base, themed-stroke
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -56,13 +56,11 @@
 #let plot-comparison(plot-block, y-step: 1) = cetz.canvas({
   import plot: *
   cetz.draw.set-style(
-    axes: (
-      stroke: (dash: "dotted", paint: theme.plot-stroke),
-      tick: (stroke: theme.plot-stroke + .5pt),
-    ),
+    axes: themed-axes-grid,
   )
   plot(
-    size: (7, 3),
+    plot-style: themed-plot-base,
+          size: (7, 3),
     x-grid: true,
     x-label: $x$,
     x-tick-step: h / 2,
@@ -167,7 +165,7 @@ quad y_(k + 1) = y_k + h f(x_k, y_k).$
     align(
       center,
       plot-comparison({
-        plot.add(yexact, domain: (0, h * ITERATIONS))
+        plot.add(yexact, domain: (0, h * ITERATIONS), style: themed-stroke("solid"))
         plot.add(
           x.zip(y),
           mark: "o",
@@ -223,7 +221,7 @@ quad y_(k + 1) = y_k + h f(x_(k + 1 / 2), y_(k + 1 / 2)).$
     align(
       center,
       plot-comparison({
-        plot.add(yexact, domain: (0, h * ITERATIONS))
+        plot.add(yexact, domain: (0, h * ITERATIONS), style: themed-stroke("solid"))
         plot.add(
           x.zip(y),
           mark: "o",
@@ -279,7 +277,7 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
     align(
       center,
       plot-comparison({
-        plot.add(yexact, domain: (0, h * ITERATIONS))
+        plot.add(yexact, domain: (0, h * ITERATIONS), style: themed-stroke("solid"))
         plot.add(
           x.zip(y),
           mark: "o",
@@ -413,7 +411,7 @@ quad y_(k + 1) = y_k + h f(x_k, y_k).$
       center,
       plot-comparison(
         {
-          plot.add(yexact, domain: (0.2, 0.2 + h * ITERATIONS))
+          plot.add(yexact, domain: (0.2, 0.2 + h * ITERATIONS), style: themed-stroke("solid"))
           plot.add(
             x.zip(y),
             mark: "o",
@@ -472,7 +470,7 @@ quad y_(k + 1) = y_k + h f(x_(k + 1 / 2), y_(k + 1 / 2)).$
       center,
       plot-comparison(
         {
-          plot.add(yexact, domain: (x0, x0 + h * ITERATIONS))
+          plot.add(yexact, domain: (x0, x0 + h * ITERATIONS), style: themed-stroke("solid"))
           plot.add(
             x.zip(y),
             mark: "o",
@@ -531,7 +529,7 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
       center,
       plot-comparison(
         {
-          plot.add(yexact, domain: (x0, x0 + h * ITERATIONS))
+          plot.add(yexact, domain: (x0, x0 + h * ITERATIONS), style: themed-stroke("solid"))
           plot.add(
             x.zip(y),
             mark: "o",

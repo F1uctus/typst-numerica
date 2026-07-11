@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
-#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-stroke
+#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-line-dashed, themed-line-dotted, themed-line-solid, themed-plot-base, themed-stroke
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -42,7 +42,8 @@
 }
 
 #let show-newton-plot(
-  plot-name,
+  plot-style: themed-plot-base,
+          plot-name,
   f,
   d1f,
   a,
@@ -63,14 +64,14 @@
       import plot: *
       cetz.draw.set-style(
         axes: (
-          stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.2mm),
-          tick: (stroke: theme.plot-stroke + .5pt),
+          ..themed-axes-grid,
           x: (tick: (label: (offset: x-tick-label-offset))),
           y: (tick: (label: (offset: y-tick-label-offset))),
         ),
       )
       plot(
-        name: plot-name,
+        plot-style: themed-plot-base,
+          name: plot-name,
         size: (8, 8),
         x-label: $x$,
         x-tick-step: 0.1,
@@ -148,7 +149,8 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
             axes: themed-axes-grid,
           )
           plot(
-            name: "p",
+            plot-style: themed-plot-base,
+          name: "p",
             size: (6, 3),
             x-label: $x$,
             y-label: none,
@@ -273,27 +275,26 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
           import plot: *
           cetz.draw.set-style(
             axes: (
-              stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.15mm),
+              ..themed-axes-grid,
               x: (
                 overshoot: 0.5,
                 tick: (
                   stroke: none,
                   label: (offset: 0.04, anchor: "south"),
                 ),
-                grid: (stroke: theme.stroke-muted + 0.1mm),
-              ),
+                ),
               y: (
                 overshoot: 0.05,
                 tick: (
                   stroke: none,
                   label: (offset: 0.03, anchor: "south-east"),
                 ),
-                grid: (stroke: theme.stroke-muted + 0.1mm),
-              ),
+                ),
             ),
           )
           plot(
-            name: "p",
+            plot-style: themed-plot-base,
+          name: "p",
             size: (6, 3),
             x-label: $x$,
             y-label: none,
@@ -420,27 +421,26 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
           import plot: *
           cetz.draw.set-style(
             axes: (
-              stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.15mm),
+              ..themed-axes-grid,
               x: (
                 overshoot: 1,
                 tick: (
                   stroke: none,
                   label: (offset: -0.2, anchor: "south-east"),
                 ),
-                grid: (stroke: theme.stroke-muted + 0.1mm),
-              ),
+                ),
               y: (
                 overshoot: 0.1,
                 tick: (
                   stroke: none,
                   label: (offset: -0.7, anchor: "east"),
                 ),
-                grid: (stroke: theme.stroke-muted + 0.1mm),
-              ),
+                ),
             ),
           )
           plot(
-            name: "p",
+            plot-style: themed-plot-base,
+          name: "p",
             size: (6, 3),
             x-label: $x$,
             y-label: none,
@@ -596,27 +596,26 @@ $
         import plot: *
         cetz.draw.set-style(
           axes: (
-            stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.15mm),
+              ..themed-axes-grid,
             x: (
               overshoot: 0.8,
               tick: (
                 stroke: none,
                 label: (offset: 0, anchor: "south-east"),
               ),
-              grid: (stroke: theme.stroke-muted + 0.1mm),
-            ),
+              ),
             y: (
               overshoot: 0.1,
               tick: (
                 stroke: none,
                 label: (offset: 0, anchor: "east"),
               ),
-              grid: (stroke: theme.stroke-muted + 0.1mm),
-            ),
+              ),
             shared-zero: $$,
           ),
         )
         plot(
+          plot-style: themed-plot-base,
           name: "p",
           size: (6, 6),
           x-label: $x$,
@@ -700,13 +699,11 @@ $
       import cetz.draw: *
       import plot: *
       set-style(
-        axes: (
-          stroke: (dash: "dotted", paint: theme.plot-stroke),
-          tick: (stroke: theme.plot-stroke + .5pt),
-        ),
+        axes: themed-axes-grid,
       )
       plot(
-        name: "cycle",
+        plot-style: themed-plot-base,
+          name: "cycle",
         size: (8, 7),
         x-grid: true,
         x-label: $x$,

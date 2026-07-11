@@ -243,10 +243,10 @@ $
         y-max: 2,
         y-format: tick-fmt,
         {
-          spectrum-circle(1, (fill: none, stroke: 0.2pt))
+          spectrum-circle(1, (fill: none, stroke: theme.stroke + 0.2pt))
           spectrum-circle(1, (fill: light-green, stroke: none), inverse: true)
-          spectrum-circle(0.1, (fill: none, stroke: (dash: "dashed")))
-          spectrum-circle(2.5, (fill: none, stroke: (dash: "dashed")))
+          spectrum-circle(0.1, (fill: none, stroke: (paint: theme.stroke, dash: "dashed")))
+          spectrum-circle(2.5, (fill: none, stroke: (paint: theme.stroke, dash: "dashed")))
         },
       )
       circle("spec.c01", radius: 0.03, fill: theme.stroke, stroke: none)
@@ -447,10 +447,10 @@ $
         y-max: 2,
         y-format: tick-fmt,
         {
-          spectrum-circle(1, (fill: none, stroke: 0.2pt))
-          spectrum-circle(1, (fill: light-green, stroke: 0.2pt), inverse: true)
-          spectrum-circle(0.7, (fill: none, stroke: (dash: "dashed")))
-          spectrum-circle(2.5, (fill: none, stroke: (dash: "dashed")))
+          spectrum-circle(1, (fill: none, stroke: theme.stroke + 0.2pt))
+          spectrum-circle(1, (fill: light-green, stroke: theme.stroke + 0.2pt), inverse: true)
+          spectrum-circle(0.7, (fill: none, stroke: (paint: theme.stroke, dash: "dashed")))
+          spectrum-circle(2.5, (fill: none, stroke: (paint: theme.stroke, dash: "dashed")))
         },
       )
       circle("spec.c07", radius: 0.03, fill: theme.stroke)
@@ -657,11 +657,11 @@ $
         y-max: 1,
         y-format: tick-fmt,
         {
-          spectrum-circle(1, (fill: none, stroke: 0.2pt))
+          spectrum-circle(1, (fill: none, stroke: theme.stroke + 0.2pt))
           let r = 1
           add-fill-between(
             domain: (1, 1 + 2 * r),
-            style: (fill: red.transparentize(80%), stroke: (dash: "dashed")),
+            style: (fill: red.transparentize(80%), stroke: (paint: theme.stroke, dash: "dashed")),
             x => calc.sqrt(calc.abs(r * r - calc.pow(x - (1 + r), 2))),
             x => -calc.sqrt(calc.abs(r * r - calc.pow(x - (1 + r), 2))),
           )

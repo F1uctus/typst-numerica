@@ -29,12 +29,39 @@
 #let themed-axes-grid = (
   stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.15mm),
   tick: (stroke: theme.plot-stroke + .5pt),
-  x: (
-    grid: (stroke: theme.stroke-muted + 0.1mm),
+  grid: (
+    stroke: (paint: theme.stroke-muted.darken(30%), thickness: 0.25pt),
   ),
-  y: (
-    grid: (stroke: theme.stroke-muted + 0.1mm),
+  minor-grid: (
+    stroke: (paint: theme.stroke-muted.darken(40%), thickness: 0.15pt),
   ),
 )
 
-#let themed-stroke(dash) = (stroke: (paint: theme.stroke, dash: dash))
+#let themed-plot-base = (
+  stroke: (paint: theme.stroke, thickness: 0.5pt),
+)
+
+#let themed-line-solid = (stroke: (paint: theme.stroke, thickness: 0.5pt))
+#let themed-line-dashed = (stroke: (paint: theme.stroke, thickness: 0.5pt, dash: "dashed"))
+#let themed-line-dotted = (stroke: (paint: theme.stroke, thickness: 0.5pt, dash: "dotted"))
+
+#let themed-stroke(dash) = if dash == "solid" {
+  themed-line-solid
+} else if dash == "dashed" {
+  themed-line-dashed
+} else if dash == "dotted" {
+  themed-line-dotted
+} else {
+  (stroke: (dash: dash))
+}
+
+#let themed-showybox-frame = (
+  inset: 4pt,
+  thickness: 0.1pt,
+  border-color: theme.stroke-muted,
+  body-color: theme.bg,
+)
+
+#let themed-showybox-body = (
+  color: theme.text,
+)

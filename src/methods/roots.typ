@@ -12,7 +12,7 @@
 #import "../eval.typ": evaluate
 #import "../render.typ": render, render-num
 #import "../diff.typ": d
-#import "../theme.typ": theme, themed-axes, themed-axes-grid, themed-stroke
+#import "../theme.typ": theme, themed-axes, themed-axes-grid, themed-line-dashed, themed-line-dotted, themed-line-solid, themed-plot-base, themed-stroke
 
 // --- iteration ----------------------------------------------------------------
 
@@ -190,6 +190,7 @@
       axes: themed-axes-grid,
     )
     plot(
+      plot-style: themed-plot-base,
       name: "p",
       size: plot-size,
       x-grid: true,
@@ -201,11 +202,11 @@
       x-format: tick-fmt,
       y-format: tick-fmt,
       {
-        add(v => at(f, v), domain: (a, b), style: themed-stroke("solid"))
+        add(v => at(f, v), domain: (a, b), style: themed-line-solid)
         add-anchor("f0", (b, fb))
-        add(v => at(df, v), domain: (a, b), style: themed-stroke("dashed"))
+        add(v => at(df, v), domain: (a, b), style: themed-line-dashed)
         add-anchor("f1", (a, dfa))
-        add(v => at(d2f, v), domain: (a, b), style: themed-stroke("dotted"))
+        add(v => at(d2f, v), domain: (a, b), style: themed-line-dotted)
         add-anchor("f2", (a, d2fa))
       },
     )

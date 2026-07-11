@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/diverential:0.2.0": *
-#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-stroke
+#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-line-dashed, themed-line-solid, themed-plot-base, themed-stroke
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -66,10 +66,7 @@
 #let plot-comparison(body) = cetz.canvas({
   import plot: *
   cetz.draw.set-style(
-    axes: (
-      stroke: (dash: "dotted", paint: theme.plot-stroke),
-      tick: (stroke: theme.plot-stroke + .5pt),
-    ),
+    axes: themed-axes-grid,
     legend: themed-legend,
   )
   body
@@ -165,14 +162,12 @@ $quad x_k = x_0 + h k,
     cetz.canvas({
       import plot: *
       cetz.draw.set-style(
-        axes: (
-          stroke: (dash: "dotted", paint: theme.plot-stroke),
-          tick: (stroke: theme.plot-stroke + .5pt),
-        ),
+        axes: themed-axes-grid,
         legend: themed-legend,
       )
       plot(
-        name: "plt",
+        plot-style: themed-plot-base,
+          name: "plt",
         size: (15, 13),
         x-grid: true,
         x-label: $x$,
@@ -213,7 +208,8 @@ $quad x_k = x_0 + h k,
   plot-comparison({
     import plot: *
     plot(
-      name: "plt1",
+      plot-style: themed-plot-base,
+          name: "plt1",
       size: (17, 15),
       x-grid: true,
       x-tick-step: h,
@@ -318,7 +314,8 @@ $quad x_(k + 1 / 2) = x_0 + h / 2 k,
       ..range(ITERATIONS).map(k => $y_#(h * (k + 1/2))$),
     ).map(strong)
     plot(
-      name: "plt2",
+      plot-style: themed-plot-base,
+          name: "plt2",
       size: (17, 15),
       x-grid: true,
       x-tick-step: h / 2,
@@ -431,7 +428,8 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
   plot-comparison({
     import plot: *
     plot(
-      name: "plt",
+      plot-style: themed-plot-base,
+          name: "plt",
       size: (17, 15),
       x-grid: true,
       x-tick-step: h / 2,

@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
-#import "../../src/theme.typ": theme, themed-axes-grid, themed-legend
+#import "../../src/theme.typ": theme, themed-axes-grid, themed-legend, themed-line-dashed, themed-line-solid, themed-plot-base, themed-stroke
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -194,7 +194,8 @@ $ mu approx #calc.round(mnum, digits: 15)$.
       legend: themed-legend,
     )
     plot.plot(
-      size: (PLOT_SCALE * 2, PLOT_SCALE * 2),
+      plot-style: themed-plot-base,
+          size: (PLOT_SCALE * 2, PLOT_SCALE * 2),
       x-label: $x$,
       x-grid: true,
       y-label: $y$,
@@ -202,12 +203,13 @@ $ mu approx #calc.round(mnum, digits: 15)$.
       axis-style: "school-book",
       legend: "north",
       {
-        plot.add(xs.zip(y1s), domain: (a, b), label: $y^*$)
-        plot.add(xs.zip(y2s), domain: (a, b), label: $y^(**)$)
+        plot.add(xs.zip(y1s), domain: (a, b), label: $y^*$, style: themed-stroke("solid"))
+        plot.add(xs.zip(y2s), domain: (a, b), label: $y^(**)$, style: themed-stroke("dashed"))
         plot.add(
           xs.zip(numerical_points),
           mark: "o",
           style: (stroke: none),
+          mark-style: (stroke: theme.stroke, fill: theme.stroke),
           label: "Численное решение",
         )
         plot.add(

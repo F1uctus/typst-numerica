@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/numty:0.0.5" as nt
-#import "../../src/theme.typ": theme, themed-legend
+#import "../../src/theme.typ": theme, themed-axes-grid, themed-legend, themed-line-dashed, themed-line-solid, themed-plot-base, themed-stroke
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -185,14 +185,12 @@
   let b = calc.max(..points-data.map(((pts, _, _)) => pts).flatten()) + 0.02
   cetz.canvas({
     cetz.draw.set-style(
-      axes: (
-        stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
-        tick: (stroke: theme.plot-stroke + .5pt),
-      ),
+      axes: themed-axes-grid,
       legend: themed-legend,
     )
     plot.plot(
-      size: (PLOT_SCALE, PLOT_SCALE),
+      plot-style: themed-plot-base,
+          size: (PLOT_SCALE, PLOT_SCALE),
       x-label: $x$,
       y-label: $f(x)$,
       axis-style: "school-book",
@@ -200,13 +198,17 @@
       y-format: tick-fmt,
       legend: "south",
       {
-        plot.add(func, domain: (a, b), style: (stroke: theme.stroke + 0.2pt))
+        plot.add(func, domain: (a, b), style: themed-line-solid, label: [
+          #set text(fill: theme.text)
+          $f(x)$
+        ])
         for (points, name, color) in points-data {
           plot.add(
             points.map(x => (x, func(x))),
             mark: "o",
             mark-size: 0.1,
             style: (stroke: color + 0.5pt),
+            mark-style: (stroke: color + 0.5pt, fill: color.lighten(50%)),
             label: name,
           )
         }
@@ -217,14 +219,12 @@
 
 #let show-error-plot(error-data) = cetz.canvas({
   cetz.draw.set-style(
-    axes: (
-      stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
-      tick: (stroke: theme.plot-stroke + .5pt),
-    ),
+    axes: themed-axes-grid,
     legend: themed-legend,
   )
   plot.plot(
-    size: (PLOT_SCALE, PLOT_SCALE),
+    plot-style: themed-plot-base,
+          size: (PLOT_SCALE, PLOT_SCALE),
     x-label: $i$,
     y-label: $|x_i - x^*|$,
     axis-style: "school-book",
@@ -238,6 +238,7 @@
           style: (stroke: COLORS.at(i) + 1pt),
           mark: "o",
           mark-size: 0.05,
+          mark-style: (stroke: COLORS.at(i) + 1pt, fill: COLORS.at(i).lighten(50%)),
           label: name,
         )
       }
