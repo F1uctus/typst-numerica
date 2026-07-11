@@ -1,6 +1,7 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/physica:0.9.5": dv
+#import "../../src/theme.typ": theme
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -132,11 +133,12 @@
   rgb(0, 200, 0),
 )
 #let double-line = block(width: 100%)[
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
   #v(2.5pt)
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
 ]
-#set page(width: 420mm, height: auto, margin: 0.5cm, columns: 4)
+#set page(fill: theme.bg, width: 420mm, height: auto, margin: 0.5cm, columns: 4)
+#set text(fill: theme.text)
 #set columns(gutter: 0.5cm)
 #set par(justify: true)
 #show heading: it => grid(
@@ -167,8 +169,8 @@
       #cetz.canvas({
         cetz.draw.set-style(
           axes: (
-            stroke: (paint: gray, dash: "solid", thickness: 0.1mm),
-            tick: (stroke: gray + .5pt),
+            stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
+            tick: (stroke: theme.plot-stroke + .5pt),
           ),
         )
         plot.plot(
@@ -224,8 +226,8 @@
       #cetz.canvas({
         cetz.draw.set-style(
           axes: (
-            stroke: (paint: gray, dash: "solid", thickness: 0.1mm),
-            tick: (stroke: gray + .5pt),
+            stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
+            tick: (stroke: theme.plot-stroke + .5pt),
           ),
         )
         plot.plot(
@@ -242,7 +244,7 @@
               mark-size: 0.15,
               mark-style: (
                 stroke: none,
-                fill: black,
+                fill: theme.stroke,
               ),
               style: (
                 stroke: (
@@ -273,7 +275,7 @@
       *#title*
       #table(
         columns: (auto, auto, auto, 1fr),
-        stroke: gray + 0.2mm,
+        stroke: theme.stroke-muted + 0.2mm,
         [*Шаги*], [*h*], [*$y(x)$*], [*$Delta$ на последнем шаге*],
         ..steps
           .zip(results)
@@ -316,7 +318,7 @@
       *#title*
       #table(
         columns: (auto, 1fr),
-        stroke: gray + 0.2mm,
+        stroke: theme.stroke-muted + 0.2mm,
         [*$alpha$*], [*Погрешность на последнем шаге*],
         ..alpha-values
           .zip(errors)
@@ -533,7 +535,8 @@
 #pagebreak()
 
 
-#set page(columns: 2)
+#set page(fill: theme.bg, columns: 2)
+#set text(fill: theme.text)
 
 === Сравнение методов для уравнения $y' = y - x$
 

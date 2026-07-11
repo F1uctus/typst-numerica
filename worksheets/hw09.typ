@@ -2,6 +2,7 @@
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/physica:0.9.5": *
 #import "@preview/showybox:2.0.4": showybox
+#import "../src/theme.typ": theme
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -10,6 +11,7 @@
 
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, rest: 0.8cm),
   numbering: "1 / 1",
@@ -21,11 +23,12 @@
     #SURNAME_NAME, #UNN_GROUP
   ],
 )
+#set text(fill: theme.text)
 #show heading: it => grid(
   columns: (1fr, auto, 1fr),
   align: horizon + center,
   column-gutter: 5pt,
-  line(length: 100%), it.body, line(length: 100%),
+  line(length: 100%, stroke: theme.stroke), it.body, line(length: 100%, stroke: theme.stroke),
 )
 
 #let tasks = counter("tasks-counter")

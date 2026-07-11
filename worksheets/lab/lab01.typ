@@ -1,4 +1,5 @@
 #import "@preview/numty:0.0.5" as nt
+#import "../../src/theme.typ": theme
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -169,15 +170,17 @@
 
 // Общие установки форматирования документа.
 #set page(
+  fill: theme.bg,
   height: auto,
   width: auto,
   margin: (top: 3em, rest: 0.5cm),
   header: [ЛР.01. #h(1fr) #SURNAME_NAME, #h(1pt) #UNN_GROUP],
 )
+#set text(fill: theme.text)
 #let double-line = [
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
   #v(2.5pt)
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
 ]
 #show heading: it => align(center, it)
 #show heading.where(level: 2): it => align(
@@ -191,7 +194,7 @@
 )
 #set par(justify: true)
 #show par: it => align(center, it)
-#set table(stroke: 0.3pt)
+#set table(stroke: theme.stroke-muted + 0.3pt)
 #show table.cell.where(x: 0): strong
 #show table.cell.where(y: 0): strong
 #let cell-highlight(x, it) = table.cell(
@@ -433,7 +436,8 @@ $
 ////////////////////////////////////////////////////////////////////////////////
 
 #pagebreak(weak: true)
-#set page(width: 50em, height: auto)
+#set page(fill: theme.bg, width: 50em, height: auto)
+#set text(fill: theme.text)
 
 == Задание 3
 

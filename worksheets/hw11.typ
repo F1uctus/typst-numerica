@@ -3,6 +3,7 @@
 #import "@preview/physica:0.9.5": *
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/fletcher:0.5.7": diagram, node, edge
+#import "../src/theme.typ": theme
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -11,6 +12,7 @@
 
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, rest: 0.8cm),
   numbering: "1 / 1",
@@ -22,16 +24,17 @@
     #SURNAME_NAME, #UNN_GROUP
   ],
 )
+#set text(fill: theme.text)
 #show heading: it => grid(
   columns: (1fr, auto, 1fr),
   align: horizon + center,
   column-gutter: 5pt,
-  line(length: 100%), it.body, line(length: 100%),
+  line(length: 100%, stroke: theme.stroke), it.body, line(length: 100%, stroke: theme.stroke),
 )
 #set par(justify: true, first-line-indent: 2em)
 
 #let hl(eqtn) = rect(
-  stroke: gray,
+  stroke: theme.stroke-muted,
   inset: (top: 10pt, bottom: 10pt, left: 5pt, right: 5pt),
   $display(eqtn.body)$,
 )

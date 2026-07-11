@@ -1,5 +1,6 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
+#import "../../src/theme.typ": theme
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -7,11 +8,12 @@
 
 #let PREC = 6
 #let double-line = block(width: 100%)[
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
   #v(2.5pt)
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
 ]
-#set page(width: 280mm, height: auto, margin: 0.5cm, columns: 2)
+#set page(fill: theme.bg, width: 280mm, height: auto, margin: 0.5cm, columns: 2)
+#set text(fill: theme.text)
 #set columns(gutter: 0.5cm)
 #set par(justify: true)
 #show heading: it => grid(
@@ -27,7 +29,7 @@
     center,
     table(
       columns: data.at(0).len(),
-      stroke: gray + 0.2mm,
+      stroke: theme.stroke-muted + 0.2mm,
       ..headers,
       ..data.flatten(),
     ),
@@ -40,8 +42,8 @@
     cetz.canvas({
       cetz.draw.set-style(
         axes: (
-          stroke: (paint: gray, dash: "solid", thickness: 0.1mm),
-          tick: (stroke: gray + .5pt),
+          stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
+          tick: (stroke: theme.plot-stroke + .5pt),
         ),
         legend: (stroke: none),
       )

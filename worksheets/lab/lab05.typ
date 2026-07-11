@@ -1,5 +1,6 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
+#import "../../src/theme.typ": theme
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -7,10 +8,12 @@
 
 #let PLOT_SCALE = 8
 #set page(
+  fill: theme.bg,
   width: 210mm,
   height: auto,
-  margin: (top: 3em, rest: 1cm),
+  margin: (top: 3em, rest: 1cm)
 )
+#set text(fill: theme.text)
 #set par(justify: true)
 #show table.cell.where(y: 0): strong
 

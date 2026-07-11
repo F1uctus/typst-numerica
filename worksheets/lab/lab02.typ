@@ -1,6 +1,7 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/numty:0.0.5" as nt
+#import "../../src/theme.typ": theme
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -133,11 +134,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #let double-line = block(width: 100%)[
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
   #v(2.5pt)
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
 ]
 #set page(
+  fill: theme.bg,
   height: auto,
   width: 50em,
   margin: (top: 3em, rest: 0.5cm),
@@ -149,10 +151,11 @@
     #UNN_GROUP
   ],
 )
+#set text(fill: theme.text)
 #set par(justify: true)
 #show par: it => align(center, it)
-#set table(stroke: 0.3pt)
-#show heading: it => align(center, box(inset: 8pt, stroke: 1pt, it))
+#set table(stroke: theme.stroke-muted + 0.3pt)
+#show heading: it => align(center, box(inset: 8pt, stroke: theme.stroke-muted + 1pt, it))
 #show heading.where(level: 2): it => align(
   center,
   grid(
@@ -183,8 +186,8 @@
   cetz.canvas({
     cetz.draw.set-style(
       axes: (
-        stroke: (paint: gray, dash: "solid", thickness: 0.1mm),
-        tick: (stroke: gray + .5pt),
+        stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
+        tick: (stroke: theme.plot-stroke + .5pt),
       ),
       legend: (stroke: none),
     )
@@ -197,7 +200,7 @@
       y-format: tick-fmt,
       legend: "south",
       {
-        plot.add(func, domain: (a, b), style: (stroke: black + 0.2pt))
+        plot.add(func, domain: (a, b), style: (stroke: theme.stroke + 0.2pt))
         for (points, name, color) in points-data {
           plot.add(
             points.map(x => (x, func(x))),
@@ -215,8 +218,8 @@
 #let show-error-plot(error-data) = cetz.canvas({
   cetz.draw.set-style(
     axes: (
-      stroke: (paint: gray, dash: "solid", thickness: 0.1mm),
-      tick: (stroke: gray + .5pt),
+      stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
+      tick: (stroke: theme.plot-stroke + .5pt),
     ),
     legend: (stroke: none),
   )

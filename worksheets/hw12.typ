@@ -3,6 +3,7 @@
 #import "@preview/physica:0.9.5": *
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/fletcher:0.5.7": diagram, node, edge
+#import "../src/theme.typ": theme
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -11,6 +12,7 @@
 
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, rest: 0.8cm),
   numbering: "1 / 1",
@@ -22,10 +24,11 @@
     #SURNAME_NAME, #UNN_GROUP
   ],
 )
+#set text(fill: theme.text)
 #let double-line = [
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
   #v(2.5pt)
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
 ]
 #show heading: it => grid(
   columns: (1fr, auto, 1fr),
@@ -37,15 +40,15 @@
 #set math.cases(gap: 8pt)
 #let cases(..children) = math.cases(..children.pos().map(math.display))
 #let hl(eqtn) = rect(
-  stroke: gray,
+  stroke: theme.stroke-muted,
   inset: (top: 10pt, bottom: 10pt, left: 5pt, right: 5pt),
   $display(eqtn.body)$,
 )
 
 #let double-line = [
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
   #v(2.5pt)
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
 ]
 
 

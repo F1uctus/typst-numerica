@@ -1,11 +1,13 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
+#import "../src/theme.typ": theme
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 #let n = 21
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, bottom: 1cm, rest: 0.5cm),
   numbering: "1 / 1",
@@ -18,16 +20,17 @@
   ],
   columns: 2,
 )
+#set text(fill: theme.text)
 #set columns(gutter: 0.5cm)
 #show heading: it => grid(
   columns: (1fr, auto, 1fr),
   align: horizon + center,
   column-gutter: 5pt,
-  line(length: 100%), it.body, line(length: 100%),
+  line(length: 100%, stroke: theme.stroke), it.body, line(length: 100%, stroke: theme.stroke),
 )
 #set table(
   align: horizon + center,
-  stroke: gray + 0.2mm,
+  stroke: theme.stroke-muted + 0.2mm,
 )
 #show table.cell.where(x: 0): strong
 #set par(justify: true)
@@ -60,8 +63,8 @@
       import plot: *
       cetz.draw.set-style(
         axes: (
-          stroke: (paint: gray, dash: "solid", thickness: 0.2mm),
-          tick: (stroke: gray + .5pt),
+          stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.2mm),
+          tick: (stroke: theme.plot-stroke + .5pt),
           x: (tick: (label: (offset: x-tick-label-offset))),
           y: (tick: (label: (offset: y-tick-label-offset))),
         ),
@@ -80,7 +83,7 @@
         {
           add(f, domain: (a, b))
           for e in eqs {
-            add(e, domain: (a, b), style: (stroke: (dash: "dotted", paint: gray, thickness: 0.2mm)))
+            add(e, domain: (a, b), style: (stroke: (dash: "dotted", paint: theme.plot-stroke, thickness: 0.2mm)))
           }
           for i in range(first-iteration-to-label, x.len()) {
             add-anchor("x" + str(i), (x.at(i), 0))
@@ -92,7 +95,7 @@
         cetz.draw.line(
           plot-name + ".x" + str(i),
           plot-name + ".fx" + str(i),
-          stroke: (paint: gray, dash: "dashed"),
+          stroke: (paint: theme.plot-stroke, dash: "dashed"),
         )
         cetz.draw.content(
           plot-name + ".fx" + str(i),
@@ -143,14 +146,14 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
           import plot: *
           cetz.draw.set-style(
             axes: (
-              stroke: (paint: gray, dash: "solid", thickness: 0.15mm),
+              stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.15mm),
               x: (
                 overshoot: 1,
                 tick: (
                   stroke: none,
                   label: (offset: 0.25, anchor: "south"),
                 ),
-                grid: (stroke: gray + 0.1mm),
+                grid: (stroke: theme.stroke-muted + 0.1mm),
               ),
               y: (
                 overshoot: 0.2,
@@ -158,7 +161,7 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
                   stroke: none,
                   label: (offset: -0.6),
                 ),
-                grid: (stroke: gray + 0.1mm),
+                grid: (stroke: theme.stroke-muted + 0.1mm),
               ),
             ),
           )
@@ -288,14 +291,14 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
           import plot: *
           cetz.draw.set-style(
             axes: (
-              stroke: (paint: gray, dash: "solid", thickness: 0.15mm),
+              stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.15mm),
               x: (
                 overshoot: 0.5,
                 tick: (
                   stroke: none,
                   label: (offset: 0.04, anchor: "south"),
                 ),
-                grid: (stroke: gray + 0.1mm),
+                grid: (stroke: theme.stroke-muted + 0.1mm),
               ),
               y: (
                 overshoot: 0.05,
@@ -303,7 +306,7 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
                   stroke: none,
                   label: (offset: 0.03, anchor: "south-east"),
                 ),
-                grid: (stroke: gray + 0.1mm),
+                grid: (stroke: theme.stroke-muted + 0.1mm),
               ),
             ),
           )
@@ -435,14 +438,14 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
           import plot: *
           cetz.draw.set-style(
             axes: (
-              stroke: (paint: gray, dash: "solid", thickness: 0.15mm),
+              stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.15mm),
               x: (
                 overshoot: 1,
                 tick: (
                   stroke: none,
                   label: (offset: -0.2, anchor: "south-east"),
                 ),
-                grid: (stroke: gray + 0.1mm),
+                grid: (stroke: theme.stroke-muted + 0.1mm),
               ),
               y: (
                 overshoot: 0.1,
@@ -450,7 +453,7 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
                   stroke: none,
                   label: (offset: -0.7, anchor: "east"),
                 ),
-                grid: (stroke: gray + 0.1mm),
+                grid: (stroke: theme.stroke-muted + 0.1mm),
               ),
             ),
           )
@@ -611,14 +614,14 @@ $
         import plot: *
         cetz.draw.set-style(
           axes: (
-            stroke: (paint: gray, dash: "solid", thickness: 0.15mm),
+            stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.15mm),
             x: (
               overshoot: 0.8,
               tick: (
                 stroke: none,
                 label: (offset: 0, anchor: "south-east"),
               ),
-              grid: (stroke: gray + 0.1mm),
+              grid: (stroke: theme.stroke-muted + 0.1mm),
             ),
             y: (
               overshoot: 0.1,
@@ -626,7 +629,7 @@ $
                 stroke: none,
                 label: (offset: 0, anchor: "east"),
               ),
-              grid: (stroke: gray + 0.1mm),
+              grid: (stroke: theme.stroke-muted + 0.1mm),
             ),
             shared-zero: $$,
           ),
@@ -707,7 +710,7 @@ $
 #{
   let arrow-style = (
     mark: (start: ">"),
-    stroke: (paint: gray, dash: "dashed"),
+    stroke: (paint: theme.plot-stroke, dash: "dashed"),
   )
   align(
     center,
@@ -716,8 +719,8 @@ $
       import plot: *
       set-style(
         axes: (
-          stroke: (dash: "dotted", paint: gray),
-          tick: (stroke: gray + .5pt),
+          stroke: (dash: "dotted", paint: theme.plot-stroke),
+          tick: (stroke: theme.plot-stroke + .5pt),
         ),
       )
       plot(

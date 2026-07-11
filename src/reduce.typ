@@ -15,6 +15,7 @@
 #import "ops.typ": operations
 #import "render.typ": render
 #import "linalg.typ": expand-matrix-call, mat-map
+#import "theme.typ": theme
 
 #let strings = (
   en: (
@@ -268,7 +269,7 @@
   let rows = ((math.equation(render(e, ops: ops, digits: digits)), []),)
   for s in steps {
     let note = if explain and s.desc != none and not (compact and s.kind == "compute") {
-      text(size: 0.8em, fill: gray.darken(20%), s.desc)
+      text(size: 0.8em, fill: theme.stroke-muted.darken(20%), s.desc)
     } else {
       []
     }

@@ -3,6 +3,7 @@
 #import "@preview/physica:0.9.5": *
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/fletcher:0.5.7": diagram, node, edge
+#import "../src/theme.typ": theme
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -11,6 +12,7 @@
 
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, rest: 0.8cm),
   numbering: "1 / 1",
@@ -22,11 +24,12 @@
     #SURNAME_NAME, #UNN_GROUP
   ],
 )
+#set text(fill: theme.text)
 #set par(justify: true, first-line-indent: 2em)
 
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-#line(length: 100%)
+#line(length: 100%, stroke: theme.stroke)
 Для численного решения задачи методом конечных разностей
 область изменения переменной $x in [0, 1]$
 разбить на три отрезка с шагом $h = 1 slash 3$,

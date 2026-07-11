@@ -1,6 +1,7 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/physica:0.9.5": *
+#import "../src/theme.typ": theme
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -9,6 +10,7 @@
 
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, rest: 0.8cm),
   numbering: "1 / 1",
@@ -20,15 +22,16 @@
     #SURNAME_NAME, #UNN_GROUP
   ],
 )
+#set text(fill: theme.text)
 #show heading: it => grid(
   columns: (1fr, auto, 1fr),
   align: horizon + center,
   column-gutter: 5pt,
-  line(length: 100%), it.body, line(length: 100%),
+  line(length: 100%, stroke: theme.stroke), it.body, line(length: 100%, stroke: theme.stroke),
 )
 #set table(
   align: horizon + center,
-  stroke: gray + 0.2mm,
+  stroke: theme.stroke-muted + 0.2mm,
 )
 #set par(justify: true)
 
@@ -54,8 +57,8 @@
   import plot: *
   cetz.draw.set-style(
     axes: (
-      stroke: (dash: "dotted", paint: gray),
-      tick: (stroke: gray + .5pt),
+      stroke: (dash: "dotted", paint: theme.plot-stroke),
+      tick: (stroke: theme.plot-stroke + .5pt),
     ),
   )
   plot(
@@ -169,7 +172,7 @@ quad y_(k + 1) = y_k + h f(x_k, y_k).$
           x.zip(y),
           mark: "o",
           mark-size: 0.1,
-          mark-style: (stroke: none, fill: black),
+          mark-style: (stroke: none, fill: theme.stroke),
         )
       }),
     )
@@ -225,7 +228,7 @@ quad y_(k + 1) = y_k + h f(x_(k + 1 / 2), y_(k + 1 / 2)).$
           x.zip(y),
           mark: "o",
           mark-size: 0.1,
-          mark-style: (stroke: none, fill: black),
+          mark-style: (stroke: none, fill: theme.stroke),
         )
       }),
     )
@@ -281,7 +284,7 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
           x.zip(y),
           mark: "o",
           mark-size: 0.1,
-          mark-style: (stroke: none, fill: black),
+          mark-style: (stroke: none, fill: theme.stroke),
         )
       }),
     )
@@ -415,7 +418,7 @@ quad y_(k + 1) = y_k + h f(x_k, y_k).$
             x.zip(y),
             mark: "o",
             mark-size: 0.1,
-            mark-style: (stroke: none, fill: black),
+            mark-style: (stroke: none, fill: theme.stroke),
           )
         },
         y-step: 0.05,
@@ -474,7 +477,7 @@ quad y_(k + 1) = y_k + h f(x_(k + 1 / 2), y_(k + 1 / 2)).$
             x.zip(y),
             mark: "o",
             mark-size: 0.1,
-            mark-style: (stroke: none, fill: black),
+            mark-style: (stroke: none, fill: theme.stroke),
           )
         },
         y-step: 0.05,
@@ -533,7 +536,7 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
             x.zip(y),
             mark: "o",
             mark-size: 0.1,
-            mark-style: (stroke: none, fill: black),
+            mark-style: (stroke: none, fill: theme.stroke),
           )
         },
         y-step: 50,
@@ -544,7 +547,7 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
 
 #let error-mod-2 = calc.abs(y.at(1) - yexact(x.at(1)))
 
-#let hl(eqtn) = rect(stroke: gray, inset: (top: 10pt, bottom: 10pt), $display(eqtn.body)$)
+#let hl(eqtn) = rect(stroke: theme.stroke-muted, inset: (top: 10pt, bottom: 10pt), $display(eqtn.body)$)
 
 Разложим точное решение в ряд Тейлора:
 $
@@ -705,8 +708,8 @@ $
     [Выпишем коэф-ты в табличной форме:]
     set table(
       stroke: (x, y) => (
-        left: if x == 2 and y < 3 { 0.7pt + black } else { none },
-        bottom: if y == 1 { 0.7pt + black } else { none },
+        left: if x == 2 and y < 3 { 0.7pt + theme.stroke } else { none },
+        bottom: if y == 1 { 0.7pt + theme.stroke } else { none },
       ),
     )
     let h = 4em

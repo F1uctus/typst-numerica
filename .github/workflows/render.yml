@@ -49,14 +49,11 @@ jobs:
       - name: Compile Typst documents
         run: |
           find worksheets -name "*.typ" -type f | while read -r file; do
-            # Get directory of the file
             dir=$(dirname "$file")
-            # Get filename without extension
             base=$(basename "$file" .typ)
-            # Compile PDF with minimal settings for faster processing
             typst compile "$file" "$dir/$base.pdf" --jobs 1 --root . --package-path packages
-            # First page preview; Typst emits the white page background itself
-            typst compile "$file" "$dir/$base-preview.svg" --format svg --pages 1 --root . --package-path packages
+            typst compile "$file" "$dir/$base-preview-light.svg" --format svg --pages 1 --root . --package-path packages --input 'x-preview={"theme":"light"}'
+            typst compile "$file" "$dir/$base-preview-dark.svg" --format svg --pages 1 --root . --package-path packages --input 'x-preview={"theme":"dark"}'
           done
 
       - name: Upload PDFs
@@ -69,7 +66,7 @@ jobs:
       - name: Prepare previews
         run: |
           mkdir -p previews
-          find . -name "*-preview.svg" -type f | while read -r file; do
+          find . -name "*-preview-*.svg" -type f | while read -r file; do
             name=$(echo "$file" | sed 's|^\./||' | sed 's|/|_|g')
             cp "$file" "previews/$name"
           done
@@ -126,13 +123,18 @@ jobs:
               rel_path=$(echo "$file" | sed 's|^\./||')
               base="${file%.typ}"
               pdf="${base}.pdf"
-              preview_name=$(echo "${base}-preview.svg" | sed 's|^\./||' | sed 's|/|_|g')
+              preview_light=$(echo "${base}-preview-light.svg" | sed 's|^\./||' | sed 's|/|_|g')
+              preview_dark=$(echo "${base}-preview-dark.svg" | sed 's|^\./||' | sed 's|/|_|g')
 
-              if [ -f "${base}-preview.svg" ]; then
+              if [ -f "${base}-preview-light.svg" ] && [ -f "${base}-preview-dark.svg" ]; then
                 echo "<details open>"
                 echo "<summary><b>$rel_path</b></summary>"
                 echo ""
-                echo "![Preview](https://raw.githubusercontent.com/${{ github.repository }}/previews/$preview_name)"
+                echo "<picture>"
+                echo "  <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://raw.githubusercontent.com/${{ github.repository }}/previews/$preview_dark\">"
+                echo "  <source media=\"(prefers-color-scheme: light)\" srcset=\"https://raw.githubusercontent.com/${{ github.repository }}/previews/$preview_light\">"
+                echo "  <img alt=\"$rel_path\" src=\"https://raw.githubusercontent.com/${{ github.repository }}/previews/$preview_light\">"
+                echo "</picture>"
                 echo ""
                 echo "> [Download PDF]($pdf)"
                 echo "</details>"

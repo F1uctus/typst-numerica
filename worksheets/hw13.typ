@@ -3,6 +3,7 @@
 #import "@preview/physica:0.9.8": *
 #import "@preview/showybox:2.0.4": showybox
 #import "@preview/fletcher:0.5.7": diagram, node, edge
+#import "../src/theme.typ": theme
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -11,6 +12,7 @@
 
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, rest: 0.8cm),
   numbering: "1 / 1",
@@ -22,10 +24,11 @@
     #SURNAME_NAME, #UNN_GROUP
   ],
 )
+#set text(fill: theme.text)
 #let double-line = [
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
   #v(2.5pt)
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
 ]
 #show heading: it => grid(
   columns: (1fr, auto, 1fr),
@@ -37,15 +40,15 @@
 #set math.cases(gap: 8pt)
 #let cases(..children) = math.cases(..children.pos().map(math.display))
 #let hl(eqtn) = rect(
-  stroke: gray,
+  stroke: theme.stroke-muted,
   inset: (top: 10pt, bottom: 10pt, left: 5pt, right: 5pt),
   $display(eqtn.body)$,
 )
 #let seq(a, b, c) = $#a, #b, ..., #c$
 #let double-line = [
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
   #v(2.5pt)
-  #block(spacing: 0pt, line(length: 100%))
+  #block(spacing: 0pt, line(length: 100%, stroke: theme.stroke))
 ]
 #let tick-fmt(v) = {
   set text(size: 8pt)
@@ -150,17 +153,17 @@ $
         let p = 1
 
         // Соединяем линиями
-        line((m, p - 1), (m, p), stroke: gray)
-        line((m, p), (m + 1, p), stroke: gray)
+        line((m, p - 1), (m, p), stroke: theme.stroke-muted)
+        line((m, p), (m + 1, p), stroke: theme.stroke-muted)
 
         // Выделяем активные точки схемы для (m,p)
-        circle((m, p), radius: 0.05, fill: black)
+        circle((m, p), radius: 0.05, fill: theme.stroke)
         content((m, p + 0.3), text(size: 8pt, $(m, p)$))
 
-        circle((m, p - 1), radius: 0.05, fill: black)
+        circle((m, p - 1), radius: 0.05, fill: theme.stroke)
         content((m + 0.6, p - 1), text(size: 8pt, $(m, p - 1)$))
 
-        circle((m + 1, p), radius: 0.05, fill: black)
+        circle((m + 1, p), radius: 0.05, fill: theme.stroke)
         content((m + 1, p + 0.3), text(size: 8pt, $(m + 1, p)$))
       },
     ),
@@ -224,7 +227,7 @@ $
     cetz.canvas({
       import cetz.draw: *
       import plot: *
-      set-style(axes: (stroke: gray, shared-zero: $$))
+      set-style(axes: (stroke: theme.stroke-muted, shared-zero: $$))
       plot(
         name: "spec",
         size: (6, 6),
@@ -246,14 +249,14 @@ $
           spectrum-circle(2.5, (fill: none, stroke: (dash: "dashed")))
         },
       )
-      circle("spec.c01", radius: 0.03, fill: black, stroke: none)
+      circle("spec.c01", radius: 0.03, fill: theme.stroke, stroke: none)
       content(
         "spec.c01",
         anchor: "south-east",
         padding: (bottom: 5pt, right: 5pt),
         text(size: 8pt, align(center, $r = 0.01$)),
       )
-      circle("spec.c25", radius: 0.03, fill: black)
+      circle("spec.c25", radius: 0.03, fill: theme.stroke)
       content(
         "spec.c25",
         anchor: "south",
@@ -359,15 +362,15 @@ $
         let p = 1
 
         // Соединяем линиями
-        line((m, p - 1), (m, p), stroke: gray)
-        line((m - 1, p), (m, p), stroke: gray)
+        line((m, p - 1), (m, p), stroke: theme.stroke-muted)
+        line((m - 1, p), (m, p), stroke: theme.stroke-muted)
 
         // Выделяем активные точки схемы для (m,p)
-        circle((m, p), radius: 0.05, fill: black)
+        circle((m, p), radius: 0.05, fill: theme.stroke)
         content((m, p + 0.3), text(size: 8pt, $(m, p)$))
-        circle((m, p - 1), radius: 0.05, fill: black)
+        circle((m, p - 1), radius: 0.05, fill: theme.stroke)
         content((m + 0.6, p - 1), text(size: 8pt, $(m, p - 1)$))
-        circle((m - 1, p), radius: 0.05, fill: black)
+        circle((m - 1, p), radius: 0.05, fill: theme.stroke)
         content((m - 1, p + 0.3), text(size: 8pt, $(m - 1, p)$))
       },
     ),
@@ -428,7 +431,7 @@ $
     cetz.canvas({
       import cetz.draw: *
       import plot: *
-      set-style(axes: (stroke: gray, shared-zero: $$))
+      set-style(axes: (stroke: theme.stroke-muted, shared-zero: $$))
       plot(
         name: "spec",
         size: (6, 6),
@@ -450,14 +453,14 @@ $
           spectrum-circle(2.5, (fill: none, stroke: (dash: "dashed")))
         },
       )
-      circle("spec.c07", radius: 0.03, fill: black)
+      circle("spec.c07", radius: 0.03, fill: theme.stroke)
       content(
         "spec.c07",
         anchor: "south",
         padding: (bottom: 5pt),
         text(size: 8pt, align(center, $1 - r > 1 \ r = 0.7$)),
       )
-      circle("spec.c25", radius: 0.03, fill: black)
+      circle("spec.c25", radius: 0.03, fill: theme.stroke)
       content(
         "spec.c25",
         anchor: "south",
@@ -569,15 +572,15 @@ $
         let p = 1
 
         // Соединяем линиями
-        line((m, p), (m, p + 1), stroke: gray)
-        line((m - 1, p), (m, p), stroke: gray)
+        line((m, p), (m, p + 1), stroke: theme.stroke-muted)
+        line((m - 1, p), (m, p), stroke: theme.stroke-muted)
 
         // Выделяем активные точки схемы для (m,p)
-        circle((m, p), radius: 0.05, fill: black)
+        circle((m, p), radius: 0.05, fill: theme.stroke)
         content((m + 0.6, p), text(size: 8pt, $(m, p)$))
-        circle((m, p + 1), radius: 0.05, fill: black)
+        circle((m, p + 1), radius: 0.05, fill: theme.stroke)
         content((m + 0.6, p + 1), text(size: 8pt, $(m, p + 1)$))
-        circle((m - 1, p), radius: 0.05, fill: black)
+        circle((m - 1, p), radius: 0.05, fill: theme.stroke)
         content((m - 1, p + 0.3), text(size: 8pt, $(m - 1, p)$))
       },
     ),
@@ -638,7 +641,7 @@ $
     cetz.canvas({
       import cetz.draw: *
       import plot: *
-      set-style(axes: (stroke: gray))
+      set-style(axes: (stroke: theme.stroke-muted))
       plot(
         name: "spec",
         size: (6, 3),

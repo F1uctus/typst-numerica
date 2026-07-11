@@ -1,13 +1,15 @@
-#import "@preview/cetz:0.3.4"
-#import "@preview/cetz-plot:0.1.1": plot, chart
+#import "@preview/cetz:0.5.2"
+#import "@preview/cetz-plot:0.1.4": plot, chart
 #import "@preview/diverential:0.3.0": dvpc
 #import "@preview/physica:0.9.8": dv, pdv, evaluated
 #import "@preview/numty:0.0.5" as nt
+#import "../src/theme.typ": theme
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, bottom: 1cm, rest: 0.5cm),
   numbering: "1 / 1",
@@ -17,9 +19,10 @@
     #SURNAME_NAME, #UNN_GROUP
   ],
 )
+#set text(fill: theme.text)
 #set table(
   align: horizon + center,
-  stroke: gray + 0.2mm,
+  stroke: theme.stroke-muted + 0.2mm,
 )
 #set par(justify: true)
 
@@ -27,7 +30,7 @@
   columns: (1fr, auto, 1fr),
   align: horizon + center,
   column-gutter: 5pt,
-  line(length: 100%), it.body, line(length: 100%),
+  line(length: 100%, stroke: theme.stroke), it.body, line(length: 100%, stroke: theme.stroke),
 )
 
 #let round(x) = calc.round(eval(str(x)), digits: 12)
@@ -97,8 +100,8 @@ $
         import plot: *
         cetz.draw.set-style(
           axes: (
-            stroke: (dash: "dotted", paint: gray),
-            tick: (stroke: gray + .5pt),
+            stroke: (dash: "dotted", paint: theme.plot-stroke),
+            tick: (stroke: theme.plot-stroke + .5pt),
           ),
         )
         plot(
@@ -374,16 +377,16 @@ $
   import plot: *
   cetz.draw.set-style(
     axes: (
-      stroke: (gray + .5pt),
+      stroke: (theme.plot-stroke + .5pt),
       x: (
         tick: (
           label: (anchor: "south-west", offset: -1em),
         ),
-        grid: (stroke: gray + 0.1mm),
+        grid: (stroke: theme.stroke-muted + 0.1mm),
       ),
       y: (
         overshoot: 0.2,
-        grid: (stroke: gray + 0.1mm),
+        grid: (stroke: theme.stroke-muted + 0.1mm),
       )
     ),
   )
@@ -494,7 +497,7 @@ $quad x_k = x_0 + h k,
       x.zip(y),
       mark: "o",
       mark-size: 0.1,
-      mark-style: (stroke: none, fill: black),
+      mark-style: (stroke: none, fill: theme.stroke),
     )
   }),
 )
@@ -558,7 +561,7 @@ $thick x_(k + 1 / 2) = x_0 + h k slash 2,
       x.zip(y),
       mark: "o",
       mark-size: 0.1,
-      mark-style: (stroke: none, fill: black),
+      mark-style: (stroke: none, fill: theme.stroke),
     )
   }),
 )
@@ -608,7 +611,7 @@ $quad y_(k + 1)
       x.zip(y),
       mark: "o",
       mark-size: 0.1,
-      mark-style: (stroke: none, fill: black),
+      mark-style: (stroke: none, fill: theme.stroke),
     )
   }),
 )
@@ -738,8 +741,8 @@ $
     [Выпишем коэф-ты в табличной форме:]
     set table(
       stroke: (x, y) => (
-        left: if x == 2 and y < 3 { 0.7pt + black } else { none },
-        bottom: if y == 1 { 0.7pt + black } else { none },
+        left: if x == 2 and y < 3 { 0.7pt + theme.stroke } else { none },
+        bottom: if y == 1 { 0.7pt + theme.stroke } else { none },
       ),
     )
     let h = 4em

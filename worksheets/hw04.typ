@@ -1,11 +1,13 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
+#import "../src/theme.typ": theme
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 #let n = 21
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, rest: 0.8cm),
   numbering: "1 / 1",
@@ -17,15 +19,16 @@
     #SURNAME_NAME, #UNN_GROUP
   ],
 )
+#set text(fill: theme.text)
 #show heading: it => grid(
   columns: (1fr, auto, 1fr),
   align: horizon + center,
   column-gutter: 5pt,
-  line(length: 100%), it.body, line(length: 100%),
+  line(length: 100%, stroke: theme.stroke), it.body, line(length: 100%, stroke: theme.stroke),
 )
 #set table(
   align: horizon + center,
-  stroke: gray + 0.2mm,
+  stroke: theme.stroke-muted + 0.2mm,
 )
 #set par(justify: true)
 #show table.cell.where(x: 0): strong
@@ -165,7 +168,7 @@ $
 
 #set enum(numbering: it => strong[#numbering("a)", it)])
 
-+ #box(stroke: gray, radius: 5pt, inset: 8pt, width: 1fr)[
++ #box(stroke: theme.stroke-muted, radius: 5pt, inset: 8pt, width: 1fr)[
     Запишем уравнение для итераций в виде:
     $x^"(k+1)" = 0.5 - (x^"(k)")^3 =: g(x^"(k)") thick.$
 
@@ -180,7 +183,7 @@ $
 
     Достаточное условие сходимости *не выполняется*.
   ]
-+ #box(stroke: gray, radius: 5pt, inset: 8pt, width: 1fr)[
++ #box(stroke: theme.stroke-muted, radius: 5pt, inset: 8pt, width: 1fr)[
     Запишем уравнение для итераций в виде:
     $x^"(k+1)" = root(3, 0.5 - x^"(k)") =: g(x^"(k)") thick.$
 

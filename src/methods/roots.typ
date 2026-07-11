@@ -12,6 +12,7 @@
 #import "../eval.typ": evaluate
 #import "../render.typ": render, render-num
 #import "../diff.typ": d
+#import "../theme.typ": theme
 
 // --- iteration ----------------------------------------------------------------
 
@@ -187,8 +188,8 @@
     import plot: *
     cetz.draw.set-style(
       axes: (
-        stroke: (dash: "dotted", paint: gray),
-        tick: (stroke: gray + 0.5pt),
+        stroke: (dash: "dotted", paint: theme.plot-stroke),
+        tick: (stroke: theme.plot-stroke + 0.5pt),
       ),
     )
     plot(
@@ -218,7 +219,7 @@
   let content = table(
     columns: (6fr, 2fr, 3fr),
     align: horizon + center,
-    stroke: gray + 0.2mm,
+    stroke: theme.stroke-muted + 0.2mm,
     table.cell(rowspan: 3, inset: (right: 15pt), fplot),
     $ f(#a) f(#b) < 0 $,
     $

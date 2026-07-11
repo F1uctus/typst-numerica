@@ -4,8 +4,8 @@
 // components. Every function returns data and/or display-ready content,
 // so a worksheet is just: problem data → these calls.
 
-#import "@preview/cetz:0.3.4"
-#import "@preview/cetz-plot:0.1.1": plot
+#import "@preview/cetz:0.5.2"
+#import "@preview/cetz-plot:0.1.4": plot
 
 #import "../numbers.typ": is-mpq, mpq, mpz, round-num, to-exact, to-float-num
 #import "../ast.typ": add, div, mul, num, pow, sub, sym, to-expr
@@ -15,6 +15,7 @@
 #import "../render.typ": render, render-num
 #import "../reduce.typ": show-reduction
 #import "../diff.typ": simplify
+#import "../theme.typ": theme
 
 // --- input normalization ---------------------------------------------------
 
@@ -205,7 +206,7 @@
     center,
     table(
       columns: (1fr,) * (history.len() + 1),
-      stroke: gray + 0.2mm,
+      stroke: theme.stroke-muted + 0.2mm,
       align: horizon + center,
       $k$, ..range(history.len()).map(str).map(math.equation),
       ..range(n)
@@ -242,8 +243,8 @@
     cetz.canvas({
       cetz.draw.set-style(
         axes: (
-          stroke: (paint: gray, dash: "solid", thickness: 0.1mm),
-          tick: (stroke: gray + 0.5pt),
+          stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.1mm),
+          tick: (stroke: theme.plot-stroke + 0.5pt),
         ),
       )
       plot.plot(
@@ -263,7 +264,7 @@
             points,
             mark: "o",
             mark-size: 0.1,
-            style: (stroke: (paint: gray, dash: "dotted", thickness: 0.2mm)),
+            style: (stroke: (paint: theme.plot-stroke, dash: "dotted", thickness: 0.2mm)),
           )
           for (k, p) in points.enumerate() {
             plot.add-anchor("x" + str(k), p)
@@ -277,12 +278,12 @@
         cetz.draw.line(
           plot-name + ".x" + str(i),
           plot-name + ".x" + str(i + 1),
-          stroke: (paint: gray, dash: "dashed", thickness: 0.2mm),
+          stroke: (paint: theme.plot-stroke, dash: "dashed", thickness: 0.2mm),
         )
         cetz.draw.rect(
           plot-name + ".x" + str(i),
           plot-name + ".x" + str(i + 1),
-          stroke: (paint: gray, dash: "dotted", thickness: 0.2mm),
+          stroke: (paint: theme.plot-stroke, dash: "dotted", thickness: 0.2mm),
         )
       }
       // points that coincide after rounding share one merged label

@@ -1,4 +1,5 @@
 #import "../src/lib.typ": *
+#import "../src/theme.typ": theme
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -7,6 +8,7 @@
 #let PREC = 3
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, bottom: 1cm, rest: 0.5cm),
   numbering: "1 / 1",
@@ -19,6 +21,7 @@
   ],
   columns: 2,
 )
+#set text(fill: theme.text)
 #set columns(gutter: 0.5cm)
 
 #show heading: it => box(inset: (bottom: 1mm))[
@@ -26,7 +29,7 @@
     columns: (1fr, auto, 1fr),
     align: horizon + center,
     column-gutter: 5pt,
-    line(length: 100%), it.body, line(length: 100%),
+    line(length: 100%, stroke: theme.stroke), it.body, line(length: 100%, stroke: theme.stroke),
   )
 ]
 

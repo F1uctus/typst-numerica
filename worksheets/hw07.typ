@@ -1,6 +1,7 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/diverential:0.2.0": *
+#import "../src/theme.typ": theme
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -8,6 +9,7 @@
 #let n = 21
 
 #set page(
+  fill: theme.bg,
   paper: "a4",
   margin: (top: 3em, rest: 1cm),
   numbering: "1 / 1",
@@ -19,22 +21,23 @@
     #SURNAME_NAME, #UNN_GROUP
   ],
 )
+#set text(fill: theme.text)
 #show heading: it => grid(
   columns: (1fr, auto, 1fr),
   align: horizon + center,
   column-gutter: 5pt,
-  line(length: 100%), it.body, line(length: 100%),
+  line(length: 100%, stroke: theme.stroke), it.body, line(length: 100%, stroke: theme.stroke),
 )
 #show table.cell.where(y: 0): strong
 #set table(
   align: horizon + center,
-  stroke: gray + 0.2mm,
+  stroke: theme.stroke-muted + 0.2mm,
   inset: 0.5em,
   columns: 5,
 )
 #set par(justify: true)
 #let hl(eqtn) = rect(
-  stroke: gray,
+  stroke: theme.stroke-muted,
   inset: (top: 10pt, bottom: 10pt, left: 5pt, right: 5pt),
   $display(eqtn.body)$,
 )
@@ -64,8 +67,8 @@
   import plot: *
   cetz.draw.set-style(
     axes: (
-      stroke: (dash: "dotted", paint: gray),
-      tick: (stroke: gray + .5pt),
+      stroke: (dash: "dotted", paint: theme.plot-stroke),
+      tick: (stroke: theme.plot-stroke + .5pt),
     ),
     legend: (
       stroke: none,
@@ -168,8 +171,8 @@ $quad x_k = x_0 + h k,
       import plot: *
       cetz.draw.set-style(
         axes: (
-          stroke: (dash: "dotted", paint: gray),
-          tick: (stroke: gray + .5pt),
+          stroke: (dash: "dotted", paint: theme.plot-stroke),
+          tick: (stroke: theme.plot-stroke + .5pt),
         ),
         legend: (
           stroke: none,
@@ -204,7 +207,7 @@ $quad x_k = x_0 + h k,
         },
       )
       for k in range(1, ITERATIONS) {
-        cetz.draw.circle("plt.x" + str(k), radius: .08, fill: black, stroke: none)
+        cetz.draw.circle("plt.x" + str(k), radius: .08, fill: theme.stroke, stroke: none)
       }
     }),
   )
@@ -230,7 +233,7 @@ $quad x_k = x_0 + h k,
         add(
           yfs.at(k),
           domain: (0, h * ITERATIONS),
-          style: (stroke: (dash: dashes.at(k), paint: black)),
+          style: (stroke: (dash: dashes.at(k), paint: theme.stroke)),
         )
         add(
           slope.with(xs, ys, k),
@@ -240,7 +243,7 @@ $quad x_k = x_0 + h k,
       },
     )
     for k in range(1, ITERATIONS) {
-      cetz.draw.circle("plt1.x" + str(k), radius: .08, fill: black, stroke: none)
+      cetz.draw.circle("plt1.x" + str(k), radius: .08, fill: theme.stroke, stroke: none)
     }
   }),
 )
@@ -340,7 +343,7 @@ $quad x_(k + 1 / 2) = x_0 + h / 2 k,
             } else {
               (h * (k - 1), h * k)
             },
-            style: (stroke: (dash: dashes.at(k), paint: black)),
+            style: (stroke: (dash: dashes.at(k), paint: theme.stroke)),
             label: labels.at(k),
           )
         }
@@ -448,7 +451,7 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
         add(
           y,
           domain: (0, h * ITERATIONS + h / 2),
-          style: (stroke: (dash: dashes.at(0), paint: black)),
+          style: (stroke: (dash: dashes.at(0), paint: theme.stroke)),
           label: $y$,
         )
         let y = y0 + h * f(x0, y0)
@@ -457,7 +460,7 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
         add(
           x => x + 1 + c * calc.exp(x),
           domain: (0, h * ITERATIONS + h / 2),
-          style: (stroke: (dash: dashes.at(0), paint: black)),
+          style: (stroke: (dash: dashes.at(0), paint: theme.stroke)),
           label: $x + 1 + #(c * calc.e) e^(x - 1)$,
         )
         add(
@@ -487,6 +490,6 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
         add-anchor("x1", (1, 50))
       },
     )
-    cetz.draw.circle("plt.x1", radius: .08, fill: black, stroke: none)
+    cetz.draw.circle("plt.x1", radius: .08, fill: theme.stroke, stroke: none)
   }),
 )
