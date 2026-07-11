@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.3.4"
-#import "@preview/cetz-plot:0.1.1": plot, chart
+#import "@preview/cetz-plot:0.1.1": chart, plot
 #import "@preview/diverential:0.2.0": *
-#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-line-dashed, themed-line-solid, themed-plot-base, themed-stroke
+#import "../src/theme.typ": theme, themed-axes-grid, themed-legend, themed-plot-base, themed-stroke
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -48,6 +48,39 @@
   v
 }
 
+#let hw07-legend = (
+  ..themed-legend,
+  orientation: ltr,
+  item: (
+    spacing: 0.45,
+    preview: (
+      width: 1,
+      height: .35,
+      margin: .12,
+    ),
+  ),
+)
+
+#let hw07-stroke(dash) = {
+  let paint = theme.stroke
+  let thickness = 0.5pt
+  if dash == "solid" {
+    (stroke: (paint: paint, thickness: thickness))
+  } else if dash == "dashed" {
+    (stroke: (paint: paint, thickness: thickness, dash: (3pt, 2pt)))
+  } else if dash == "dotted" {
+    (stroke: (paint: paint, thickness: thickness, dash: (0.5pt, 1pt)))
+  } else if dash == "dash-dotted" {
+    (stroke: (paint: paint, thickness: thickness, dash: (3pt, 1.5pt, 0.5pt, 1.5pt)))
+  } else if dash == "densely-dotted" {
+    (stroke: (paint: paint, thickness: thickness, dash: (0.5pt, 0.5pt)))
+  } else if dash == "densely-dashed" {
+    (stroke: (paint: paint, thickness: thickness, dash: (1.5pt, 1pt)))
+  } else {
+    themed-stroke(dash)
+  }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -67,12 +100,13 @@
   import plot: *
   cetz.draw.set-style(
     axes: themed-axes-grid,
-    legend: themed-legend,
+    legend: hw07-legend,
   )
   body
 })
 
-Выполнить два шага с $h = 1$ методом Эйлера и его модификациями. Показать геометрическую интерпретацию методов для двух шагов.
+Выполнить два шага с $h = 1$ методом Эйлера и его модификациями. Показать геометрическую интерпретацию методов для двух
+шагов.
 
 #let C = n + 3
 #let y = x => x + 1 + C * calc.exp(x)
@@ -103,7 +137,7 @@ $
 
 Классический метод Эйлера:
 $quad x_k = x_0 + h k,
-  quad y_(k + 1) = y_k + h f(x_k, y_k).$
+quad y_(k + 1) = y_k + h f(x_k, y_k).$
 
 #{
   let ITERATIONS = 2
@@ -140,21 +174,21 @@ $quad x_k = x_0 + h k,
           xs.map(y.code).at(k),
           calc.abs(ys.at(k) - (y.code)(xs.at(k))),
         ).map(a => $#a$))
-        .flatten()
+        .flatten(),
     )
   ]
   for k in range(1, ITERATIONS) {
     $
       y_#(h * k)
-    = #xs.at(k) + 1 + C e^#xs.at(k)
-    = #ys.at(k)
-    ==>
-    C
-    = (#ys.at(k) - #xs.at(k) - 1) / e^#xs.at(k)
-    = #cs.at(k),
-    quad
-    y_#(h * k)
-    = x + 1 + #cs.at(k) e^x
+      = #xs.at(k) + 1 + C e^#xs.at(k)
+      = #ys.at(k)
+      ==>
+      C
+      = (#ys.at(k) - #xs.at(k) - 1) / e^#xs.at(k)
+      = #cs.at(k),
+      quad
+      y_#(h * k)
+      = x + 1 + #cs.at(k) e^x
     $
   }
   align(
@@ -163,12 +197,12 @@ $quad x_k = x_0 + h k,
       import plot: *
       cetz.draw.set-style(
         axes: themed-axes-grid,
-        legend: themed-legend,
+        legend: hw07-legend,
       )
       plot(
         plot-style: themed-plot-base,
-          name: "plt",
-        size: (15, 13),
+        name: "plt",
+        size: (16, 15),
         x-grid: true,
         x-label: $x$,
         x-tick-step: h,
@@ -177,19 +211,24 @@ $quad x_k = x_0 + h k,
         mark: "o",
         axis-style: "school-book",
         legend: "south",
-        for k in range(ITERATIONS) {
-          add-anchor("x" + str(k), (xs.at(k), ys.at(k)))
-          add(
-            yfs.map(f => f.code).at(k),
-            domain: (0, h * ITERATIONS),
-            style: (stroke: (dash: dashes.at(k), paint: theme.stroke)),
-            label: $space #if k == 0 {$y$} else {$y^*_#(h * k)$}$,
-          )
-          add(
-            xx => (xx - h * k) * f(xs.at(k), ys.at(k)) + ys.at(k),
-            domain: (h * k, h * (k + 1)),
-            style: themed-stroke("dashed"),
-          )
+        {
+          for k in range(ITERATIONS) {
+            add-anchor("x" + str(k), (xs.at(k), ys.at(k)))
+            add(
+              yfs.map(f => f.code).at(k),
+              domain: (0, h * ITERATIONS),
+              style: hw07-stroke(dashes.at(k)),
+              label: $space #if k == 0 { $y$ } else { $y^*_#(h * k)$ }$,
+            )
+          }
+          for k in range(ITERATIONS) {
+            add(
+              xx => (xx - h * k) * f(xs.at(k), ys.at(k)) + ys.at(k),
+              domain: (h * k, h * (k + 1)),
+              style: hw07-stroke("dashed"),
+              label: if k == 0 { $1$ } else { none },
+            )
+          }
         },
       )
       for k in range(1, ITERATIONS) {
@@ -209,7 +248,7 @@ $quad x_k = x_0 + h k,
     import plot: *
     plot(
       plot-style: themed-plot-base,
-          name: "plt1",
+      name: "plt1",
       size: (17, 15),
       x-grid: true,
       x-tick-step: h,
@@ -220,12 +259,12 @@ $quad x_k = x_0 + h k,
         add(
           yfs.at(k),
           domain: (0, h * ITERATIONS),
-          style: (stroke: (dash: dashes.at(k), paint: theme.stroke)),
+          style: hw07-stroke(dashes.at(k)),
         )
         add(
           slope.with(xs, ys, k),
           domain: (0, h * ITERATIONS),
-          style: (stroke: (dash: annot-dashes.at(k), paint: theme.stroke)),
+          style: hw07-stroke(annot-dashes.at(k)),
         )
       },
     )
@@ -253,8 +292,8 @@ $quad x_k = x_0 + h k,
 
 Первая модификация метода:
 $quad x_(k + 1 / 2) = x_0 + h / 2 k,
-  quad y_(k + 1 / 2) = y_k + h / 2 f(x_k, y_k),
-  quad y_(k + 1) = y_k + h f(x_(k + 1 / 2), y_(k + 1 / 2)).$
+quad y_(k + 1 / 2) = y_k + h / 2 f(x_k, y_k),
+quad y_(k + 1) = y_k + h f(x_(k + 1 / 2), y_(k + 1 / 2)).$
 
 #let x2 = range(ITERATIONS + 1).map(k => xs.at(k) + 1 / 2 * h)
 #let y2 = range(ITERATIONS + 1).map(k => ys.at(k) + h / 2 * f(xs.at(k), ys.at(k)))
@@ -285,7 +324,7 @@ $quad x_(k + 1 / 2) = x_0 + h / 2 k,
           xs.map(y).at(k),
           calc.abs(ys.at(k) - y(xs.at(k))),
         ).map(a => $#a$))
-        .flatten()
+        .flatten(),
     ),
   )
   for k in range(ITERATIONS) {
@@ -298,9 +337,7 @@ $quad x_(k + 1 / 2) = x_0 + h / 2 k,
       = (#y2.at(k) - #x2.at(k) - 1) / e^#x2.at(k)
       = #cs.at(k) e^(-#x2.at(k)),
       \ \
-      #hl($
-        y_#x2.at(k) = x + 1 + #cs.at(k) e^(x - #x2.at(k))
-      $)
+      #hl($ y_#x2.at(k) = x + 1 + #cs.at(k) e^(x - #x2.at(k)) $)
     $
   }
 }
@@ -311,12 +348,12 @@ $quad x_(k + 1 / 2) = x_0 + h / 2 k,
     import plot: *
     let labels = (
       $y^*_k$,
-      ..range(ITERATIONS).map(k => $y_#(h * (k + 1/2))$),
+      ..range(ITERATIONS).map(k => $y_#(h * (k + 1 / 2))$),
     ).map(strong)
     plot(
       plot-style: themed-plot-base,
-          name: "plt2",
-      size: (17, 15),
+      name: "plt2",
+      size: (17, 19),
       x-grid: true,
       x-tick-step: h / 2,
       y-grid: true,
@@ -331,7 +368,7 @@ $quad x_(k + 1 / 2) = x_0 + h / 2 k,
             } else {
               (h * (k - 1), h * k)
             },
-            style: (stroke: (dash: dashes.at(k), paint: theme.stroke)),
+            style: hw07-stroke(dashes.at(k)),
             label: labels.at(k),
           )
         }
@@ -341,21 +378,21 @@ $quad x_(k + 1 / 2) = x_0 + h / 2 k,
             x => (x - a) * f(xs.at(k), ys.at(k)) + ys.at(k),
             domain: (a, a + h / 2),
             label: $1$,
-            style: themed-stroke(annot-dashes.at(0)),
+            style: hw07-stroke(annot-dashes.at(0)),
           )
           let a = h * k + h / 2
           add(
             x => (x - a) * dyfs.at(k)(x2.at(k)) + y2.at(k),
             domain: (a, a + h / 2),
             label: $2$,
-            style: themed-stroke(annot-dashes.at(1)),
+            style: hw07-stroke(annot-dashes.at(1)),
           )
           let a = h * k
           add(
             x => (x - a) * dyfs.at(k)(x2.at(k)) + ys.at(k),
             domain: (a, a + h),
             label: $3$,
-            style: themed-stroke(annot-dashes.at(2)),
+            style: hw07-stroke(annot-dashes.at(2)),
           )
         }
       },
@@ -418,9 +455,7 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
     = (#ys.at(k) - #xs.at(k) - 1) / e^#xs.at(k)
     = #cs.at(k) e^(-#xs.at(k)),
     \ \
-    #hl($
-      y_#(h * k) = x + 1 + #cs.at(k) e^(x - #k)
-    $)
+    #hl($ y_#(h * k) = x + 1 + #cs.at(k) e^(x - #k) $)
   $
 }
 #align(
@@ -429,8 +464,8 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
     import plot: *
     plot(
       plot-style: themed-plot-base,
-          name: "plt",
-      size: (17, 15),
+      name: "plt",
+      size: (17, 19),
       x-grid: true,
       x-tick-step: h / 2,
       y-grid: true,
@@ -440,7 +475,7 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
         add(
           y,
           domain: (0, h * ITERATIONS + h / 2),
-          style: (stroke: (dash: dashes.at(0), paint: theme.stroke)),
+          style: hw07-stroke(dashes.at(0)),
           label: $y$,
         )
         let y = y0 + h * f(x0, y0)
@@ -449,31 +484,31 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
         add(
           x => x + 1 + c * calc.exp(x),
           domain: (0, h * ITERATIONS + h / 2),
-          style: (stroke: (dash: dashes.at(0), paint: theme.stroke)),
+          style: hw07-stroke(dashes.at(0)),
           label: $x + 1 + #(c * calc.e) e^(x - 1)$,
         )
         add(
           x => x * ang + y0,
           domain: (0, h + h / 2),
-          style: themed-stroke(annot-dashes.at(2)),
+          style: hw07-stroke(annot-dashes.at(2)),
           label: $3$,
         )
         add(
           slope.with(xs, ys, 0),
           domain: (0, h + h / 2),
-          style: themed-stroke(annot-dashes.at(3)),
+          style: hw07-stroke(annot-dashes.at(3)),
           label: $4$,
         )
         add(
           x => (x - h) * ang / 0.6 + 2 + c * calc.e,
           domain: (0, h + h / 2),
-          style: themed-stroke(annot-dashes.at(4)),
+          style: hw07-stroke(annot-dashes.at(4)),
           label: $5$,
         )
         add(
           x => (x - h) * ang + 2 + c * calc.e,
           domain: (0, h + h / 2),
-          style: themed-stroke(annot-dashes.at(5)),
+          style: hw07-stroke(annot-dashes.at(5)),
           label: $6$,
         )
         add-anchor("x1", (1, 50))
