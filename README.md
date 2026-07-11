@@ -19,7 +19,7 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 
 ## Worksheets
 
-> Note: PDFs are available in the [latest workflow run](https://github.com/F1uctus/typst-numerica/actions/runs/29155961539)
+> Note: PDFs are available in the [latest workflow run](https://github.com/F1uctus/typst-numerica/actions/runs/29156895733)
 
 ### worksheets
 
@@ -105,18 +105,6 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 </picture>
 
 > [Download PDF](worksheets/hw06.pdf)
-</details>
-
-<details open>
-<summary><b>worksheets/hw07-1.typ</b></summary>
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw07-1-preview-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw07-1-preview-light.svg">
-  <img alt="worksheets/hw07-1.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw07-1-preview-light.svg">
-</picture>
-
-> [Download PDF](worksheets/hw07-1.pdf)
 </details>
 
 <details open>
