@@ -19,14 +19,18 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 
 ## Worksheets
 
-> Note: PDFs are available in the [latest workflow run](https://github.com/F1uctus/typst-numerica/actions/runs/29115648036)
+> Note: PDFs are available in the [latest workflow run](https://github.com/F1uctus/typst-numerica/actions/runs/29147172804)
 
 ### worksheets
 
 <details open>
 <summary><b>worksheets/cw01.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_cw01-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_cw01-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_cw01-preview-light.svg">
+  <img alt="worksheets/cw01.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_cw01-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/cw01.pdf)
 </details>
@@ -34,7 +38,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw01.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw01-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw01-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw01-preview-light.svg">
+  <img alt="worksheets/hw01.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw01-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw01.pdf)
 </details>
@@ -42,7 +50,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw02.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw02-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw02-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw02-preview-light.svg">
+  <img alt="worksheets/hw02.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw02-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw02.pdf)
 </details>
@@ -50,7 +62,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw03.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw03-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw03-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw03-preview-light.svg">
+  <img alt="worksheets/hw03.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw03-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw03.pdf)
 </details>
@@ -58,7 +74,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw04.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw04-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw04-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw04-preview-light.svg">
+  <img alt="worksheets/hw04.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw04-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw04.pdf)
 </details>
@@ -66,7 +86,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw05.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw05-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw05-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw05-preview-light.svg">
+  <img alt="worksheets/hw05.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw05-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw05.pdf)
 </details>
@@ -74,15 +98,35 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw06.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw06-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw06-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw06-preview-light.svg">
+  <img alt="worksheets/hw06.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw06-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw06.pdf)
 </details>
 
 <details open>
+<summary><b>worksheets/hw07-1.typ</b></summary>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw07-1-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw07-1-preview-light.svg">
+  <img alt="worksheets/hw07-1.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw07-1-preview-light.svg">
+</picture>
+
+> [Download PDF](worksheets/hw07-1.pdf)
+</details>
+
+<details open>
 <summary><b>worksheets/hw07.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw07-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw07-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw07-preview-light.svg">
+  <img alt="worksheets/hw07.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw07-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw07.pdf)
 </details>
@@ -90,7 +134,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw08.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw08-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw08-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw08-preview-light.svg">
+  <img alt="worksheets/hw08.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw08-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw08.pdf)
 </details>
@@ -98,7 +146,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw09.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw09-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw09-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw09-preview-light.svg">
+  <img alt="worksheets/hw09.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw09-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw09.pdf)
 </details>
@@ -106,7 +158,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw10.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw10-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw10-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw10-preview-light.svg">
+  <img alt="worksheets/hw10.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw10-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw10.pdf)
 </details>
@@ -114,7 +170,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw11.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw11-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw11-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw11-preview-light.svg">
+  <img alt="worksheets/hw11.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw11-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw11.pdf)
 </details>
@@ -122,7 +182,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw12.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw12-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw12-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw12-preview-light.svg">
+  <img alt="worksheets/hw12.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw12-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw12.pdf)
 </details>
@@ -130,7 +194,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/hw13.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw13-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw13-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw13-preview-light.svg">
+  <img alt="worksheets/hw13.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_hw13-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/hw13.pdf)
 </details>
@@ -140,7 +208,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/lab/lab01.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab01-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab01-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab01-preview-light.svg">
+  <img alt="worksheets/lab/lab01.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab01-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/lab/lab01.pdf)
 </details>
@@ -148,7 +220,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/lab/lab02.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab02-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab02-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab02-preview-light.svg">
+  <img alt="worksheets/lab/lab02.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab02-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/lab/lab02.pdf)
 </details>
@@ -156,7 +232,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/lab/lab03.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab03-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab03-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab03-preview-light.svg">
+  <img alt="worksheets/lab/lab03.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab03-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/lab/lab03.pdf)
 </details>
@@ -164,7 +244,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/lab/lab04.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab04-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab04-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab04-preview-light.svg">
+  <img alt="worksheets/lab/lab04.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab04-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/lab/lab04.pdf)
 </details>
@@ -172,7 +256,11 @@ Build: `typst compile worksheets/hw01.typ --root . --package-path packages`
 <details open>
 <summary><b>worksheets/lab/lab05.typ</b></summary>
 
-![Preview](https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab05-preview.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab05-preview-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab05-preview-light.svg">
+  <img alt="worksheets/lab/lab05.typ" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/worksheets_lab_lab05-preview-light.svg">
+</picture>
 
 > [Download PDF](worksheets/lab/lab05.pdf)
 </details>
