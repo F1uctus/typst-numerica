@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
-#import "../src/theme.typ": theme
+#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-stroke
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -81,7 +81,7 @@
         x-format: tick-fmt,
         y-format: tick-fmt,
         {
-          add(f, domain: (a, b))
+          add(f, domain: (a, b), style: themed-stroke("solid"))
           for e in eqs {
             add(e, domain: (a, b), style: (stroke: (dash: "dotted", paint: theme.plot-stroke, thickness: 0.2mm)))
           }
@@ -145,25 +145,7 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
         cetz.canvas({
           import plot: *
           cetz.draw.set-style(
-            axes: (
-              stroke: (paint: theme.plot-stroke, dash: "solid", thickness: 0.15mm),
-              x: (
-                overshoot: 1,
-                tick: (
-                  stroke: none,
-                  label: (offset: 0.25, anchor: "south"),
-                ),
-                grid: (stroke: theme.stroke-muted + 0.1mm),
-              ),
-              y: (
-                overshoot: 0.2,
-                tick: (
-                  stroke: none,
-                  label: (offset: -0.6),
-                ),
-                grid: (stroke: theme.stroke-muted + 0.1mm),
-              ),
-            ),
+            axes: themed-axes-grid,
           )
           plot(
             name: "p",
@@ -181,19 +163,19 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
               add(
                 f,
                 domain: (a, b),
-                style: (stroke: (dash: "solid")),
+                style: themed-stroke("solid"),
               )
               add-anchor("f0", (a, f(a)))
               add(
                 d1f,
                 domain: (a, b),
-                style: (stroke: (dash: "dashed")),
+                style: themed-stroke("dashed"),
               )
               add-anchor("f1", (a, d1f(a)))
               add(
                 d2f,
                 domain: (a, b),
-                style: (stroke: (dash: "dotted")),
+                style: themed-stroke("dotted"),
               )
               add-anchor("f2", (a, d2f(a)))
             },
@@ -326,19 +308,19 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
               add(
                 f,
                 domain: (a, b),
-                style: (stroke: (dash: "solid")),
+                style: themed-stroke("solid"),
               )
               add-anchor("f0", (b, f(b)))
               add(
                 d1f,
                 domain: (a, b),
-                style: (stroke: (dash: "dashed")),
+                style: themed-stroke("dashed"),
               )
               add-anchor("f1", (a, d1f(a)))
               add(
                 d2f,
                 domain: (a, b),
-                style: (stroke: (dash: "dotted")),
+                style: themed-stroke("dotted"),
               )
               add-anchor("f2", (a, d2f(a)))
             },
@@ -473,19 +455,19 @@ $ f'(x) = 3x^2 + 4x - 3, quad f''(x) = 6x + 4. $
               add(
                 f,
                 domain: (a, b),
-                style: (stroke: (dash: "solid")),
+                style: themed-stroke("solid"),
               )
               add-anchor("f0", (b, f(b)))
               add(
                 d1f,
                 domain: (a, b),
-                style: (stroke: (dash: "dashed")),
+                style: themed-stroke("dashed"),
               )
               add-anchor("f1", (a, d1f(a)))
               add(
                 d2f,
                 domain: (a, b),
-                style: (stroke: (dash: "dotted")),
+                style: themed-stroke("dotted"),
               )
               add-anchor("f2", (a, d2f(a)))
             },
@@ -650,19 +632,19 @@ $
             add(
               f,
               domain: (a, b),
-              style: (stroke: (dash: "solid")),
+              style: themed-stroke("solid"),
             )
             add-anchor("f0", (a, f(a)))
             add(
               d1f,
               domain: (a, b),
-              style: (stroke: (dash: "dashed")),
+              style: themed-stroke("dashed"),
             )
             add-anchor("f1", (a, d1f(a)))
             add(
               d2f,
               domain: (a, b),
-              style: (stroke: (dash: "dotted")),
+              style: themed-stroke("dotted"),
             )
             add-anchor("f2", (a, d2f(a)))
           },
@@ -737,7 +719,7 @@ $
         x-format: tick-fmt,
         y-format: tick-fmt,
         {
-          add(f, domain: (-0.5, 0.5))
+          add(f, domain: (-0.5, 0.5), style: themed-stroke("solid"))
           add-anchor("x0", (x0, f(x0)))
           add-anchor("x0axis", (x0, 0))
           add-anchor("x1", (x1, f(x1)))

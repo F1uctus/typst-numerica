@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "@preview/diverential:0.2.0": *
-#import "../src/theme.typ": theme
+#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-stroke
 
 
 #let SURNAME_NAME = "Никитин Илья"
@@ -55,8 +55,8 @@
 === Задание 1
 #let PREC = 10
 #let ITERATIONS = 1
-#let dashes = ("solid", "dashed", "dash-dotted", "dotted")
-#let colors = (blue, red, yellow, purple)
+#let dashes = ("solid", "densely-dotted", "dash-dotted", "dotted")
+#let annot-dashes = ("dashed", "dotted", "dash-dotted", "densely-dotted", "solid", "densely-dashed")
 #let f(x, y) = y - x
 #let y0 = n + 4
 #let h = 1
@@ -70,12 +70,7 @@
       stroke: (dash: "dotted", paint: theme.plot-stroke),
       tick: (stroke: theme.plot-stroke + .5pt),
     ),
-    legend: (
-      stroke: none,
-      orientation: ltr,
-      item: (spacing: 3em),
-      scale: 80%,
-    ),
+    legend: themed-legend,
   )
   body
 })
@@ -174,12 +169,7 @@ $quad x_k = x_0 + h k,
           stroke: (dash: "dotted", paint: theme.plot-stroke),
           tick: (stroke: theme.plot-stroke + .5pt),
         ),
-        legend: (
-          stroke: none,
-          orientation: ltr,
-          item: (spacing: 3em),
-          scale: 80%,
-        ),
+        legend: themed-legend,
       )
       plot(
         name: "plt",
@@ -197,12 +187,13 @@ $quad x_k = x_0 + h k,
           add(
             yfs.map(f => f.code).at(k),
             domain: (0, h * ITERATIONS),
-            style: (stroke: (dash: dashes.at(k))),
+            style: (stroke: (dash: dashes.at(k), paint: theme.stroke)),
             label: $space #if k == 0 {$y$} else {$y^*_#(h * k)$}$,
           )
           add(
             xx => (xx - h * k) * f(xs.at(k), ys.at(k)) + ys.at(k),
             domain: (h * k, h * (k + 1)),
+            style: themed-stroke("dashed"),
           )
         },
       )
@@ -238,7 +229,7 @@ $quad x_k = x_0 + h k,
         add(
           slope.with(xs, ys, k),
           domain: (0, h * ITERATIONS),
-          style: (stroke: (dash: dashes.at(k), paint: colors.at(1 - k))),
+          style: (stroke: (dash: annot-dashes.at(k), paint: theme.stroke)),
         )
       },
     )
@@ -353,21 +344,21 @@ $quad x_(k + 1 / 2) = x_0 + h / 2 k,
             x => (x - a) * f(xs.at(k), ys.at(k)) + ys.at(k),
             domain: (a, a + h / 2),
             label: $1$,
-            style: (stroke: red),
+            style: themed-stroke(annot-dashes.at(0)),
           )
           let a = h * k + h / 2
           add(
             x => (x - a) * dyfs.at(k)(x2.at(k)) + y2.at(k),
             domain: (a, a + h / 2),
             label: $2$,
-            style: (stroke: green),
+            style: themed-stroke(annot-dashes.at(1)),
           )
           let a = h * k
           add(
             x => (x - a) * dyfs.at(k)(x2.at(k)) + ys.at(k),
             domain: (a, a + h),
             label: $3$,
-            style: (stroke: purple),
+            style: themed-stroke(annot-dashes.at(2)),
           )
         }
       },
@@ -466,25 +457,25 @@ $quad y_(k + 1) = y_k + h / 2 (f(x_k, y_k) + f(x_(k+1), y_k + h f(x_k, y_k))).$
         add(
           x => x * ang + y0,
           domain: (0, h + h / 2),
-          style: (stroke: (paint: green)),
+          style: themed-stroke(annot-dashes.at(2)),
           label: $3$,
         )
         add(
           slope.with(xs, ys, 0),
           domain: (0, h + h / 2),
-          style: (stroke: (paint: colors.at(0))),
+          style: themed-stroke(annot-dashes.at(3)),
           label: $4$,
         )
         add(
           x => (x - h) * ang / 0.6 + 2 + c * calc.e,
           domain: (0, h + h / 2),
-          style: (stroke: (paint: colors.at(3))),
+          style: themed-stroke(annot-dashes.at(4)),
           label: $5$,
         )
         add(
           x => (x - h) * ang + 2 + c * calc.e,
           domain: (0, h + h / 2),
-          style: (stroke: (paint: colors.at(1))),
+          style: themed-stroke(annot-dashes.at(5)),
           label: $6$,
         )
         add-anchor("x1", (1, 50))

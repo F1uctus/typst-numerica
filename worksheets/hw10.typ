@@ -69,7 +69,7 @@ $
     pos: pos,
     draw: {
       draw.content((0, 40), $#num$, anchor: "south", padding: (bottom: 0.4))
-      draw.line((90deg, -5), (90deg, +5))
+      draw.line((90deg, -5), (90deg, +5), stroke: theme.stroke)
       draw.content((0, 0), $y_#num$, anchor: "south", padding: (bottom: 0.4))
       draw.content(
         (0, 0),
@@ -91,6 +91,7 @@ $
     edge(
       (0, 0.1),
       (12, 0.1),
+      stroke: theme.stroke,
       marks: (
         tick(0, 0.065),
         tick(1, 0.354),
@@ -248,7 +249,7 @@ $
     pos: pos,
     draw: {
       draw.content((0, 40), $#num$, anchor: "south", padding: (bottom: 0.4))
-      draw.line((90deg, -5), (90deg, +5))
+      draw.line((90deg, -5), (90deg, +5), stroke: theme.stroke)
       draw.content((0, 0), $y_#num$, anchor: "south", padding: (bottom: 0.4))
       draw.content(
         (0, 0),
@@ -270,6 +271,7 @@ $
     edge(
       (0, 0.1),
       (12, 0.1),
+      stroke: theme.stroke,
       marks: (
         tick(0, 0.065),
         tick(1, 0.354),

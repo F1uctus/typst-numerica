@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/cetz-plot:0.1.1": plot, chart
-#import "../../src/theme.typ": theme
+#import "../../src/theme.typ": theme, themed-axes-grid, themed-legend
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -189,6 +189,10 @@ $ mu approx #calc.round(mnum, digits: 15)$.
 #align(
   center,
   cetz.canvas({
+    cetz.draw.set-style(
+      axes: themed-axes-grid,
+      legend: themed-legend,
+    )
     plot.plot(
       size: (PLOT_SCALE * 2, PLOT_SCALE * 2),
       x-label: $x$,

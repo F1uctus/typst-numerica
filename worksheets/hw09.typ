@@ -51,7 +51,12 @@
 ) = context {
   exercises.step()
   showybox(
-    frame: (inset: 4pt, thickness: 0.1pt),
+    frame: (
+      inset: 4pt,
+      thickness: 0.1pt,
+      border-color: theme.stroke-muted,
+      body-color: theme.bg.transparentize(100%),
+    ),
     breakable: true,
     grid(
       columns: (auto, 1fr),

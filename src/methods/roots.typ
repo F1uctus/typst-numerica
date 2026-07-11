@@ -12,7 +12,7 @@
 #import "../eval.typ": evaluate
 #import "../render.typ": render, render-num
 #import "../diff.typ": d
-#import "../theme.typ": theme
+#import "../theme.typ": theme, themed-axes, themed-axes-grid, themed-stroke
 
 // --- iteration ----------------------------------------------------------------
 
@@ -187,10 +187,7 @@
   let fplot = cetz.canvas({
     import plot: *
     cetz.draw.set-style(
-      axes: (
-        stroke: (dash: "dotted", paint: theme.plot-stroke),
-        tick: (stroke: theme.plot-stroke + 0.5pt),
-      ),
+      axes: themed-axes-grid,
     )
     plot(
       name: "p",
@@ -204,11 +201,11 @@
       x-format: tick-fmt,
       y-format: tick-fmt,
       {
-        add(v => at(f, v), domain: (a, b), style: (stroke: (dash: "solid")))
+        add(v => at(f, v), domain: (a, b), style: themed-stroke("solid"))
         add-anchor("f0", (b, fb))
-        add(v => at(df, v), domain: (a, b), style: (stroke: (dash: "dashed")))
+        add(v => at(df, v), domain: (a, b), style: themed-stroke("dashed"))
         add-anchor("f1", (a, dfa))
-        add(v => at(d2f, v), domain: (a, b), style: (stroke: (dash: "dotted")))
+        add(v => at(d2f, v), domain: (a, b), style: themed-stroke("dotted"))
         add-anchor("f2", (a, d2fa))
       },
     )

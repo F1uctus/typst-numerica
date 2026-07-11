@@ -3,7 +3,7 @@
 #import "@preview/diverential:0.3.0": dvpc
 #import "@preview/physica:0.9.8": dv, pdv, evaluated
 #import "@preview/numty:0.0.5" as nt
-#import "../src/theme.typ": theme
+#import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-stroke
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -99,10 +99,7 @@ $
       cetz.canvas({
         import plot: *
         cetz.draw.set-style(
-          axes: (
-            stroke: (dash: "dotted", paint: theme.plot-stroke),
-            tick: (stroke: theme.plot-stroke + .5pt),
-          ),
+          axes: themed-axes-grid,
         )
         plot(
           name: "p",
@@ -120,19 +117,19 @@ $
             add(
               f.code,
               domain: (0, 2),
-              style: (stroke: (dash: "solid")),
+              style: themed-stroke("solid"),
             )
             add-anchor("f0", (b, (f.code)(b)))
             add(
               d1f.code,
               domain: (0, 2),
-              style: (stroke: (dash: "dashed")),
+              style: themed-stroke("dashed"),
             )
             add-anchor("f1", (a, (d1f.code)(a)))
             add(
               d2f.code,
               domain: (0, 2),
-              style: (stroke: (dash: "dotted")),
+              style: themed-stroke("dotted"),
             )
             add-anchor("f2", (a, (d2f.code)(a)))
           },
@@ -377,7 +374,7 @@ $
   import plot: *
   cetz.draw.set-style(
     axes: (
-      stroke: (theme.plot-stroke + .5pt),
+      stroke: themed-axes.stroke,
       x: (
         tick: (
           label: (anchor: "south-west", offset: -1em),
@@ -387,7 +384,7 @@ $
       y: (
         overshoot: 0.2,
         grid: (stroke: theme.stroke-muted + 0.1mm),
-      )
+      ),
     ),
   )
   plot(
