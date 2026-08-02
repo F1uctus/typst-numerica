@@ -119,16 +119,23 @@ jobs:
           git push -qf "https://x-access-token:$GITHUB_TOKEN@github.com/${{ github.repository }}.git" previews
 
       # Fragments are named after their path, so sorting them restores
-      # document order.
+      # document order. The action caps open spoilers per document, and each
+      # worksheet is its own call, so the cap across worksheets lands here.
       - name: Splice README
+        env:
+          OPEN: "3"
         run: |
           python3 - <<'EOF'
+          import os
           from pathlib import Path
 
-          section = [
-              md.read_text(encoding="utf-8").strip() + "\n"
-              for md in sorted(Path("fragments/previews").glob("*.md"))
-          ]
+          open_limit = int(os.environ["OPEN"])
+          section = []
+          for index, md in enumerate(sorted(Path("fragments/previews").glob("*.md"))):
+              text = md.read_text(encoding="utf-8").strip()
+              if index >= open_limit:
+                  text = text.replace("<details open>", "<details>", 1)
+              section.append(text + "\n")
 
           readme = Path("README.md")
           text = readme.read_text(encoding="utf-8")
