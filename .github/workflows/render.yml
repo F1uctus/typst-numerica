@@ -57,6 +57,9 @@ jobs:
         with:
           file: ${{ matrix.file }}
           title-label: preview-title
+          # Каждый лист -- один спойлер: заголовки заданий и так видны на
+          # самих страницах, вложенные спойлеры только добавляли уровень.
+          group: flat
           open-depth: 1
           media: prefers-color-scheme=light,dark
           base-url: https://raw.githubusercontent.com/${{ github.repository }}/previews
@@ -115,20 +118,17 @@ jobs:
           git commit -qm "Previews for ${{ github.sha }}"
           git push -qf "https://x-access-token:$GITHUB_TOKEN@github.com/${{ github.repository }}.git" previews
 
-      # Fragments are named after their path, so sorting them restores document
-      # order and the directory headings the README carried before.
+      # Fragments are named after their path, so sorting them restores
+      # document order.
       - name: Splice README
         run: |
           python3 - <<'EOF'
           from pathlib import Path
 
-          section, group = [], None
-          for md in sorted(Path("fragments/previews").glob("*.md")):
-              directory = md.stem.rsplit("_", 1)[0].replace("_", "/")
-              if directory != group:
-                  section.append(f"### {directory}\n")
-                  group = directory
-              section.append(md.read_text(encoding="utf-8").strip() + "\n")
+          section = [
+              md.read_text(encoding="utf-8").strip() + "\n"
+              for md in sorted(Path("fragments/previews").glob("*.md"))
+          ]
 
           readme = Path("README.md")
           text = readme.read_text(encoding="utf-8")
