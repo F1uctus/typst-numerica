@@ -123,7 +123,7 @@ jobs:
       # worksheet is its own call, so the cap across worksheets lands here.
       - name: Splice README
         env:
-          OPEN: "3"
+          OPEN: "2"
         run: |
           python3 - <<'EOF'
           import os
