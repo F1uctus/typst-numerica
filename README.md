@@ -80,7 +80,7 @@ follow the GitHub theme.
 
 </details>
 
-<details open>
+<details>
 <summary><b>ДЗ.02. Численные методы решения нелинейных уравнений.</b></summary>
 
 <picture>
