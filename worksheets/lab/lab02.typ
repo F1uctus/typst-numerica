@@ -3,6 +3,9 @@
 #import "@preview/numty:0.0.5" as nt
 #import "../../src/theme.typ": theme, themed-axes-grid, themed-legend, themed-line-dashed, themed-line-solid, themed-plot-base, themed-stroke
 
+#let TITLE = "ЛР.02."
+#metadata(TITLE)<preview-title>
+
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 
@@ -144,7 +147,7 @@
   width: 50em,
   margin: (top: 3em, rest: 0.5cm),
   header: [
-    ЛР.02.
+    #TITLE
     #h(1fr)
     #SURNAME_NAME,
     #h(1pt)

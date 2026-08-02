@@ -2,6 +2,9 @@
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "../../src/theme.typ": theme, themed-axes-grid, themed-legend, themed-plot-base
 
+#let TITLE = "ЛР.04."
+#metadata(TITLE)<preview-title>
+
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 #let n = 21

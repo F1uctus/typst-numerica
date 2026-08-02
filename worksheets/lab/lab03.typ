@@ -3,6 +3,9 @@
 #import "@preview/physica:0.9.5": dv
 #import "../../src/theme.typ": theme, themed-axes-grid, themed-plot-base, themed-stroke
 
+#let TITLE = "ЛР.03."
+#metadata(TITLE)<preview-title>
+
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 

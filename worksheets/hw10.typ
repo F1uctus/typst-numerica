@@ -5,6 +5,9 @@
 #import "@preview/fletcher:0.5.7": diagram, node, edge
 #import "../src/theme.typ": theme
 
+#let TITLE = "ДЗ.10. Построение разностной схемы краевой задачи для ЛОДУ 2 порядка."
+#metadata(TITLE)<preview-title>
+
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -17,7 +20,7 @@
   margin: (top: 3em, rest: 0.8cm),
   numbering: "1 / 1",
   header: [
-    ДЗ.10. Построение разностной схемы краевой задачи для ЛОДУ 2 порядка.
+    #TITLE
     #h(1fr)
     #eval(mode: "math", "n = " + repr(n))
     #h(1fr)

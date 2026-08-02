@@ -1,5 +1,6 @@
-#let preview-args = json(bytes(sys.inputs.at("x-preview", default: "{}")))
-#let preview-theme = preview-args.at("theme", default: "light")
+// Тема берётся из того же имени, по которому браузер выбирает <source>:
+// typst-readme-preview передаёт `--input prefers-color-scheme=<значение>`.
+#let preview-theme = sys.inputs.at("prefers-color-scheme", default: "light")
 
 #let theme = (
   text: black,

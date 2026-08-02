@@ -13,7 +13,72 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      worksheets: ${{ steps.list.outputs.worksheets }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: |
+          find worksheets -name '*.typ' -type f | sort |
+            jq -R -s -c 'split("\n") | map(select(length > 0))' |
+            sed 's/^/worksheets=/' >> "$GITHUB_OUTPUT"
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: typst-community/setup-typst@v4
+      - name: Run library tests
+        run: |
+          find tests -name "*.typ" -type f | while read -r file; do
+            typst compile "$file" - --format pdf --root . --package-path packages > /dev/null
+          done
+
+  # One action call per worksheet: the action renders a single document, so the
+  # fan-out lives here, where ordering and grouping are decided.
   render:
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        file: ${{ fromJson(needs.discover.outputs.worksheets) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: typst-community/setup-typst@v4
+
+      - name: Compile PDF
+        run: typst compile "${{ matrix.file }}" --root . --package-path packages
+
+      - id: preview
+        uses: F1uctus/typst-readme-preview@v2
+        with:
+          file: ${{ matrix.file }}
+          title-label: preview-title
+          open-depth: 1
+          media: prefers-color-scheme=light,dark
+          base-url: https://raw.githubusercontent.com/${{ github.repository }}/previews
+          typst-args: --root . --package-path packages
+
+      - name: Name the fragment after its path
+        run: |
+          slug=$(echo '${{ matrix.file }}' | sed 's|/|_|g; s|\.typ$||')
+          mv previews/preview.md "previews/$slug.md"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preview-${{ strategy.job-index }}
+          path: |
+            previews/*.svg
+            previews/*.md
+            worksheets/**/*.pdf
+          retention-days: 1
+
+  publish:
+    needs: [render, test]
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -24,135 +89,68 @@ jobs:
         with:
           fetch-depth: 0
 
-      # - name: Check Spelling
-      #   uses: check-spelling/check-spelling@v0.0.25
-
-      - name: Cache Typst
-        uses: actions/cache@v4
+      - uses: actions/download-artifact@v4
         with:
-          path: ~/.cache/typst
-          key: ${{ runner.os }}-typst-${{ hashFiles('packages/**') }}
-          restore-keys: |
-            ${{ runner.os }}-typst-
-
-      - name: Install Typst
-        run: |
-          curl -L https://github.com/typst/typst/releases/download/v0.15.0/typst-x86_64-unknown-linux-musl.tar.xz | tar -xJf -
-          sudo mv typst-x86_64-unknown-linux-musl/typst /usr/local/bin/
-
-      - name: Run library tests
-        run: |
-          find tests -name "*.typ" -type f | while read -r file; do
-            typst compile "$file" - --format pdf --root . --package-path packages > /dev/null
-          done
-
-      - name: Compile Typst documents
-        run: |
-          find worksheets -name "*.typ" -type f | while read -r file; do
-            dir=$(dirname "$file")
-            base=$(basename "$file" .typ)
-            typst compile "$file" "$dir/$base.pdf" --jobs 1 --root . --package-path packages
-            typst compile "$file" "$dir/$base-preview-light.svg" --format svg --pages 1 --root . --package-path packages --input 'x-preview={"theme":"light"}'
-            typst compile "$file" "$dir/$base-preview-dark.svg" --format svg --pages 1 --root . --package-path packages --input 'x-preview={"theme":"dark"}'
-          done
+          pattern: preview-*
+          path: fragments
+          merge-multiple: true
 
       - name: Upload PDFs
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.run_id }}
-          path: "**/*.pdf"
+          path: fragments/worksheets/**/*.pdf
           retention-days: 7
-
-      - name: Prepare previews
-        run: |
-          mkdir -p previews
-          find . -name "*-preview-*.svg" -type f | while read -r file; do
-            name=$(echo "$file" | sed 's|^\./||' | sed 's|/|_|g')
-            cp "$file" "previews/$name"
-          done
 
       # Release assets are served as application/octet-stream, which browsers
       # refuse to render as SVG; raw.githubusercontent.com sets image/svg+xml.
       - name: Publish previews branch
-        if: github.event_name == 'push'
         run: |
-          cd previews
+          mkdir -p out && cp fragments/previews/*.svg out/
+          cd out
           git init -q -b previews
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add .
+          git add '*.svg'
           git commit -qm "Previews for ${{ github.sha }}"
           git push -qf "https://x-access-token:$GITHUB_TOKEN@github.com/${{ github.repository }}.git" previews
 
-      - name: Update README
+      # Fragments are named after their path, so sorting them restores document
+      # order and the directory headings the README carried before.
+      - name: Splice README
         run: |
-          {
-            echo "# numerica"
-            echo ""
-            echo "A homoiconic expression core + numerical-methods library in Typst:"
-            echo "one expression tree is evaluated (exactly over ℚ via a vendored"
-            echo "[peano](https://github.com/F1uctus/peano_typ) fork, or in floats),"
-            echo "rendered as math, reduced step by step with explanations, and"
-            echo "differentiated symbolically. Worksheets below state a problem as"
-            echo "data and generate the full worked solution."
-            echo ""
-            echo '```typst'
-            echo '#import "../src/lib.typ": *'
-            echo '#let f = from-math($f(x) = x^3 - 3 x^2 + 6 x - 5$)'
-            echo '#show-reduction(f, ctx: (x: 3), lang: "ru")   // full chain to f(3) = 13'
-            echo '#let df = d(f, "x")                           // 3x² − 6x + 6'
-            echo '#newton-history(f, 1, iterations: 5)          // exact ℚ iterations'
-            echo '```'
-            echo ""
-            echo "Build: \`typst compile worksheets/hw01.typ --root . --package-path packages\`"
-            echo ""
-            echo "## Worksheets"
-            echo ""
-            echo "> Note: PDFs are available in the [latest workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-            echo ""
+          python3 - <<'EOF'
+          from pathlib import Path
 
-            find worksheets -name "*.typ" -type f | sort | while read -r file; do
-              dir=$(dirname "$file" | sed 's|^\./||')
-              
-              if [ "$dir" != "." ] && [ "$dir" != "$last_dir" ]; then
-                echo "### $dir"
-                echo ""
-                last_dir="$dir"
-              fi
-              
-              rel_path=$(echo "$file" | sed 's|^\./||')
-              base="${file%.typ}"
-              pdf="${base}.pdf"
-              preview_light=$(echo "${base}-preview-light.svg" | sed 's|^\./||' | sed 's|/|_|g')
-              preview_dark=$(echo "${base}-preview-dark.svg" | sed 's|^\./||' | sed 's|/|_|g')
+          section, group = [], None
+          for md in sorted(Path("fragments/previews").glob("*.md")):
+              directory = md.stem.rsplit("_", 1)[0].replace("_", "/")
+              if directory != group:
+                  section.append(f"### {directory}\n")
+                  group = directory
+              section.append(md.read_text(encoding="utf-8").strip() + "\n")
 
-              if [ -f "${base}-preview-light.svg" ] && [ -f "${base}-preview-dark.svg" ]; then
-                echo "<details open>"
-                echo "<summary><b>$rel_path</b></summary>"
-                echo ""
-                echo "<picture>"
-                echo "  <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://raw.githubusercontent.com/${{ github.repository }}/previews/$preview_dark\">"
-                echo "  <source media=\"(prefers-color-scheme: light)\" srcset=\"https://raw.githubusercontent.com/${{ github.repository }}/previews/$preview_light\">"
-                echo "  <img alt=\"$rel_path\" src=\"https://raw.githubusercontent.com/${{ github.repository }}/previews/$preview_light\">"
-                echo "</picture>"
-                echo ""
-                echo "> [Download PDF]($pdf)"
-                echo "</details>"
-                echo ""
-              fi
-            done
-          } > README.md
+          readme = Path("README.md")
+          text = readme.read_text(encoding="utf-8")
+          a = text.index("<!-- preview:begin -->") + len("<!-- preview:begin -->")
+          b = text.index("<!-- preview:end -->")
+          body = "\n".join(section).strip()
+          readme.write_text(f"{text[:a]}\n\n{body}\n\n{text[b:]}", encoding="utf-8")
+          EOF
 
-      - name: Commit changes
-        if: github.event_name == 'push'
+      - name: Commit README
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git fetch origin main
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git fetch -q origin main
           if [ "$(git rev-parse origin/main)" != "${{ github.sha }}" ]; then
             echo "main moved past ${{ github.sha }}; the newer run will refresh the README"
             exit 0
           fi
-          git add -f README.md
-          git commit -m "Update README" || exit 0
-          git push "https://$GITHUB_TOKEN@github.com/${{ github.repository }}.git" HEAD:main
+          git add README.md
+          if git diff --cached --quiet; then
+            echo "README unchanged"
+            exit 0
+          fi
+          git commit -qm "Update README preview"
+          git push -q "https://x-access-token:$GITHUB_TOKEN@github.com/${{ github.repository }}.git" HEAD:main

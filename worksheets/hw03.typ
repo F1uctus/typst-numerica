@@ -1,6 +1,9 @@
 #import "../src/lib.typ": *
 #import "../src/theme.typ": theme
 
+#let TITLE = "ДЗ.03. Численные методы решения нелинейных уравнений."
+#metadata(TITLE)<preview-title>
+
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 #let n = 21
@@ -11,7 +14,7 @@
   margin: (top: 3em, bottom: 1cm, rest: 0.5cm),
   numbering: "1 / 1",
   header: [
-    ДЗ.03. Численные методы решения нелинейных уравнений.
+    #TITLE
     #h(1fr)
     #eval(mode: "math", "n = " + repr(n))
     #h(1fr)

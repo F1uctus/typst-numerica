@@ -3,6 +3,9 @@
 #import "@preview/physica:0.9.5": *
 #import "../src/theme.typ": theme
 
+#let TITLE = "ДЗ.08. Метод Рунге-Кутты 4 порядка точности для решения ОДУ 1 порядка."
+#metadata(TITLE)<preview-title>
+
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -15,7 +18,7 @@
   margin: (top: 3em, rest: 0.8cm),
   numbering: "1 / 1",
   header: [
-    ДЗ.08. Метод Рунге-Кутты 4 порядка точности для решения ОДУ 1 порядка.
+    #TITLE
     #h(1fr)
     #eval(mode: "math", "n = " + repr(n))
     #h(1fr)

@@ -2,6 +2,9 @@
 #import "@preview/cetz-plot:0.1.1": plot, chart
 #import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-line-dashed, themed-line-dotted, themed-line-solid, themed-plot-base, themed-stroke
 
+#let TITLE = "ДЗ.02. Численные методы решения нелинейных уравнений."
+#metadata(TITLE)<preview-title>
+
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 #let n = 21
@@ -12,7 +15,7 @@
   margin: (top: 3em, bottom: 1cm, rest: 0.5cm),
   numbering: "1 / 1",
   header: [
-    ДЗ.02. Численные методы решения нелинейных уравнений.
+    #TITLE
     #h(1fr)
     #eval(mode: "math", "n = " + repr(n))
     #h(1fr)

@@ -4,6 +4,9 @@
 #import "@preview/showybox:2.0.4": showybox
 #import "../src/theme.typ": theme, themed-showybox-body, themed-showybox-frame
 
+#let TITLE = "ДЗ.09. Решение разностных уравнений."
+#metadata(TITLE)<preview-title>
+
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -16,7 +19,7 @@
   margin: (top: 3em, rest: 0.8cm),
   numbering: "1 / 1",
   header: [
-    ДЗ.09. Решение разностных уравнений.
+    #TITLE
     #h(1fr)
     #eval(mode: "math", "n = " + repr(n))
     #h(1fr)

@@ -1,6 +1,9 @@
 #import "@preview/numty:0.0.5" as nt
 #import "../../src/theme.typ": theme
 
+#let TITLE = "ЛР.01."
+#metadata(TITLE)<preview-title>
+
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 
@@ -174,7 +177,7 @@
   height: auto,
   width: auto,
   margin: (top: 3em, rest: 0.5cm),
-  header: [ЛР.01. #h(1fr) #SURNAME_NAME, #h(1pt) #UNN_GROUP],
+  header: [#TITLE #h(1fr) #SURNAME_NAME, #h(1pt) #UNN_GROUP],
 )
 #set text(fill: theme.text)
 #let double-line = [

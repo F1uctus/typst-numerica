@@ -5,6 +5,9 @@
 #import "@preview/numty:0.0.5" as nt
 #import "../src/theme.typ": theme, themed-axes, themed-axes-grid, themed-legend, themed-line-dashed, themed-line-dotted, themed-line-solid, themed-plot-base, themed-stroke
 
+#let TITLE = "КР.01. Работа над ошибками. Вариант 17."
+#metadata(TITLE)<preview-title>
+
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
 
@@ -14,7 +17,7 @@
   margin: (top: 3em, bottom: 1cm, rest: 0.5cm),
   numbering: "1 / 1",
   header: [
-    КР.01. Работа над ошибками. Вариант 17.
+    #TITLE
     #h(1fr)
     #SURNAME_NAME, #UNN_GROUP
   ],

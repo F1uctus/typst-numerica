@@ -3,6 +3,9 @@
 #import "@preview/diverential:0.2.0": *
 #import "../src/theme.typ": theme, themed-axes-grid, themed-legend, themed-plot-base, themed-stroke
 
+#let TITLE = "ДЗ.07. Геометрическая интерпретация метода Эйлера и его модификаций."
+#metadata(TITLE)<preview-title>
+
 
 #let SURNAME_NAME = "Никитин Илья"
 #let UNN_GROUP = "3822Б1МА1"
@@ -14,7 +17,7 @@
   margin: (top: 3em, rest: 1cm),
   numbering: "1 / 1",
   header: [
-    ДЗ.07. Геометрическая интерпретация метода Эйлера и его модификаций.
+    #TITLE
     #h(1fr)
     #eval(mode: "math", "n = " + repr(n))
     #h(1fr)
