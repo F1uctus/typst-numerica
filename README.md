@@ -28,13 +28,8 @@ follow the GitHub theme.
 
 <!-- preview:begin -->
 
-### worksheets
-
 <details open>
 <summary><b>КР.01. Работа над ошибками. Вариант 17.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/cw01-light-page-1.svg">
@@ -42,21 +37,11 @@ follow the GitHub theme.
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/cw01-light-page-1.svg">
 </picture>
 
-</details>
-
-<details>
-<summary><b>Задание 3</b></summary>
-
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/cw01-light-page-2.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/cw01-dark-page-2.svg">
   <img alt="Page 2" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/cw01-light-page-2.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 4</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/cw01-light-page-3.svg">
@@ -78,24 +63,14 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.01. Геометрическая интепретация метода Якоби и метода Зейделя.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw01-light-page-1.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw01-dark-page-1.svg">
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw01-light-page-1.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 1 (обращённый порядок уравнений)</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw01-light-page-2.svg">
@@ -105,24 +80,14 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.02. Численные методы решения нелинейных уравнений.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw02-light-page-1.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw02-dark-page-1.svg">
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw02-light-page-1.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 2</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw02-light-page-2.svg">
@@ -138,13 +103,8 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.03. Численные методы решения нелинейных уравнений.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw03-light-page-1.svg">
@@ -154,24 +114,14 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.04. Численные методы решения нелинейных уравнений.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw04-light-page-1.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw04-dark-page-1.svg">
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw04-light-page-1.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 2*</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw04-light-page-2.svg">
@@ -181,24 +131,14 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.05. Метод Ньютона для решения систем нелинейных уравнений.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw05-light-page-1.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw05-dark-page-1.svg">
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw05-light-page-1.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 3</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw05-light-page-2.svg">
@@ -208,24 +148,14 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.06. М. Эйлера и его модификации решения з. Коши для ОДУ 1 порядка.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw06-light-page-1.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw06-dark-page-1.svg">
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw06-light-page-1.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 2*</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw06-light-page-2.svg">
@@ -239,11 +169,6 @@ follow the GitHub theme.
   <img alt="Page 3" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw06-light-page-3.svg">
 </picture>
 
-</details>
-
-<details>
-<summary><b>Задание 3</b></summary>
-
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw06-light-page-4.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw06-dark-page-4.svg">
@@ -252,13 +177,8 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.07. Геометрическая интерпретация метода Эйлера и его модификаций.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw07-light-page-1.svg">
@@ -280,13 +200,8 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.08. Метод Рунге-Кутты 4 порядка точности для решения ОДУ 1 порядка.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw08-light-page-1.svg">
@@ -296,24 +211,14 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.09. Решение разностных уравнений.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw09-light-page-1.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw09-dark-page-1.svg">
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw09-light-page-1.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 2</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw09-light-page-2.svg">
@@ -338,8 +243,6 @@ follow the GitHub theme.
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw09-dark-page-5.svg">
   <img alt="Page 5" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw09-light-page-5.svg">
 </picture>
-
-</details>
 
 </details>
 
@@ -369,19 +272,11 @@ follow the GitHub theme.
 <details open>
 <summary><b>ДЗ.11. Исследование аппроксимации и устойчивости разностных схем для ЗК.</b></summary>
 
-<details>
-<summary><b>Задача 5</b></summary>
-
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw11-light-page-1.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw11-dark-page-1.svg">
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw11-light-page-1.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задача 7</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw11-light-page-2.svg">
@@ -391,24 +286,14 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.12. Построение и исследование разностных схем для ОДУ.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw12-light-page-1.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw12-dark-page-1.svg">
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw12-light-page-1.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 2</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw12-light-page-2.svg">
@@ -418,24 +303,14 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ДЗ.13. Метод конечных разностей для уравнений в частных производных.</b></summary>
-
-<details>
-<summary><b>Задание 2</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw13-light-page-1.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw13-dark-page-1.svg">
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw13-light-page-1.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 3</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw13-light-page-2.svg">
@@ -448,11 +323,6 @@ follow the GitHub theme.
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw13-dark-page-3.svg">
   <img alt="Page 3" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw13-light-page-3.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 4</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/hw13-light-page-4.svg">
@@ -468,15 +338,8 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
-### worksheets/lab
-
 <details open>
 <summary><b>ЛР.01.</b></summary>
-
-<details>
-<summary><b>Задание 1 + 3</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab01-light-page-1.svg">
@@ -484,21 +347,11 @@ follow the GitHub theme.
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab01-light-page-1.svg">
 </picture>
 
-</details>
-
-<details>
-<summary><b>Задание 2 + 3</b></summary>
-
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab01-light-page-2.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab01-dark-page-2.svg">
   <img alt="Page 2" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab01-light-page-2.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 3</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab01-light-page-3.svg">
@@ -508,13 +361,8 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ЛР.02.</b></summary>
-
-<details>
-<summary><b>Задание 1</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab02-light-page-1.svg">
@@ -524,13 +372,8 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ЛР.03.</b></summary>
-
-<details>
-<summary><b>Задание 1:  = y − x, y(0) = n + 4</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-light-page-1.svg">
@@ -538,21 +381,11 @@ follow the GitHub theme.
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-light-page-1.svg">
 </picture>
 
-</details>
-
-<details>
-<summary><b>Задание 1:  = y − x, y(0) = n + 4, иетод Рунге-Кутты с разными α (n=40, h=0.05)</b></summary>
-
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-light-page-2.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-dark-page-2.svg">
   <img alt="Page 2" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-light-page-2.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Задание 2:  = y − 2, y(0) = n + 4</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-light-page-3.svg">
@@ -560,21 +393,11 @@ follow the GitHub theme.
   <img alt="Page 3" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-light-page-3.svg">
 </picture>
 
-</details>
-
-<details>
-<summary><b>Задание 2:  = y − 2, y(0) = n + 4, иетод Рунге-Кутты с разными α (n=40, h=0.05)</b></summary>
-
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-light-page-4.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-dark-page-4.svg">
   <img alt="Page 4" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-light-page-4.svg">
 </picture>
-
-</details>
-
-<details>
-<summary><b>Сравнение методов для уравнения  = y − x</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab03-light-page-5.svg">
@@ -584,13 +407,8 @@ follow the GitHub theme.
 
 </details>
 
-</details>
-
 <details open>
 <summary><b>ЛР.04.</b></summary>
-
-<details>
-<summary><b>Задание 1 (Часть 1)</b></summary>
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab04-light-page-1.svg">
@@ -598,18 +416,11 @@ follow the GitHub theme.
   <img alt="Page 1" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab04-light-page-1.svg">
 </picture>
 
-</details>
-
-<details>
-<summary><b>Анализ результатов (Часть 2*)</b></summary>
-
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab04-light-page-2.svg">
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab04-dark-page-2.svg">
   <img alt="Page 2" src="https://raw.githubusercontent.com/F1uctus/typst-numerica/previews/lab04-light-page-2.svg">
 </picture>
-
-</details>
 
 </details>
 
